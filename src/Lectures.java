@@ -66,6 +66,9 @@ public class Lectures {
             } while (numberOfLecture < 0 || numberOfLecture >= lectures.length);
 
             System.out.println(lectures[numberOfLecture]);
+        } else if (command == 5) {
+            scanner.close();
+            System.exit(0);
         }
 
         scanner.close();
