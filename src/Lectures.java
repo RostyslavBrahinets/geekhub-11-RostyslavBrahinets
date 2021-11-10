@@ -34,6 +34,29 @@ public class Lectures {
             for (String l : lectures) {
                 System.out.println(l);
             }
+        } else if (command == 3) {
+            int numberOfLecture;
+
+            do {
+                System.out.print("Input number of lecture: ");
+                numberOfLecture = scanner.nextInt();
+            } while (numberOfLecture < 0 || numberOfLecture >= lectures.length);
+
+            String[] newLectures = new String[lectures.length - 1];
+
+            for (int i = 0; i < numberOfLecture; i++) {
+                newLectures[i] = lectures[i];
+            }
+
+            for (int i = numberOfLecture + 1; i < lectures.length; i++) {
+                newLectures[i - 1] = lectures[i];
+            }
+
+            lectures = newLectures;
+
+            for (String l : lectures) {
+                System.out.println(l);
+            }
         }
 
         scanner.close();
