@@ -19,6 +19,21 @@ public class Lectures {
             for (String lecture : lectures) {
                 System.out.println(lecture);
             }
+        } else if (command == 2) {
+            System.out.print("Input new lecture: ");
+            String lecture = scanner.next();
+            String[] newLectures = new String[lectures.length + 1];
+
+            for (int i = 0; i < lectures.length; i++) {
+                newLectures[i] = lectures[i];
+            }
+
+            newLectures[newLectures.length - 1] = lecture;
+            lectures = newLectures;
+
+            for (String l : lectures) {
+                System.out.println(l);
+            }
         }
 
         scanner.close();
