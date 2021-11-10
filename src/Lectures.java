@@ -15,6 +15,12 @@ public class Lectures {
 
         String[] lectures = {"Intro", "Basics", "Object-oriented Programming", "Error Propagation and Handling"};
 
+        if (command == 1) {
+            for (String lecture : lectures) {
+                System.out.println(lecture);
+            }
+        }
+
         scanner.close();
     }
 }
