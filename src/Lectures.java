@@ -13,6 +13,8 @@ public class Lectures {
             command = scanner.nextInt();
         } while (Arrays.binarySearch(commands, command) < 0);
 
+        String[] lectures = {"Intro", "Basics", "Object-oriented Programming", "Error Propagation and Handling"};
+
         scanner.close();
     }
 }
