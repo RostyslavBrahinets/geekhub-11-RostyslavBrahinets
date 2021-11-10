@@ -57,6 +57,15 @@ public class Lectures {
             for (String l : lectures) {
                 System.out.println(l);
             }
+        } else if (command == 4) {
+            int numberOfLecture;
+
+            do {
+                System.out.print("Input number of lecture: ");
+                numberOfLecture = scanner.nextInt();
+            } while (numberOfLecture < 0 || numberOfLecture >= lectures.length);
+
+            System.out.println(lectures[numberOfLecture]);
         }
 
         scanner.close();
