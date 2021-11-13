@@ -60,14 +60,20 @@ public class Lectures {
                 lectures = newLectures;
                 System.out.println();
             } else if (command.equals("4")) {
-                int numberOfLecture;
+                String[] numbersOfLectures = new String[lectures.length];
+
+                for (int i = 0; i < lectures.length; i++) {
+                    numbersOfLectures[i] = String.valueOf(i);
+                }
+
+                String numberOfLecture;
 
                 do {
                     System.out.print("Input number of lecture: ");
-                    numberOfLecture = scanner.nextInt();
-                } while (numberOfLecture < 0 || numberOfLecture >= lectures.length);
+                    numberOfLecture = scanner.nextLine();
+                } while (Arrays.binarySearch(numbersOfLectures, numberOfLecture) < 0);
 
-                System.out.println(lectures[numberOfLecture]);
+                System.out.println(lectures[Integer.parseInt(numberOfLecture)]);
                 System.out.println();
             } else if (command.equals("5")) {
                 scanner.close();
