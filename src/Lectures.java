@@ -16,68 +16,74 @@ public class Lectures {
                 command = scanner.nextLine();
             } while (Arrays.binarySearch(commands, command) < 0);
 
-            if (command.equals("1")) {
-                for (String lecture : lectures) {
-                    System.out.println(lecture);
+            switch (command) {
+                case "1" -> {
+                    for (String lecture : lectures) {
+                        System.out.println(lecture);
+                    }
+                    System.out.println();
                 }
-                System.out.println();
-            } else if (command.equals("2")) {
-                System.out.print("Input new lecture: ");
-                String lecture = scanner.nextLine();
-                String[] newLectures = new String[lectures.length + 1];
+                case "2" -> {
+                    System.out.print("Input new lecture: ");
+                    String lecture = scanner.nextLine();
+                    String[] newLectures = new String[lectures.length + 1];
 
-                for (int i = 0; i < lectures.length; i++) {
-                    newLectures[i] = lectures[i];
+                    for (int i = 0; i < lectures.length; i++) {
+                        newLectures[i] = lectures[i];
+                    }
+
+                    newLectures[newLectures.length - 1] = lecture;
+                    lectures = newLectures;
+                    System.out.println();
                 }
+                case "3" -> {
+                    String[] numbersOfLectures = new String[lectures.length];
 
-                newLectures[newLectures.length - 1] = lecture;
-                lectures = newLectures;
-                System.out.println();
-            } else if (command.equals("3")) {
-                String[] numbersOfLectures = new String[lectures.length];
+                    for (int i = 0; i < lectures.length; i++) {
+                        numbersOfLectures[i] = String.valueOf(i);
+                    }
 
-                for (int i = 0; i < lectures.length; i++) {
-                    numbersOfLectures[i] = String.valueOf(i);
+                    String numberOfLecture;
+
+                    do {
+                        System.out.print("Input number of lecture: ");
+                        numberOfLecture = scanner.nextLine();
+                    } while (Arrays.binarySearch(numbersOfLectures, numberOfLecture) < 0);
+
+                    String[] newLectures = new String[lectures.length - 1];
+
+                    for (int i = 0; i < Integer.parseInt(numberOfLecture); i++) {
+                        newLectures[i] = lectures[i];
+                    }
+
+                    for (int i = Integer.parseInt(numberOfLecture) + 1; i < lectures.length; i++) {
+                        newLectures[i - 1] = lectures[i];
+                    }
+
+                    lectures = newLectures;
+                    System.out.println();
                 }
+                case "4" -> {
+                    String[] numbersOfLectures = new String[lectures.length];
 
-                String numberOfLecture;
+                    for (int i = 0; i < lectures.length; i++) {
+                        numbersOfLectures[i] = String.valueOf(i);
+                    }
 
-                do {
-                    System.out.print("Input number of lecture: ");
-                    numberOfLecture = scanner.nextLine();
-                } while (Arrays.binarySearch(numbersOfLectures, numberOfLecture) < 0);
+                    String numberOfLecture;
 
-                String[] newLectures = new String[lectures.length - 1];
+                    do {
+                        System.out.print("Input number of lecture: ");
+                        numberOfLecture = scanner.nextLine();
+                    } while (Arrays.binarySearch(numbersOfLectures, numberOfLecture) < 0);
 
-                for (int i = 0; i < Integer.parseInt(numberOfLecture); i++) {
-                    newLectures[i] = lectures[i];
+                    System.out.println(lectures[Integer.parseInt(numberOfLecture)]);
+                    System.out.println();
                 }
-
-                for (int i = Integer.parseInt(numberOfLecture) + 1; i < lectures.length; i++) {
-                    newLectures[i - 1] = lectures[i];
+                case "5" -> {
+                    scanner.close();
+                    System.exit(0);
                 }
-
-                lectures = newLectures;
-                System.out.println();
-            } else if (command.equals("4")) {
-                String[] numbersOfLectures = new String[lectures.length];
-
-                for (int i = 0; i < lectures.length; i++) {
-                    numbersOfLectures[i] = String.valueOf(i);
-                }
-
-                String numberOfLecture;
-
-                do {
-                    System.out.print("Input number of lecture: ");
-                    numberOfLecture = scanner.nextLine();
-                } while (Arrays.binarySearch(numbersOfLectures, numberOfLecture) < 0);
-
-                System.out.println(lectures[Integer.parseInt(numberOfLecture)]);
-                System.out.println();
-            } else if (command.equals("5")) {
-                scanner.close();
-                System.exit(0);
             }
         }
     }
