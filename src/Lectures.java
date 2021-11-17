@@ -12,7 +12,7 @@ public class Lectures {
 
         while (true) {
             do {
-                System.out.print("Input command (1-5): ");
+                System.out.printf("%nInput command (1-5): ");
                 command = scanner.nextLine();
             } while (Arrays.binarySearch(commands, command) < 0);
 
@@ -21,7 +21,6 @@ public class Lectures {
                     for (String lecture : lectures) {
                         System.out.println(lecture);
                     }
-                    System.out.println();
                 }
                 case "2" -> {
                     System.out.print("Input new lecture: ");
@@ -34,7 +33,6 @@ public class Lectures {
 
                     newLectures[newLectures.length - 1] = lecture;
                     lectures = newLectures;
-                    System.out.println();
                 }
                 case "3" -> {
                     String[] numbersOfLectures = new String[lectures.length];
@@ -61,7 +59,6 @@ public class Lectures {
                     }
 
                     lectures = newLectures;
-                    System.out.println();
                 }
                 case "4" -> {
                     String[] numbersOfLectures = new String[lectures.length];
@@ -78,7 +75,6 @@ public class Lectures {
                     } while (Arrays.binarySearch(numbersOfLectures, numberOfLecture) < 0);
 
                     System.out.println(lectures[Integer.parseInt(numberOfLecture)]);
-                    System.out.println();
                 }
                 case "5" -> {
                     scanner.close();
