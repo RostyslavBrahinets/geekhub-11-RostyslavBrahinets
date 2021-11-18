@@ -7,14 +7,16 @@ public class Lecture {
     private LocalDate date;
     private Lecturer lecturer;
     private Homework homework;
+    private AdditionalMaterial additionalMaterial;
 
     public Lecture(String title, String describe, LocalDate date, Lecturer lecturer,
-                   Homework homework) {
+                   Homework homework, AdditionalMaterial additionalMaterial) {
         this.title = title;
         this.describe = describe;
         this.date = date;
         this.lecturer = lecturer;
         this.homework = homework;
+        this.additionalMaterial = additionalMaterial;
     }
 
     public String getTitle() {
@@ -57,6 +59,14 @@ public class Lecture {
         this.homework = homework;
     }
 
+    public AdditionalMaterial getAdditionalMaterial() {
+        return additionalMaterial;
+    }
+
+    public void setAdditionalMaterial(AdditionalMaterial additionalMaterial) {
+        this.additionalMaterial = additionalMaterial;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -72,12 +82,13 @@ public class Lecture {
             && Objects.equals(describe, lecture.describe)
             && Objects.equals(date, lecture.date)
             && Objects.equals(lecturer, lecture.lecturer)
-            && Objects.equals(homework, lecture.homework);
+            && Objects.equals(homework, lecture.homework)
+            && Objects.equals(additionalMaterial, lecture.additionalMaterial);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, describe, date, lecturer, homework);
+        return Objects.hash(title, describe, date, lecturer, homework, additionalMaterial);
     }
 
     @Override
@@ -88,6 +99,7 @@ public class Lecture {
             + ", date=" + date
             + ", lecturer=" + lecturer
             + ", homework=" + homework
+            + ", additionalMaterial=" + additionalMaterial
             + '}';
     }
 }
