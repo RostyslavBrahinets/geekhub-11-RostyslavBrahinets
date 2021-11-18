@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 public class LecturesDemonstration {
     static final Scanner scanner = new Scanner(System.in);
-    static Lecture[] lectures = {new Lecture("Intro", "", null),
-        new Lecture("Basics", "", null), new Lecture("OOP", "", null)};
+    static Lecture[] lectures = {new Lecture("Intro", "", null, null),
+        new Lecture("Basics", "", null, null), new Lecture("OOP", "", null, null)};
 
     public static void main(String[] args) {
         UseCommandOfLectures useCommand = new UseCommandOfLectures();
