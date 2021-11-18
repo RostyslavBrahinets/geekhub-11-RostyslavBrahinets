@@ -59,10 +59,10 @@ public class Homework {
 
     @Override
     public String toString() {
-        return "Homework{" +
-            "task='" + task + '\'' +
-            ", deadline=" + deadline +
-            ", lecturer=" + lecturer +
-            '}';
+        return "Homework{"
+            + "task='" + task + '\''
+            + ", deadline=" + deadline
+            + ", lecturer=" + lecturer
+            + '}';
     }
 }
