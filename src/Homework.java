@@ -47,7 +47,9 @@ public class Homework {
         }
 
         Homework homework = (Homework) o;
-        return Objects.equals(task, homework.task) && Objects.equals(deadline, homework.deadline) && Objects.equals(lecturer, homework.lecturer);
+        return Objects.equals(task, homework.task)
+            && Objects.equals(deadline, homework.deadline)
+            && Objects.equals(lecturer, homework.lecturer);
     }
 
     @Override

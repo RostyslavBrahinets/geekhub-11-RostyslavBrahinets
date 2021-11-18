@@ -6,12 +6,14 @@ public class Lecture {
     private String describe;
     private LocalDate date;
     private Lecturer lecturer;
+    private Homework homework;
 
-    public Lecture(String title, String describe, LocalDate date, Lecturer lecturer) {
+    public Lecture(String title, String describe, LocalDate date, Lecturer lecturer, Homework homework) {
         this.title = title;
         this.describe = describe;
         this.date = date;
         this.lecturer = lecturer;
+        this.homework = homework;
     }
 
     public String getTitle() {
@@ -46,6 +48,14 @@ public class Lecture {
         this.lecturer = lecturer;
     }
 
+    public Homework getHomework() {
+        return homework;
+    }
+
+    public void setHomework(Homework homework) {
+        this.homework = homework;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -57,12 +67,16 @@ public class Lecture {
         }
 
         Lecture lecture = (Lecture) o;
-        return Objects.equals(title, lecture.title) && Objects.equals(describe, lecture.describe) && Objects.equals(date, lecture.date) && Objects.equals(lecturer, lecture.lecturer);
+        return Objects.equals(title, lecture.title)
+            && Objects.equals(describe, lecture.describe)
+            && Objects.equals(date, lecture.date)
+            && Objects.equals(lecturer, lecture.lecturer)
+            && Objects.equals(homework, lecture.homework);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, describe, date, lecturer);
+        return Objects.hash(title, describe, date, lecturer, homework);
     }
 
     @Override
@@ -72,6 +86,7 @@ public class Lecture {
             ", describe='" + describe + '\'' +
             ", date=" + date +
             ", lecturer=" + lecturer +
+            ", homework=" + homework +
             '}';
     }
 }
