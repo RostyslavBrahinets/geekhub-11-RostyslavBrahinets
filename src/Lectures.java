@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Lectures {
     static final Scanner scanner = new Scanner(System.in);
-    static String[] lectures = {"Intro", "Basics", "Object-oriented Programming", "Error Propagation and Handling"};
+    static Lecture[] lectures = {new Lecture("Intro"), new Lecture("Basics"), new Lecture("OOP")};
 
     public static void main(String[] args) {
         while (true) {
@@ -40,28 +40,28 @@ public class Lectures {
     }
 
     private static void showAllLectures() {
-        for (String lecture : lectures) {
-            System.out.println(lecture);
+        for (Lecture lecture : lectures) {
+            System.out.println(lecture.getTitle());
         }
     }
 
     private static void addNewLecture() {
         System.out.print("Input new lecture: ");
-        String lecture = scanner.nextLine();
-        String[] newLectures = new String[lectures.length + 1];
+        String titleOfLecture = scanner.nextLine();
+        Lecture[] newLectures = new Lecture[lectures.length + 1];
 
         for (int i = 0; i < lectures.length; i++) {
             newLectures[i] = lectures[i];
         }
 
-        newLectures[newLectures.length - 1] = lecture;
+        newLectures[newLectures.length - 1] = new Lecture(titleOfLecture);
         lectures = newLectures;
     }
 
     private static void deleteLectureByNumber() {
         String numberOfLecture = getNumberOfLecture();
 
-        String[] newLectures = new String[lectures.length - 1];
+        Lecture[] newLectures = new Lecture[lectures.length - 1];
 
         for (int i = 0; i < Integer.parseInt(numberOfLecture); i++) {
             newLectures[i] = lectures[i];
@@ -76,7 +76,7 @@ public class Lectures {
 
     private static void showLectureByNumber() {
         String numberOfLecture = getNumberOfLecture();
-        System.out.println(lectures[Integer.parseInt(numberOfLecture)]);
+        System.out.println(lectures[Integer.parseInt(numberOfLecture)].getTitle());
     }
 
     private static void exit() {
