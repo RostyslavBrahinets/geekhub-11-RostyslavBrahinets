@@ -1,7 +1,8 @@
 import java.util.Objects;
 
 public class Lecturer extends Person {
-    public Lecturer(String firstName, String lastName, String slackNickname, String gitHubNickname) {
+    public Lecturer(String firstName, String lastName, String slackNickname,
+                    String gitHubNickname) {
         super(firstName, lastName, slackNickname, gitHubNickname);
     }
 
@@ -29,11 +30,11 @@ public class Lecturer extends Person {
 
     @Override
     public String toString() {
-        return "Lecturer{" +
-            "first_name='" + getFirstName() + '\'' +
-            ", last_name='" + getLastName() + '\'' +
-            ", slackNickname='" + getSlackNickname() + '\'' +
-            ", gitHubNickname='" + getGitHubNickname() + '\'' +
-            '}';
+        return "Lecturer{"
+            + "first_name='" + getFirstName() + '\''
+            + ", last_name='" + getLastName() + '\''
+            + ", slackNickname='" + getSlackNickname() + '\''
+            + ", gitHubNickname='" + getGitHubNickname() + '\''
+            + '}';
     }
 }
