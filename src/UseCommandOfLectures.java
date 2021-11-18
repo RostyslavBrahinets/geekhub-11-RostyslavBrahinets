@@ -20,7 +20,7 @@ public class UseCommandOfLectures {
         }
 
         newLectures[newLectures.length - 1] = new Lecture(titleOfLecture, "",
-            null, null, null, null);
+            null, null, null);
         return newLectures;
     }
 

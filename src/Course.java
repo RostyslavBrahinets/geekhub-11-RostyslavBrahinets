@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -10,22 +8,15 @@ public class Course {
     private Student[] students;
     private String formOfStudy;
     private String address;
-    private LocalDate startDate;
-    private LocalDate finishDate;
-    private LocalTime time;
 
     public Course(String name, Lecture[] lectures, Lecturer[] lecturers, Student[] students,
-                  String formOfStudy, String address, LocalDate startDate, LocalDate finishDate,
-                  LocalTime time) {
+                  String formOfStudy, String address) {
         this.name = name;
         this.lectures = lectures;
         this.lecturers = lecturers;
         this.students = students;
         this.formOfStudy = formOfStudy;
         this.address = address;
-        this.startDate = startDate;
-        this.finishDate = finishDate;
-        this.time = time;
     }
 
     public String getName() {
@@ -76,30 +67,6 @@ public class Course {
         this.address = address;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getFinishDate() {
-        return finishDate;
-    }
-
-    public void setFinishDate(LocalDate finishDate) {
-        this.finishDate = finishDate;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -116,18 +83,27 @@ public class Course {
             && Arrays.equals(lecturers, course.lecturers)
             && Arrays.equals(students, course.students)
             && Objects.equals(formOfStudy, course.formOfStudy)
-            && Objects.equals(address, course.address)
-            && Objects.equals(startDate, course.startDate)
-            && Objects.equals(finishDate, course.finishDate)
-            && Objects.equals(time, course.time);
+            && Objects.equals(address, course.address);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, formOfStudy, address, startDate, finishDate, time);
+        int result = Objects.hash(name, formOfStudy, address);
         result = 31 * result + Arrays.hashCode(lectures);
         result = 31 * result + Arrays.hashCode(lecturers);
         result = 31 * result + Arrays.hashCode(students);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{"
+            + "name='" + name + '\''
+            + ", lectures=" + Arrays.toString(lectures)
+            + ", lecturers=" + Arrays.toString(lecturers)
+            + ", students=" + Arrays.toString(students)
+            + ", formOfStudy='" + formOfStudy + '\''
+            + ", address='" + address + '\''
+            + '}';
     }
 }

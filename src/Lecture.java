@@ -4,16 +4,14 @@ import java.util.Objects;
 public class Lecture {
     private String title;
     private String describe;
-    private LocalDate date;
     private Lecturer lecturer;
     private Homework homework;
     private AdditionalMaterial additionalMaterial;
 
-    public Lecture(String title, String describe, LocalDate date, Lecturer lecturer,
+    public Lecture(String title, String describe, Lecturer lecturer,
                    Homework homework, AdditionalMaterial additionalMaterial) {
         this.title = title;
         this.describe = describe;
-        this.date = date;
         this.lecturer = lecturer;
         this.homework = homework;
         this.additionalMaterial = additionalMaterial;
@@ -33,14 +31,6 @@ public class Lecture {
 
     public void setDescribe(String describe) {
         this.describe = describe;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public Lecturer getLecturer() {
@@ -80,7 +70,6 @@ public class Lecture {
         Lecture lecture = (Lecture) o;
         return Objects.equals(title, lecture.title)
             && Objects.equals(describe, lecture.describe)
-            && Objects.equals(date, lecture.date)
             && Objects.equals(lecturer, lecture.lecturer)
             && Objects.equals(homework, lecture.homework)
             && Objects.equals(additionalMaterial, lecture.additionalMaterial);
@@ -88,7 +77,7 @@ public class Lecture {
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, describe, date, lecturer, homework, additionalMaterial);
+        return Objects.hash(title, describe, lecturer, homework, additionalMaterial);
     }
 
     @Override
@@ -96,7 +85,6 @@ public class Lecture {
         return "Lecture{"
             + "title='" + title + '\''
             + ", describe='" + describe + '\''
-            + ", date=" + date
             + ", lecturer=" + lecturer
             + ", homework=" + homework
             + ", additionalMaterial=" + additionalMaterial
