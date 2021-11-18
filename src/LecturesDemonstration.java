@@ -14,7 +14,7 @@ public class LecturesDemonstration {
                 case "2" -> changeLectures(useCommand.addNewLecture(lectures));
                 case "3" -> changeLectures(useCommand.deleteLectureByNumber(lectures));
                 case "4" -> useCommand.showLectureByNumber(lectures);
-                case "5" -> {
+                default -> {
                     scanner.close();
                     useCommand.exit();
                 }
