@@ -1,48 +1,8 @@
 import java.util.Objects;
 
-public class Lecturer {
-    private String firstName;
-    private String lastName;
-    private String slackNickname;
-    private String gitHubNickname;
-
+public class Lecturer extends Person {
     public Lecturer(String firstName, String lastName, String slackNickname, String gitHubNickname) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.slackNickname = slackNickname;
-        this.gitHubNickname = gitHubNickname;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getSlackNickname() {
-        return slackNickname;
-    }
-
-    public void setSlackNickname(String slackNickname) {
-        this.slackNickname = slackNickname;
-    }
-
-    public String getGitHubNickname() {
-        return gitHubNickname;
-    }
-
-    public void setGitHubNickname(String gitHubNickname) {
-        this.gitHubNickname = gitHubNickname;
+        super(firstName, lastName, slackNickname, gitHubNickname);
     }
 
     @Override
@@ -56,24 +16,24 @@ public class Lecturer {
         }
 
         Lecturer lecturer = (Lecturer) o;
-        return Objects.equals(firstName, lecturer.firstName)
-            && Objects.equals(lastName, lecturer.lastName)
-            && Objects.equals(slackNickname, lecturer.slackNickname)
-            && Objects.equals(gitHubNickname, lecturer.gitHubNickname);
+        return Objects.equals(getFirstName(), lecturer.getFirstName())
+            && Objects.equals(getLastName(), lecturer.getLastName())
+            && Objects.equals(getSlackNickname(), lecturer.getSlackNickname())
+            && Objects.equals(getGitHubNickname(), lecturer.getGitHubNickname());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, slackNickname, gitHubNickname);
+        return Objects.hash(getFirstName(), getLastName(), getSlackNickname(), getGitHubNickname());
     }
 
     @Override
     public String toString() {
         return "Lecturer{" +
-            "first_name='" + firstName + '\'' +
-            ", last_name='" + lastName + '\'' +
-            ", slackNickname='" + slackNickname + '\'' +
-            ", gitHubNickname='" + gitHubNickname + '\'' +
+            "first_name='" + getFirstName() + '\'' +
+            ", last_name='" + getLastName() + '\'' +
+            ", slackNickname='" + getSlackNickname() + '\'' +
+            ", gitHubNickname='" + getGitHubNickname() + '\'' +
             '}';
     }
 }
