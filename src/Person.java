@@ -4,7 +4,8 @@ public abstract class Person {
     private String slackNickname;
     private String gitHubNickname;
 
-    public Person(String firstName, String lastName, String slackNickname, String gitHubNickname) {
+    protected Person(String firstName, String lastName, String slackNickname,
+                     String gitHubNickname) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.slackNickname = slackNickname;
