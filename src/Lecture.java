@@ -8,7 +8,8 @@ public class Lecture {
     private Lecturer lecturer;
     private Homework homework;
 
-    public Lecture(String title, String describe, LocalDate date, Lecturer lecturer, Homework homework) {
+    public Lecture(String title, String describe, LocalDate date, Lecturer lecturer,
+                   Homework homework) {
         this.title = title;
         this.describe = describe;
         this.date = date;
@@ -81,12 +82,12 @@ public class Lecture {
 
     @Override
     public String toString() {
-        return "Lecture{" +
-            "title='" + title + '\'' +
-            ", describe='" + describe + '\'' +
-            ", date=" + date +
-            ", lecturer=" + lecturer +
-            ", homework=" + homework +
-            '}';
+        return "Lecture{"
+            + "title='" + title + '\''
+            + ", describe='" + describe + '\''
+            + ", date=" + date
+            + ", lecturer=" + lecturer
+            + ", homework=" + homework
+            + '}';
     }
 }
