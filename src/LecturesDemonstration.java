@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Lectures {
+public class LecturesDemonstration {
     static final Scanner scanner = new Scanner(System.in);
     static Lecture[] lectures = {new Lecture("Intro"), new Lecture("Basics"), new Lecture("OOP")};
 
