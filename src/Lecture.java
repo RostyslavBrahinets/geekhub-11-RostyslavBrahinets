@@ -2,11 +2,11 @@ public class Lecture {
     private String title;
     private String describe;
     private Lecturer lecturer;
-    private Homework homework;
+    private HomeWork homework;
     private AdditionalMaterial additionalMaterial;
 
     public Lecture(String title, String describe, Lecturer lecturer,
-                   Homework homework, AdditionalMaterial additionalMaterial) {
+                   HomeWork homework, AdditionalMaterial additionalMaterial) {
         this.title = title;
         this.describe = describe;
         this.lecturer = lecturer;
@@ -38,11 +38,11 @@ public class Lecture {
         this.lecturer = lecturer;
     }
 
-    public Homework getHomework() {
+    public HomeWork getHomework() {
         return homework;
     }
 
-    public void setHomework(Homework homework) {
+    public void setHomework(HomeWork homework) {
         this.homework = homework;
     }
 

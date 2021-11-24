@@ -1,7 +1,7 @@
-public class Homework {
+public class HomeWork {
     private String task;
 
-    public Homework(String task) {
+    public HomeWork(String task) {
         this.task = task;
     }
 
