@@ -34,7 +34,7 @@ public class LectionsDemonstration {
 
         do {
             if (command != null) {
-                String message = "'" + command + "'" + " is invalid command";
+                String message = "'" + command + "' is invalid command";
                 Logger.log(LogType.ERROR, LectionsDemonstration.class.getName(), message);
             }
 
