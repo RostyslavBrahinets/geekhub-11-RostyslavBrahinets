@@ -1,3 +1,5 @@
+import logger.LogType;
+import logger.Logger;
 import work.Lection;
 
 import java.util.Arrays;
@@ -28,9 +30,14 @@ public class LectionsDemonstration {
 
     private static String getCommand() {
         String[] commands = {"1", "2", "3", "4", "5"};
-        String command;
+        String command = null;
 
         do {
+            if (command != null) {
+                String message = "'" + command + "'" + " is invalid command";
+                Logger.log(LogType.ERROR, LectionsDemonstration.class.getName(), message);
+            }
+
             System.out.printf("%nInput command (1-5): ");
             command = scanner.nextLine();
         } while (Arrays.binarySearch(commands, command) < 0);
