@@ -1,7 +1,7 @@
 public class Resource {
-    private String name;
-    private ResourceType type;
-    private String data;
+    private final String name;
+    private final ResourceType type;
+    private final String data;
 
     public Resource(String name, ResourceType type, String data) {
         this.name = name;
