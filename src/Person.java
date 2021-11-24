@@ -1,46 +1,36 @@
 public class Person {
-    private String firstName;
-    private String lastName;
-    private String slackNickname;
-    private String gitHubNickname;
+    private final String firstName;
+    private final String lastName;
+    private final String[] contacts;
+    private final String email;
+    private final Role role;
 
-    protected Person(String firstName, String lastName, String slackNickname,
-                     String gitHubNickname) {
+    protected Person(String firstName, String lastName, String[] contacts,
+                     String gitHubNickname, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.slackNickname = slackNickname;
-        this.gitHubNickname = gitHubNickname;
+        this.contacts = contacts;
+        this.email = gitHubNickname;
+        this.role = role;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getSlackNickname() {
-        return slackNickname;
-    }
-
-    public void setSlackNickname(String slackNickname) {
-        this.slackNickname = slackNickname;
+    public String[] getContacts() {
+        return contacts;
     }
 
     public String getGitHubNickname() {
-        return gitHubNickname;
+        return email;
     }
 
-    public void setGitHubNickname(String gitHubNickname) {
-        this.gitHubNickname = gitHubNickname;
+    public Role getRole() {
+        return role;
     }
 }
