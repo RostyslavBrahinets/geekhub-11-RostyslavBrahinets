@@ -20,6 +20,7 @@ public class LectionsDemonstration {
                 case "2" -> changeLections(useCommand.addNewLection(lections));
                 case "3" -> changeLections(useCommand.deleteLectionByNumber(lections));
                 case "4" -> useCommand.showLectionByNumber(lections);
+                case "5" -> Logger.showAllLogs();
                 default -> {
                     scanner.close();
                     useCommand.exit();
@@ -29,7 +30,7 @@ public class LectionsDemonstration {
     }
 
     private static String getCommand() {
-        String[] commands = {"1", "2", "3", "4", "5"};
+        String[] commands = {"1", "2", "3", "4", "5", "6"};
         String command = null;
 
         do {
@@ -38,7 +39,7 @@ public class LectionsDemonstration {
                 Logger.log(LogType.ERROR, LectionsDemonstration.class.getName(), message);
             }
 
-            System.out.printf("%nInput command (1-5): ");
+            System.out.printf("%nInput command (1-6): ");
             command = scanner.nextLine();
         } while (Arrays.binarySearch(commands, command) < 0);
 
