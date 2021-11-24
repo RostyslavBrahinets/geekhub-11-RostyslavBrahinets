@@ -1,46 +1,23 @@
 public class Course {
-    private String name;
-    private Lection[] lections;
-    private String formOfStudy;
-    private String address;
+    private final String name;
+    private final Lection[] lections;
+    private final Person[] students;
 
-    public Course(String name, Lection[] lections,
-                  String formOfStudy, String address) {
+    public Course(String name, Lection[] lections, Person[] students) {
         this.name = name;
         this.lections = lections;
-        this.formOfStudy = formOfStudy;
-        this.address = address;
+        this.students = students;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Lection[] getLectures() {
+    public Lection[] getLections() {
         return lections;
     }
 
-    public void setLectures(Lection[] lections) {
-        this.lections = lections;
-    }
-
-    public String getFormOfStudy() {
-        return formOfStudy;
-    }
-
-    public void setFormOfStudy(String formOfStudy) {
-        this.formOfStudy = formOfStudy;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public Person[] getStudents() {
+        return students;
     }
 }
