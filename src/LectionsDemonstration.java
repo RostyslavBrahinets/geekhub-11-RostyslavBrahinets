@@ -1,14 +1,14 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class LecturesDemonstration {
+public class LectionsDemonstration {
     static final Scanner scanner = new Scanner(System.in);
     static Lection[] lections = {new Lection("Intro"),
         new Lection("Basics"),
         new Lection("OOP")};
 
     public static void main(String[] args) {
-        UseCommandOfLectures useCommand = new UseCommandOfLectures();
+        UseCommandOfLections useCommand = new UseCommandOfLections();
 
         while (true) {
             switch (getCommand()) {

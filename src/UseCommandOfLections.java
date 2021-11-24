@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class UseCommandOfLectures {
+public class UseCommandOfLections {
     private final Scanner scanner = new Scanner(System.in);
 
     public void showAllLectures(Lection[] lections) {
