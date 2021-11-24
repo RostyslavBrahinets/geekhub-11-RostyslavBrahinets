@@ -1,6 +1,3 @@
-import java.time.LocalDate;
-import java.util.Objects;
-
 public class Lecture {
     private String title;
     private String describe;
@@ -55,39 +52,5 @@ public class Lecture {
 
     public void setAdditionalMaterial(AdditionalMaterial additionalMaterial) {
         this.additionalMaterial = additionalMaterial;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Lecture lecture = (Lecture) o;
-        return Objects.equals(title, lecture.title)
-            && Objects.equals(describe, lecture.describe)
-            && Objects.equals(lecturer, lecture.lecturer)
-            && Objects.equals(homework, lecture.homework)
-            && Objects.equals(additionalMaterial, lecture.additionalMaterial);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, describe, lecturer, homework, additionalMaterial);
-    }
-
-    @Override
-    public String toString() {
-        return "Lecture{"
-            + "title='" + title + '\''
-            + ", describe='" + describe + '\''
-            + ", lecturer=" + lecturer
-            + ", homework=" + homework
-            + ", additionalMaterial=" + additionalMaterial
-            + '}';
     }
 }
