@@ -1,3 +1,8 @@
+package work;
+
+import people.Person;
+import resourses.Resource;
+
 public class Lection {
     private final String name;
     private String describe;

@@ -1,3 +1,5 @@
+package work;
+
 public class HomeWork {
     private String task;
 

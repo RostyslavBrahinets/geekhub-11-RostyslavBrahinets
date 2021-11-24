@@ -1,3 +1,5 @@
+package resourses;
+
 public class Resource {
     private final String name;
     private final ResourceType type;

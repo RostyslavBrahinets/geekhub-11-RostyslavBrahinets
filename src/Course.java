@@ -1,3 +1,6 @@
+import people.Person;
+import work.Lection;
+
 public class Course {
     private final String name;
     private final Lection[] lections;
