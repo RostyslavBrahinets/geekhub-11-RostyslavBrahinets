@@ -16,10 +16,10 @@ public class LectionsDemonstration {
 
         while (true) {
             switch (getCommand()) {
-                case "1" -> useCommand.showAllLectures(lections);
-                case "2" -> changeLectures(useCommand.addNewLecture(lections));
-                case "3" -> changeLectures(useCommand.deleteLectureByNumber(lections));
-                case "4" -> useCommand.showLectureByNumber(lections);
+                case "1" -> useCommand.showAllLections(lections);
+                case "2" -> changeLections(useCommand.addNewLection(lections));
+                case "3" -> changeLections(useCommand.deleteLectionByNumber(lections));
+                case "4" -> useCommand.showLectionByNumber(lections);
                 default -> {
                     scanner.close();
                     useCommand.exit();
@@ -45,7 +45,7 @@ public class LectionsDemonstration {
         return command;
     }
 
-    private static void changeLectures(Lection[] newLections) {
+    private static void changeLections(Lection[] newLections) {
         lections = newLections;
     }
 }
