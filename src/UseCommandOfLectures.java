@@ -4,44 +4,43 @@ import java.util.Scanner;
 public class UseCommandOfLectures {
     private final Scanner scanner = new Scanner(System.in);
 
-    public void showAllLectures(Lecture[] lectures) {
-        for (Lecture lecture : lectures) {
-            System.out.println(lecture.getTitle());
+    public void showAllLectures(Lection[] lections) {
+        for (Lection lection : lections) {
+            System.out.println(lection.getName());
         }
     }
 
-    public Lecture[] addNewLecture(Lecture[] lectures) {
+    public Lection[] addNewLecture(Lection[] lections) {
         System.out.print("Input new lecture: ");
         String titleOfLecture = scanner.nextLine();
-        Lecture[] newLectures = new Lecture[lectures.length + 1];
+        Lection[] newLections = new Lection[lections.length + 1];
 
-        for (int i = 0; i < lectures.length; i++) {
-            newLectures[i] = lectures[i];
+        for (int i = 0; i < lections.length; i++) {
+            newLections[i] = lections[i];
         }
 
-        newLectures[newLectures.length - 1] = new Lecture(titleOfLecture, "",
-            null, null, null);
-        return newLectures;
+        newLections[newLections.length - 1] = new Lection(titleOfLecture);
+        return newLections;
     }
 
-    public Lecture[] deleteLectureByNumber(Lecture[] lectures) {
-        String numberOfLecture = getNumberOfLecture(lectures);
-        Lecture[] newLectures = new Lecture[lectures.length - 1];
+    public Lection[] deleteLectureByNumber(Lection[] lections) {
+        String numberOfLecture = getNumberOfLecture(lections);
+        Lection[] newLections = new Lection[lections.length - 1];
 
         for (int i = 0; i < Integer.parseInt(numberOfLecture); i++) {
-            newLectures[i] = lectures[i];
+            newLections[i] = lections[i];
         }
 
-        for (int i = Integer.parseInt(numberOfLecture) + 1; i < lectures.length; i++) {
-            newLectures[i - 1] = lectures[i];
+        for (int i = Integer.parseInt(numberOfLecture) + 1; i < lections.length; i++) {
+            newLections[i - 1] = lections[i];
         }
 
-        return newLectures;
+        return newLections;
     }
 
-    public void showLectureByNumber(Lecture[] lectures) {
-        String numberOfLecture = getNumberOfLecture(lectures);
-        System.out.println(lectures[Integer.parseInt(numberOfLecture)].getTitle());
+    public void showLectureByNumber(Lection[] lections) {
+        String numberOfLecture = getNumberOfLecture(lections);
+        System.out.println(lections[Integer.parseInt(numberOfLecture)].getName());
     }
 
     public void exit() {
@@ -49,23 +48,23 @@ public class UseCommandOfLectures {
         System.exit(0);
     }
 
-    public String[] getArrayNumbersOfLectures(Lecture[] lectures) {
-        String[] numbersOfLectures = new String[lectures.length];
+    public String[] getArrayNumbersOfLectures(Lection[] lections) {
+        String[] numbersOfLectures = new String[lections.length];
 
-        for (int i = 0; i < lectures.length; i++) {
+        for (int i = 0; i < lections.length; i++) {
             numbersOfLectures[i] = String.valueOf(i);
         }
 
         return numbersOfLectures;
     }
 
-    public String getNumberOfLecture(Lecture[] lectures) {
+    public String getNumberOfLecture(Lection[] lections) {
         String numberOfLecture;
 
         do {
             System.out.print("Input number of lecture: ");
             numberOfLecture = scanner.nextLine();
-        } while (Arrays.binarySearch(getArrayNumbersOfLectures(lectures), numberOfLecture) < 0);
+        } while (Arrays.binarySearch(getArrayNumbersOfLectures(lections), numberOfLecture) < 0);
 
         return numberOfLecture;
     }

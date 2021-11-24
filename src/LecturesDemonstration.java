@@ -3,19 +3,19 @@ import java.util.Scanner;
 
 public class LecturesDemonstration {
     static final Scanner scanner = new Scanner(System.in);
-    static Lecture[] lectures = {new Lecture("Intro", "", null, null, null),
-        new Lecture("Basics", "", null, null, null),
-        new Lecture("OOP", "", null, null, null)};
+    static Lection[] lections = {new Lection("Intro"),
+        new Lection("Basics"),
+        new Lection("OOP")};
 
     public static void main(String[] args) {
         UseCommandOfLectures useCommand = new UseCommandOfLectures();
 
         while (true) {
             switch (getCommand()) {
-                case "1" -> useCommand.showAllLectures(lectures);
-                case "2" -> changeLectures(useCommand.addNewLecture(lectures));
-                case "3" -> changeLectures(useCommand.deleteLectureByNumber(lectures));
-                case "4" -> useCommand.showLectureByNumber(lectures);
+                case "1" -> useCommand.showAllLectures(lections);
+                case "2" -> changeLectures(useCommand.addNewLecture(lections));
+                case "3" -> changeLectures(useCommand.deleteLectureByNumber(lections));
+                case "4" -> useCommand.showLectureByNumber(lections);
                 default -> {
                     scanner.close();
                     useCommand.exit();
@@ -36,7 +36,7 @@ public class LecturesDemonstration {
         return command;
     }
 
-    private static void changeLectures(Lecture[] newLectures) {
-        lectures = newLectures;
+    private static void changeLectures(Lection[] newLections) {
+        lections = newLections;
     }
 }

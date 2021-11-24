@@ -1,17 +1,13 @@
 public class Course {
     private String name;
-    private Lecture[] lectures;
-    private Lecturer[] lecturers;
-    private Student[] students;
+    private Lection[] lections;
     private String formOfStudy;
     private String address;
 
-    public Course(String name, Lecture[] lectures, Lecturer[] lecturers, Student[] students,
+    public Course(String name, Lection[] lections,
                   String formOfStudy, String address) {
         this.name = name;
-        this.lectures = lectures;
-        this.lecturers = lecturers;
-        this.students = students;
+        this.lections = lections;
         this.formOfStudy = formOfStudy;
         this.address = address;
     }
@@ -24,28 +20,12 @@ public class Course {
         this.name = name;
     }
 
-    public Lecture[] getLectures() {
-        return lectures;
+    public Lection[] getLectures() {
+        return lections;
     }
 
-    public void setLectures(Lecture[] lectures) {
-        this.lectures = lectures;
-    }
-
-    public Lecturer[] getLecturers() {
-        return lecturers;
-    }
-
-    public void setLecturers(Lecturer[] lecturers) {
-        this.lecturers = lecturers;
-    }
-
-    public Student[] getStudents() {
-        return students;
-    }
-
-    public void setStudents(Student[] students) {
-        this.students = students;
+    public void setLectures(Lection[] lections) {
+        this.lections = lections;
     }
 
     public String getFormOfStudy() {
