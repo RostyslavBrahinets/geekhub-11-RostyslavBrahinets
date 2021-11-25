@@ -1,4 +1,5 @@
 import exceptions.LessonNotFoundException;
+import exceptions.ValidationException;
 import logger.LogType;
 import logger.Logger;
 import work.Lection;
@@ -16,8 +17,8 @@ public class UseCommandOfLections {
     }
 
     public Lection[] addNewLection(Lection[] lections) {
-        System.out.print("Input new lection: ");
-        String nameOfLection = scanner.nextLine();
+        String nameOfLection = getNameOfLection();
+
         Lection[] newLections = new Lection[lections.length + 1];
 
         for (int i = 0; i < lections.length; i++) {
@@ -53,7 +54,30 @@ public class UseCommandOfLections {
         System.exit(0);
     }
 
-    public String[] getArrayNumbersOfLections(Lection[] lections) {
+    private String getNameOfLection() {
+        String nameOfLection = null;
+        boolean run;
+
+        do {
+            try {
+                run = false;
+                System.out.print("Input new lection: ");
+                nameOfLection = scanner.nextLine();
+
+                if (nameOfLection.isBlank()) {
+                    throw new ValidationException("Inputted Invalid Data");
+                }
+            } catch (ValidationException e) {
+                run = true;
+                String message = "'" + nameOfLection + "' is invalid name of lection!";
+                Logger.log(LogType.ERROR, getClass().getName(), message, e);
+            }
+        } while (run);
+
+        return nameOfLection;
+    }
+
+    private String[] getArrayNumbersOfLections(Lection[] lections) {
         String[] numbersOfLections = new String[lections.length];
 
         for (int i = 0; i < lections.length; i++) {
@@ -63,7 +87,7 @@ public class UseCommandOfLections {
         return numbersOfLections;
     }
 
-    public String getNumberOfLection(Lection[] lections) {
+    private String getNumberOfLection(Lection[] lections) {
         String numberOfLection = null;
         boolean run;
 
