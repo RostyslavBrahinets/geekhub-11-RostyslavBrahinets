@@ -1,3 +1,4 @@
+import exceptions.CommandNotFoundException;
 import logger.LogType;
 import logger.Logger;
 import work.Lection;
@@ -32,16 +33,23 @@ public class LectionsDemonstration {
     private static String getCommand() {
         String[] commands = {"1", "2", "3", "4", "5", "6"};
         String command = null;
+        boolean run;
 
         do {
-            if (command != null) {
-                String message = "'" + command + "' is invalid command";
-                Logger.log(LogType.ERROR, LectionsDemonstration.class.getName(), message);
-            }
+            try {
+                run = false;
+                System.out.printf("%nInput command (1-6): ");
+                command = scanner.nextLine();
 
-            System.out.printf("%nInput command (1-6): ");
-            command = scanner.nextLine();
-        } while (Arrays.binarySearch(commands, command) < 0);
+                if (Arrays.binarySearch(commands, command) < 0) {
+                    throw new CommandNotFoundException("Command Not Found");
+                }
+            } catch (CommandNotFoundException e) {
+                run = true;
+                String message = "'" + command + "' is invalid command!";
+                Logger.log(LogType.ERROR, LectionsDemonstration.class.getName(), message, e);
+            }
+        } while (run);
 
         return command;
     }
