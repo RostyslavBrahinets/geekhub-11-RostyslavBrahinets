@@ -21,11 +21,11 @@ public class LectionsDemonstration {
                 case "2" -> changeLections(useCommand.addNewLection(lections));
                 case "3" -> changeLections(useCommand.deleteLectionByNumber(lections));
                 case "4" -> useCommand.showLectionByNumber(lections);
-                case "5" -> Logger.showAllLogs();
-                default -> {
+                case "5" -> {
                     scanner.close();
                     useCommand.exit();
                 }
+                default -> Logger.showAllLogs();
             }
         }
     }
