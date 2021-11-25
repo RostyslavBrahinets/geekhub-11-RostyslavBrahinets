@@ -1,3 +1,4 @@
+import exceptions.LessonNotFoundException;
 import logger.LogType;
 import logger.Logger;
 import work.Lection;
@@ -64,16 +65,23 @@ public class UseCommandOfLections {
 
     public String getNumberOfLection(Lection[] lections) {
         String numberOfLection = null;
+        boolean run;
 
         do {
-            if (numberOfLection != null) {
-                String message = "'" + numberOfLection + "' is invalid number of lection";
-                Logger.log(LogType.ERROR, getClass().getName(), message);
-            }
+            try {
+                run = false;
+                System.out.print("Input number of lection: ");
+                numberOfLection = scanner.nextLine();
 
-            System.out.print("Input number of lection: ");
-            numberOfLection = scanner.nextLine();
-        } while (Arrays.binarySearch(getArrayNumbersOfLections(lections), numberOfLection) < 0);
+                if (Arrays.binarySearch(getArrayNumbersOfLections(lections), numberOfLection) < 0) {
+                    throw new LessonNotFoundException("Lesson Not Found");
+                }
+            } catch (LessonNotFoundException e) {
+                run = true;
+                String message = "'" + numberOfLection + "' is invalid number of lection!";
+                Logger.log(LogType.ERROR, getClass().getName(), message, e);
+            }
+        } while (run);
 
         return numberOfLection;
     }
