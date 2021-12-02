@@ -17,6 +17,13 @@ public class Logger {
     }
 
     public static void warning(String className, String message) {
+        if (className == null
+            || className.isBlank()
+            || message == null
+            || message.isBlank()) {
+            return;
+        }
+
         String log = "[" + LogType.WARNING + "] " + className + ": " + message;
         addLog(log);
         System.out.println(log);

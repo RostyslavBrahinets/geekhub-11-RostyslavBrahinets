@@ -40,4 +40,39 @@ class LoggerTest {
     void info_doNothing_withoutError() {
         assertDoesNotThrow(() -> Logger.info(getClass().getName(), "Message"));
     }
+
+    @Test
+    void warning_doNothing_forClassNameAndMessageAreNull() {
+        assertDoesNotThrow(() -> Logger.warning(null, null));
+    }
+
+    @Test
+    void warning_doNothing_forClassNameIsNull() {
+        assertDoesNotThrow(() -> Logger.warning(null, "Message"));
+    }
+
+    @Test
+    void warning_doNothing_forMessageIsNull() {
+        assertDoesNotThrow(() -> Logger.warning(getClass().getName(), null));
+    }
+
+    @Test
+    void warning_doNothing_forClassNameAndMessageAreEmpty() {
+        assertDoesNotThrow(() -> Logger.warning("", ""));
+    }
+
+    @Test
+    void warning_doNothing_forClassNameIsEmpty() {
+        assertDoesNotThrow(() -> Logger.warning("", "Message"));
+    }
+
+    @Test
+    void warning_doNothing_forMessageIsEmpty() {
+        assertDoesNotThrow(() -> Logger.warning(getClass().getName(), ""));
+    }
+
+    @Test
+    void warning_doNothing_withoutError() {
+        assertDoesNotThrow(() -> Logger.warning(getClass().getName(), "Message"));
+    }
 }
