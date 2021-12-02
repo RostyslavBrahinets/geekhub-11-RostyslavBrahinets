@@ -30,6 +30,13 @@ public class Logger {
     }
 
     public static void error(String className, String message) {
+        if (className == null
+            || className.isBlank()
+            || message == null
+            || message.isBlank()) {
+            return;
+        }
+
         String log = "[" + LogType.ERROR + "] " + className + ": " + message;
         addLog(log);
         System.out.println(log);
