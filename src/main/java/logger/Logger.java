@@ -43,6 +43,14 @@ public class Logger {
     }
 
     public static void error(String className, String message, Exception e) {
+        if (className == null
+            || className.isBlank()
+            || message == null
+            || message.isBlank()
+            || e == null) {
+            return;
+        }
+
         String log = "[" + LogType.ERROR + "] " + className + ": " + message + "\n"
             + e.getStackTrace()[0];
         addLog(log);
