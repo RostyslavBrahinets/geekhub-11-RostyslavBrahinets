@@ -1,4 +1,5 @@
 import exceptions.CommandNotFoundException;
+import exceptions.ValidationException;
 import logger.Logger;
 import work.Lection;
 
@@ -34,6 +35,9 @@ public class LectionsDemonstration {
             } catch (CommandNotFoundException e) {
                 message = "Invalid command!";
                 Logger.error(LectionsDemonstration.class.getName(), message, e);
+            } catch (ValidationException e) {
+                message = "Name of lection is invalid!";
+                Logger.error(LectionsDemonstration.class.getName(), message);
             }
         }
     }

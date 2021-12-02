@@ -54,24 +54,12 @@ public class UseCommandOfLections {
     }
 
     private String getNameOfLection() {
-        String nameOfLection = null;
-        boolean run;
+        System.out.print("Input new lection: ");
+        String nameOfLection = scanner.nextLine();
 
-        do {
-            try {
-                run = false;
-                System.out.print("Input new lection: ");
-                nameOfLection = scanner.nextLine();
-
-                if (nameOfLection.isBlank()) {
-                    throw new ValidationException("Inputted Invalid Data");
-                }
-            } catch (ValidationException e) {
-                run = true;
-                String message = "'" + nameOfLection + "' is invalid name of lection!";
-                Logger.error(getClass().getName(), message, e);
-            }
-        } while (run);
+        if (nameOfLection.isBlank()) {
+            throw new ValidationException("Inputted Invalid Data");
+        }
 
         return nameOfLection;
     }
