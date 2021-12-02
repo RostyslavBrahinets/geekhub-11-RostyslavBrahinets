@@ -4,6 +4,13 @@ public class Logger {
     private static String[] logs = new String[0];
 
     public static void info(String className, String message) {
+        if (className == null
+            || className.isBlank()
+            || message == null
+            || message.isBlank()) {
+            return;
+        }
+
         String log = "[" + LogType.INFO + "] " + className + ": " + message;
         addLog(log);
         System.out.println(log);
