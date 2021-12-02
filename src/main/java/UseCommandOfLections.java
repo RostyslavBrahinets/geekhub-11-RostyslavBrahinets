@@ -6,6 +6,10 @@ public class UseCommandOfLections {
     private final Scanner scanner = new Scanner(System.in);
 
     public void showAllLections(Lection[] lections) {
+        if (lections == null) {
+            return;
+        }
+
         for (Lection lection : lections) {
             System.out.println(lection.getName());
         }
