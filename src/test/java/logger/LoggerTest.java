@@ -2,7 +2,7 @@ package logger;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class LoggerTest {
 
@@ -37,7 +37,7 @@ class LoggerTest {
     }
 
     @Test
-    void info_doNothing_withoutError() {
+    void info_withoutError() {
         assertDoesNotThrow(() -> Logger.info(getClass().getName(), "Message"));
     }
 
@@ -72,7 +72,7 @@ class LoggerTest {
     }
 
     @Test
-    void warning_doNothing_withoutError() {
+    void warning_withoutError() {
         assertDoesNotThrow(() -> Logger.warning(getClass().getName(), "Message"));
     }
 
@@ -107,7 +107,7 @@ class LoggerTest {
     }
 
     @Test
-    void errorWith2Parameters_doNothing_withoutError() {
+    void errorWith2Parameters_withoutError() {
         assertDoesNotThrow(() -> Logger.error(getClass().getName(), "Message"));
     }
 
@@ -142,7 +142,12 @@ class LoggerTest {
     }
 
     @Test
-    void errorWith3Parameters_doNothing_withoutError() {
+    void errorWith3Parameters_withoutError() {
         assertDoesNotThrow(() -> Logger.error(getClass().getName(), "Message", new Exception()));
+    }
+
+    @Test
+    void showAllLogs_withoutError() {
+        assertDoesNotThrow(Logger::showAllLogs);
     }
 }
