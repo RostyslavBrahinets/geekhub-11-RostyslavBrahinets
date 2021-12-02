@@ -23,7 +23,7 @@ public class Logger {
 
     public static void error(String className, String message, Exception e) {
         String log = "[" + LogType.ERROR + "] " + className + ": " + message + "\n"
-                        + e.getStackTrace()[0];
+            + e.getStackTrace()[0];
         addLog(log);
         System.out.println(log);
     }

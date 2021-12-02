@@ -2,7 +2,6 @@ import exceptions.CommandNotFoundException;
 import logger.Logger;
 import work.Lection;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class LectionsDemonstration {
@@ -14,43 +13,34 @@ public class LectionsDemonstration {
     public static void main(String[] args) {
         UseCommandOfLections useCommand = new UseCommandOfLections();
 
+        String message = "\n1 - show all lections\n2 - add new lection\n3 - delete lection by number\n" +
+            "4 - show lection by number\n5- exit\n6 - show all logs";
+        Logger.info(LectionsDemonstration.class.getName(), message);
+
         while (true) {
-            switch (getCommand()) {
-                case "1" -> useCommand.showAllLections(lections);
-                case "2" -> changeLections(useCommand.addNewLection(lections));
-                case "3" -> changeLections(useCommand.deleteLectionByNumber(lections));
-                case "4" -> useCommand.showLectionByNumber(lections);
-                case "5" -> {
-                    scanner.close();
-                    useCommand.exit();
+            try {
+                switch (getCommand()) {
+                    case "1" -> useCommand.showAllLections(lections);
+                    case "2" -> changeLections(useCommand.addNewLection(lections));
+                    case "3" -> changeLections(useCommand.deleteLectionByNumber(lections));
+                    case "4" -> useCommand.showLectionByNumber(lections);
+                    case "5" -> {
+                        scanner.close();
+                        useCommand.exit();
+                    }
+                    case "6" -> Logger.showAllLogs();
+                    default -> throw new CommandNotFoundException("Command Not Found");
                 }
-                default -> Logger.showAllLogs();
+            } catch (CommandNotFoundException e) {
+                message = "Invalid command!";
+                Logger.error(LectionsDemonstration.class.getName(), message, e);
             }
         }
     }
 
     private static String getCommand() {
-        String[] commands = {"1", "2", "3", "4", "5", "6"};
-        String command = null;
-        boolean run;
-
-        do {
-            try {
-                run = false;
-                System.out.printf("%nInput command (1-6): ");
-                command = scanner.nextLine();
-
-                if (Arrays.binarySearch(commands, command) < 0) {
-                    throw new CommandNotFoundException("Command Not Found");
-                }
-            } catch (CommandNotFoundException e) {
-                run = true;
-                String message = "'" + command + "' is invalid command!";
-                Logger.error(LectionsDemonstration.class.getName(), message, e);
-            }
-        } while (run);
-
-        return command;
+        System.out.printf("%nInput command (1-6): ");
+        return scanner.nextLine();
     }
 
     private static void changeLections(Lection[] newLections) {
