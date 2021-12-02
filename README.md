@@ -27,7 +27,7 @@
 |22|Front End|TBD|
 |23|Concurrency|TBD|
 |24|Integration Testing|TBD|
-|25|Course works preview|TBD|
+|25|main.java.Course works preview|TBD|
 |26|Hibernate, Spring Data|TBD|
 |27|Docker, Kubernetes|TBD|
-|28|Course works review|TBD|
+|28|main.java.Course works review|TBD|
