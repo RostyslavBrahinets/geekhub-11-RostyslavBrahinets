@@ -57,13 +57,7 @@ public class LectionsDemonstration {
 
     private static String getNameOfLection() {
         System.out.print("Input new lection: ");
-        String nameOfLection = scanner.nextLine();
-
-        if (nameOfLection.isBlank()) {
-            throw new ValidationException("Inputted Invalid Data");
-        }
-
-        return nameOfLection;
+        return scanner.nextLine();
     }
 
     private static String getNumberOfLection() {

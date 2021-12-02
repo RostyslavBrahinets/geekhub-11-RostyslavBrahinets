@@ -1,4 +1,5 @@
 import exceptions.LessonNotFoundException;
+import exceptions.ValidationException;
 import work.Lection;
 
 import java.util.Scanner;
@@ -17,6 +18,16 @@ public class UseCommandOfLections {
     }
 
     public Lection[] addNewLection(Lection[] lections, String nameOfLection) {
+        if (lections == null) {
+            lections = new Lection[0];
+        }
+
+        if (nameOfLection == null
+            || nameOfLection.isEmpty()
+            || nameOfLection.isBlank()) {
+            throw new ValidationException("Inputted Invalid Data");
+        }
+
         Lection[] newLections = new Lection[lections.length + 1];
 
         for (int i = 0; i < lections.length; i++) {

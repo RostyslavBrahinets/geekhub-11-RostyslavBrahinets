@@ -1,10 +1,10 @@
 import exceptions.LessonNotFoundException;
+import exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import work.Lection;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UseCommandOfLectionsTest {
     UseCommandOfLections useCommand;
@@ -21,6 +21,61 @@ class UseCommandOfLectionsTest {
     }
 
     @Test
+    void addNewLection_error_forLectionsAndNameAreNull() {
+        assertThrows(
+            ValidationException.class,
+            () -> lections = useCommand.addNewLection(null, null)
+        );
+    }
+
+    @Test
+    void addNewLection_error_forLectionsIsNull() {
+        assertDoesNotThrow(
+            () -> lections = useCommand.addNewLection(null, "L04")
+        );
+    }
+
+    @Test
+    void addNewLection_error_forNameIsNull() {
+        assertThrows(
+            ValidationException.class,
+            () -> lections = useCommand.addNewLection(lections, null)
+        );
+    }
+
+    @Test
+    void addNewLection_error_forNameIsEmpty() {
+        assertThrows(
+            ValidationException.class,
+            () -> lections = useCommand.addNewLection(lections, "")
+        );
+    }
+
+    @Test
+    void addNewLection_error_forNameIsBlank() {
+        assertThrows(
+            ValidationException.class,
+            () -> lections = useCommand.addNewLection(lections, " ")
+        );
+    }
+
+    @Test
+    void addNewLection_withoutError() {
+        lections = useCommand.addNewLection(lections, "L04");
+        assertEquals("L04", lections[lections.length - 1].getName());
+    }
+
+
+
+
+
+
+
+
+
+
+
+    @Test
     void showAllLections_doNothing_forNull() {
         assertDoesNotThrow(() -> useCommand.showAllLections(null));
     }
@@ -32,24 +87,24 @@ class UseCommandOfLectionsTest {
 
     @Test
     void showLectionByNumber_doNothing_forLectionsAndNumberOfLectionAreNull() {
-        assertDoesNotThrow(() ->  useCommand.showLectionByNumber(null, null));
+        assertDoesNotThrow(() -> useCommand.showLectionByNumber(null, null));
     }
 
     @Test
     void showLectionByNumber_doNothing_forLectionsIsNull() {
-        assertDoesNotThrow(() ->  useCommand.showLectionByNumber(null, "0"));
+        assertDoesNotThrow(() -> useCommand.showLectionByNumber(null, "0"));
     }
 
     @Test
     void showLectionByNumber_doNothing_forNumberOfLectionIsNull() {
-        assertDoesNotThrow(() ->  useCommand.showLectionByNumber(lections, null));
+        assertDoesNotThrow(() -> useCommand.showLectionByNumber(lections, null));
     }
 
     @Test
     void showLectionByNumber_error_forNumberOfLectionIsEmpty() {
         assertThrows(
             LessonNotFoundException.class,
-            () ->  useCommand.showLectionByNumber(lections, "")
+            () -> useCommand.showLectionByNumber(lections, "")
         );
     }
 
@@ -57,7 +112,7 @@ class UseCommandOfLectionsTest {
     void showLectionByNumber_error_forNumberOfLectionIsLessThenRequired() {
         assertThrows(
             LessonNotFoundException.class,
-            () ->  useCommand.showLectionByNumber(lections, "-1")
+            () -> useCommand.showLectionByNumber(lections, "-1")
         );
     }
 
@@ -65,7 +120,7 @@ class UseCommandOfLectionsTest {
     void showLectionByNumber_error_forNumberOfLectionIsMoreThenRequired() {
         assertThrows(
             LessonNotFoundException.class,
-            () ->  useCommand.showLectionByNumber(lections, "99")
+            () -> useCommand.showLectionByNumber(lections, "99")
         );
     }
 
@@ -73,12 +128,12 @@ class UseCommandOfLectionsTest {
     void showLectionByNumber_error_forNumberOfLectionIsInvalid() {
         assertThrows(
             LessonNotFoundException.class,
-            () ->  useCommand.showLectionByNumber(lections, "a")
+            () -> useCommand.showLectionByNumber(lections, "a")
         );
     }
 
     @Test
-    void showLectionByNumber_doNothing_withoutError() {
-        assertDoesNotThrow(() ->  useCommand.showLectionByNumber(lections, "0"));
+    void showLectionByNumber_withoutError() {
+        assertDoesNotThrow(() -> useCommand.showLectionByNumber(lections, "0"));
     }
 }
