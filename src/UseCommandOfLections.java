@@ -1,6 +1,5 @@
 import exceptions.LessonNotFoundException;
 import exceptions.ValidationException;
-import logger.LogType;
 import logger.Logger;
 import work.Lection;
 
@@ -70,7 +69,7 @@ public class UseCommandOfLections {
             } catch (ValidationException e) {
                 run = true;
                 String message = "'" + nameOfLection + "' is invalid name of lection!";
-                Logger.log(LogType.ERROR, getClass().getName(), message, e);
+                Logger.error(getClass().getName(), message, e);
             }
         } while (run);
 
@@ -103,7 +102,7 @@ public class UseCommandOfLections {
             } catch (LessonNotFoundException e) {
                 run = true;
                 String message = "'" + numberOfLection + "' is invalid number of lection!";
-                Logger.log(LogType.ERROR, getClass().getName(), message, e);
+                Logger.error(getClass().getName(), message, e);
             }
         } while (run);
 
