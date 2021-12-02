@@ -29,23 +29,35 @@ public class UseCommandOfLections {
     }
 
     public Lection[] deleteLectionByNumber(Lection[] lections) {
-        String numberOfLection = getNumberOfLection(lections);
+        String numberOfLection;
         Lection[] newLections = new Lection[lections.length - 1];
 
-        for (int i = 0; i < Integer.parseInt(numberOfLection); i++) {
-            newLections[i] = lections[i];
-        }
+        try {
+            numberOfLection = getNumberOfLection(lections);
 
-        for (int i = Integer.parseInt(numberOfLection) + 1; i < lections.length; i++) {
-            newLections[i - 1] = lections[i];
+            for (int i = 0; i < Integer.parseInt(numberOfLection); i++) {
+                newLections[i] = lections[i];
+            }
+
+            for (int i = Integer.parseInt(numberOfLection) + 1; i < lections.length; i++) {
+                newLections[i - 1] = lections[i];
+            }
+        } catch (LessonNotFoundException e) {
+            String message = "Number of lection is invalid!";
+            Logger.error(getClass().getName(), message, e);
         }
 
         return newLections;
     }
 
     public void showLectionByNumber(Lection[] lections) {
-        String numberOfLection = getNumberOfLection(lections);
-        System.out.println(lections[Integer.parseInt(numberOfLection)].getName());
+        try {
+            String numberOfLection = getNumberOfLection(lections);
+            System.out.println(lections[Integer.parseInt(numberOfLection)].getName());
+        } catch (LessonNotFoundException e) {
+            String message = "Number of lection is invalid!";
+            Logger.error(getClass().getName(), message, e);
+        }
     }
 
     public void exit() {
@@ -75,24 +87,12 @@ public class UseCommandOfLections {
     }
 
     private String getNumberOfLection(Lection[] lections) {
-        String numberOfLection = null;
-        boolean run;
+        System.out.print("Input number of lection: ");
+        String numberOfLection = scanner.nextLine();
 
-        do {
-            try {
-                run = false;
-                System.out.print("Input number of lection: ");
-                numberOfLection = scanner.nextLine();
-
-                if (Arrays.binarySearch(getArrayNumbersOfLections(lections), numberOfLection) < 0) {
-                    throw new LessonNotFoundException("Lesson Not Found");
-                }
-            } catch (LessonNotFoundException e) {
-                run = true;
-                String message = "'" + numberOfLection + "' is invalid number of lection!";
-                Logger.error(getClass().getName(), message, e);
-            }
-        } while (run);
+        if (Arrays.binarySearch(getArrayNumbersOfLections(lections), numberOfLection) < 0) {
+            throw new LessonNotFoundException("Lesson Not Found");
+        }
 
         return numberOfLection;
     }

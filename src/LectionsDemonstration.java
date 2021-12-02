@@ -15,7 +15,7 @@ public class LectionsDemonstration {
         UseCommandOfLections useCommand = new UseCommandOfLections();
 
         String message = "\n1 - show all lections\n2 - add new lection\n3 - delete lection by number\n" +
-            "4 - show lection by number\n5- exit\n6 - show all logs";
+            "4 - show lection by number\n5 - exit\n6 - show all logs";
         Logger.info(LectionsDemonstration.class.getName(), message);
 
         while (true) {
