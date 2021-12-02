@@ -1,6 +1,6 @@
 package exceptions;
 
-public class LessonNotFoundException extends RuntimeException {
+public class LessonNotFoundException extends ArrayIndexOutOfBoundsException {
     public LessonNotFoundException() {
     }
 
@@ -8,7 +8,4 @@ public class LessonNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public LessonNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

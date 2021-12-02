@@ -1,3 +1,4 @@
+import exceptions.LessonNotFoundException;
 import work.Lection;
 
 import java.util.Scanner;
@@ -41,6 +42,20 @@ public class UseCommandOfLections {
     }
 
     public void showLectionByNumber(Lection[] lections, String numberOfLection) {
+        if (lections == null || numberOfLection == null) {
+            return;
+        }
+
+        try {
+            if (numberOfLection.isBlank()
+                || Integer.parseInt(numberOfLection) < 0
+                || Integer.parseInt(numberOfLection) >= lections.length) {
+                throw new LessonNotFoundException("Lection Not Found");
+            }
+        } catch (NumberFormatException e) {
+            throw new LessonNotFoundException("Lection Not Found");
+        }
+
         System.out.println(lections[Integer.parseInt(numberOfLection)].getName());
     }
 
