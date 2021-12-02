@@ -6,6 +6,7 @@ import work.Lection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class UseCommandOfLectionsTest {
     UseCommandOfLections useCommand;
     Lection[] lections;
@@ -21,6 +22,16 @@ class UseCommandOfLectionsTest {
     }
 
     @Test
+    void showAllLections_doNothing_forNull() {
+        assertDoesNotThrow(() -> useCommand.showAllLections(null));
+    }
+
+    @Test
+    void showAllLections_withoutError() {
+        assertDoesNotThrow(() -> useCommand.showAllLections(lections));
+    }
+
+    @Test
     void addNewLection_error_forLectionsAndNameAreNull() {
         assertThrows(
             ValidationException.class,
@@ -29,7 +40,7 @@ class UseCommandOfLectionsTest {
     }
 
     @Test
-    void addNewLection_error_forLectionsIsNull() {
+    void addNewLection_doNothing_forLectionsIsNull() {
         assertDoesNotThrow(
             () -> lections = useCommand.addNewLection(null, "L04")
         );
@@ -65,24 +76,66 @@ class UseCommandOfLectionsTest {
         assertEquals("L04", lections[lections.length - 1].getName());
     }
 
-
-
-
-
-
-
-
-
-
-
     @Test
-    void showAllLections_doNothing_forNull() {
-        assertDoesNotThrow(() -> useCommand.showAllLections(null));
+    void deleteLectionByNumber_error_forLectionsAndNameAreNull() {
+        assertThrows(
+            LessonNotFoundException.class,
+            () -> lections = useCommand.deleteLectionByNumber(null, null)
+        );
     }
 
     @Test
-    void showAllLections_withoutError() {
-        assertDoesNotThrow(() -> useCommand.showAllLections(lections));
+    void deleteLectionByNumber_error_forLectionsIsNull() {
+        assertThrows(
+            LessonNotFoundException.class,
+            () -> lections = useCommand.deleteLectionByNumber(null, "0")
+        );
+    }
+
+    @Test
+    void deleteLectionByNumber_error_forNameIsNull() {
+        assertThrows(
+            LessonNotFoundException.class,
+            () -> lections = useCommand.deleteLectionByNumber(lections, null)
+        );
+    }
+
+    @Test
+    void deleteLectionByNumber_error_forNameIsEmpty() {
+        assertThrows(
+            LessonNotFoundException.class,
+            () -> lections = useCommand.deleteLectionByNumber(lections, "")
+        );
+    }
+
+    @Test
+    void deleteLectionByNumber_error_forNameIsLessThanRequired() {
+        assertThrows(
+            LessonNotFoundException.class,
+            () -> lections = useCommand.deleteLectionByNumber(lections, "-1")
+        );
+    }
+
+    @Test
+    void deleteLectionByNumber_error_forNameIsMoreThanRequired() {
+        assertThrows(
+            LessonNotFoundException.class,
+            () -> lections = useCommand.deleteLectionByNumber(lections, "99")
+        );
+    }
+
+    @Test
+    void deleteLectionByNumber_error_forNameIsInvalid() {
+        assertThrows(
+            LessonNotFoundException.class,
+            () -> lections = useCommand.deleteLectionByNumber(lections, "a")
+        );
+    }
+
+    @Test
+    void deleteLectionByNumber_withoutError() {
+        Lection[] newLections = useCommand.deleteLectionByNumber(lections, "0");
+        assertEquals(lections.length - 1, newLections.length);
     }
 
     @Test

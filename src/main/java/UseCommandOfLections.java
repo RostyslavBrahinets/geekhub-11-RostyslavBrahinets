@@ -39,6 +39,18 @@ public class UseCommandOfLections {
     }
 
     public Lection[] deleteLectionByNumber(Lection[] lections, String numberOfLection) {
+        try {
+            if (lections == null
+                || numberOfLection == null
+                || numberOfLection.isBlank()
+                || Integer.parseInt(numberOfLection) < 0
+                || Integer.parseInt(numberOfLection) >= lections.length) {
+                throw new LessonNotFoundException("Lection Not Found");
+            }
+        } catch (NumberFormatException e) {
+            throw new LessonNotFoundException("Lection Not Found");
+        }
+
         Lection[] newLections = new Lection[lections.length - 1];
 
         for (int i = 0; i < Integer.parseInt(numberOfLection); i++) {
