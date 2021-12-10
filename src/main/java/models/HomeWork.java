@@ -1,4 +1,4 @@
-package work;
+package models;
 
 public class HomeWork {
     private String task;

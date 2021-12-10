@@ -2,7 +2,7 @@ import exceptions.CommandNotFoundException;
 import exceptions.LessonNotFoundException;
 import exceptions.ValidationException;
 import logger.Logger;
-import work.Lection;
+import models.Lection;
 
 import java.util.Scanner;
 

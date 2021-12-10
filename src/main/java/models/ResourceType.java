@@ -1,4 +1,4 @@
-package resourses;
+package models;
 
 public enum ResourceType {
     URL,

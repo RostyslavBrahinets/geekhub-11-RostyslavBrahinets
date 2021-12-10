@@ -1,7 +1,4 @@
-package work;
-
-import people.Person;
-import resourses.Resource;
+package models;
 
 public class Lection {
     private final String name;

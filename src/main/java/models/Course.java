@@ -1,5 +1,4 @@
-import people.Person;
-import work.Lection;
+package models;
 
 public class Course {
     private final String name;

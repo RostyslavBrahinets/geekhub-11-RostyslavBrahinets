@@ -1,4 +1,4 @@
-package people;
+package models;
 
 public enum Role {
     STUDENT,

@@ -1,4 +1,4 @@
-package people;
+package models;
 
 public class Person {
     private final String firstName;

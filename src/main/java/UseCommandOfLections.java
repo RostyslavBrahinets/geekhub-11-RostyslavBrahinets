@@ -1,6 +1,6 @@
 import exceptions.LessonNotFoundException;
 import exceptions.ValidationException;
-import work.Lection;
+import models.Lection;
 
 import java.util.Scanner;
 

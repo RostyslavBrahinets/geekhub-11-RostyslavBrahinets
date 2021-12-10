@@ -1,4 +1,4 @@
-package resourses;
+package models;
 
 public class Resource {
     private final String name;

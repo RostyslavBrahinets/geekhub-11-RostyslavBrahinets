@@ -2,7 +2,7 @@ import exceptions.LessonNotFoundException;
 import exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import work.Lection;
+import models.Lection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
