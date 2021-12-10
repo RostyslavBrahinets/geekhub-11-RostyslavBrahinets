@@ -6,7 +6,7 @@ import models.Lection;
 
 import java.util.Scanner;
 
-public class LectionsDemonstration {
+public class ApplicationStarter {
     static final Scanner scanner = new Scanner(System.in);
     static Lection[] lections = {new Lection("Intro"),
         new Lection("Basics"),
@@ -17,7 +17,7 @@ public class LectionsDemonstration {
 
         String message = "\n1 - show all lections\n2 - add new lection\n3 - delete lection by number\n" +
             "4 - show lection by number\n5 - exit\n6 - show all logs";
-        Logger.info(LectionsDemonstration.class.getName(), message);
+        Logger.info(ApplicationStarter.class.getName(), message);
 
         while (true) {
             try {
@@ -35,13 +35,13 @@ public class LectionsDemonstration {
                 }
             } catch (CommandNotFoundException e) {
                 message = "Invalid command!";
-                Logger.error(LectionsDemonstration.class.getName(), message, e);
+                Logger.error(ApplicationStarter.class.getName(), message, e);
             } catch (ValidationException e) {
                 message = "Name of lection is invalid!";
-                Logger.error(LectionsDemonstration.class.getName(), message);
+                Logger.error(ApplicationStarter.class.getName(), message);
             } catch (LessonNotFoundException e) {
                 message = "Number of lection is invalid!";
-                Logger.error(LectionsDemonstration.class.getName(), message, e);
+                Logger.error(ApplicationStarter.class.getName(), message, e);
             }
         }
     }
