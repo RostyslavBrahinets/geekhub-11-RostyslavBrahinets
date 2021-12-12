@@ -19,7 +19,7 @@ public class LectionSource {
     }
 
     public void addLection(Lection lection) {
-        if (lection == null || lection.getName().isBlank()) {
+        if (lection == null || lection.getName().isBlank() || lection.getResources() == null) {
             throw new ValidationException("Lection is invalid");
         }
 
