@@ -11,6 +11,11 @@ public class Lection {
         this.name = name;
     }
 
+    public Lection(String name, Resource[] resources) {
+        this.name = name;
+        this.resources = resources;
+    }
+
     public Lection(String name, String describe, Resource[] resources, Person lecturer, HomeWork[] homeWork) {
         this.name = name;
         this.describe = describe;
