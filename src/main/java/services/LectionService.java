@@ -17,7 +17,7 @@ public class LectionService {
         try {
             lectionSource.addLection(lection);
         } catch (ValidationException e) {
-            Logger.error(getClass().getName(), "Lection is invalid", e);
+            Logger.error(getClass().getName(), "Invalid name of lection", e);
         }
     }
 
@@ -31,6 +31,7 @@ public class LectionService {
 
     public Lection getLection(int id) {
         Lection lection = null;
+
         try {
             lection = lectionSource.getLectionById(id);
         } catch (LessonNotFoundException e) {
