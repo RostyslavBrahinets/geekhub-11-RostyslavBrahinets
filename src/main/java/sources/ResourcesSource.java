@@ -3,6 +3,7 @@ package sources;
 import exceptions.ResourceNotFoundException;
 import exceptions.ValidationException;
 import models.Resource;
+import models.ResourceType;
 
 import java.util.Arrays;
 
@@ -19,7 +20,20 @@ public class ResourcesSource {
     }
 
     public void addResource(Resource resource) {
-        if (resource == null || resource.getName().isBlank()) {
+        if (resource == null || resource.getName().isBlank() || resource.getData() == null) {
+            throw new ValidationException("Resource is invalid");
+        }
+
+        boolean invalidType = true;
+
+        for (ResourceType type : ResourceType.values()) {
+            if (type == resource.getType()) {
+                invalidType = false;
+                break;
+            }
+        }
+
+        if (invalidType) {
             throw new ValidationException("Resource is invalid");
         }
 
