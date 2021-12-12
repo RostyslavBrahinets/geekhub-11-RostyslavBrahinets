@@ -9,20 +9,15 @@ import sources.LectionSource;
 public class LectionService {
     private final LectionSource lectionSource = LectionSource.getInstance();
 
-    public void showLections() {
-        for (Lection lection : lectionSource.getLections()) {
-            if (lection == null) {
-                return;
-            }
-            System.out.println(lection.getName());
-        }
+    public Lection[] getLections() {
+        return lectionSource.getLections();
     }
 
     public void addLection(Lection lection) {
         try {
             lectionSource.addLection(lection);
         } catch (ValidationException e) {
-            Logger.error(getClass().getName(), "Invalid name of lection", e);
+            Logger.error(getClass().getName(), "Lection is invalid", e);
         }
     }
 
@@ -34,11 +29,14 @@ public class LectionService {
         }
     }
 
-    public void showLection(int id) {
+    public Lection getLection(int id) {
+        Lection lection = null;
         try {
-            System.out.println(lectionSource.getLectionById(id).getName());
+            lection = lectionSource.getLectionById(id);
         } catch (LessonNotFoundException e) {
             Logger.error(getClass().getName(), "Lection not found", e);
         }
+
+        return lection;
     }
 }
