@@ -10,8 +10,14 @@ public class ApplicationStarter {
     public static void main(String[] args) {
         UseLectionService useCommand = new UseLectionService();
 
-        String message = "\n1 - show all lections\n2 - add new lection\n3 - delete lection by number\n" +
-            "4 - show lection by number\n5 - exit\n6 - show all logs";
+        String message = """
+            
+            1 - show all lections
+            2 - add new lection
+            3 - delete lection by number
+            4 - show lection by number
+            5 - exit
+            6 - show all logs""";
         Logger.info(ApplicationStarter.class.getName(), message);
 
         while (true) {
