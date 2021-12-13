@@ -1,16 +1,10 @@
 import exceptions.CommandNotFoundException;
-import exceptions.LessonNotFoundException;
-import exceptions.ValidationException;
 import logger.Logger;
-import models.Lection;
 
 import java.util.Scanner;
 
 public class ApplicationStarter {
     static final Scanner scanner = new Scanner(System.in);
-    static Lection[] lections = {new Lection("Intro"),
-        new Lection("Basics"),
-        new Lection("OOP")};
 
     public static void main(String[] args) {
         UseCommandOfLections useCommand = new UseCommandOfLections();
@@ -22,10 +16,10 @@ public class ApplicationStarter {
         while (true) {
             try {
                 switch (getCommand()) {
-                    case "1" -> useCommand.showAllLections(lections);
-                    case "2" -> changeLections(useCommand.addNewLection(lections, getNameOfLection()));
-                    case "3" -> changeLections(useCommand.deleteLectionByNumber(lections, getNumberOfLection()));
-                    case "4" -> useCommand.showLectionByNumber(lections, getNumberOfLection());
+                    case "1" -> useCommand.showAllLections();
+                    case "2" -> useCommand.addNewLection();
+                    case "3" -> useCommand.deleteLectionByNumber();
+                    case "4" -> useCommand.showLectionByNumber();
                     case "5" -> {
                         scanner.close();
                         useCommand.exit();
@@ -36,32 +30,12 @@ public class ApplicationStarter {
             } catch (CommandNotFoundException e) {
                 message = "Invalid command!";
                 Logger.error(ApplicationStarter.class.getName(), message, e);
-            } catch (ValidationException e) {
-                message = "Name of lection is invalid!";
-                Logger.error(ApplicationStarter.class.getName(), message);
-            } catch (LessonNotFoundException e) {
-                message = "Number of lection is invalid!";
-                Logger.error(ApplicationStarter.class.getName(), message, e);
             }
         }
     }
 
     private static String getCommand() {
         System.out.printf("%nInput command (1-6): ");
-        return scanner.nextLine();
-    }
-
-    private static void changeLections(Lection[] newLections) {
-        lections = newLections;
-    }
-
-    private static String getNameOfLection() {
-        System.out.print("Input new lection: ");
-        return scanner.nextLine();
-    }
-
-    private static String getNumberOfLection() {
-        System.out.print("Input number of lection: ");
         return scanner.nextLine();
     }
 }
