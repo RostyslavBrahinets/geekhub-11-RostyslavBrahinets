@@ -22,4 +22,9 @@ public class Resource {
     public String getData() {
         return data;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s - %s", name, type, data);
+    }
 }
