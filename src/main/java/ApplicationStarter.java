@@ -1,5 +1,6 @@
 import exceptions.CommandNotFoundException;
 import logger.Logger;
+import use.UseLectionService;
 
 import java.util.Scanner;
 
@@ -7,7 +8,7 @@ public class ApplicationStarter {
     static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        UseCommandOfLections useCommand = new UseCommandOfLections();
+        UseLectionService useCommand = new UseLectionService();
 
         String message = "\n1 - show all lections\n2 - add new lection\n3 - delete lection by number\n" +
             "4 - show lection by number\n5 - exit\n6 - show all logs";
