@@ -1,5 +1,6 @@
 package validators;
 
+import exceptions.InvalidArgumentException;
 import exceptions.ResourceNotFoundException;
 import exceptions.ValidationException;
 import models.ResourceType;
@@ -10,7 +11,7 @@ public class ResourceValidator {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of resource is invalid");
         } else if (isInvalidType(type)) {
-            throw new ValidationException("Type of resource is invalid");
+            throw new InvalidArgumentException("Type of resource is invalid");
         } else if (data == null || data.isBlank()) {
             throw new ValidationException("Data of are invalid");
         }
