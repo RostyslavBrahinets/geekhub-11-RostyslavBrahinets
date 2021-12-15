@@ -41,7 +41,7 @@ public class LectionService {
 
         try {
             validator.validate(id);
-            lection = lectionSource.getLectionById(id);
+            lection = lectionSource.getLection(id);
         } catch (LessonNotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

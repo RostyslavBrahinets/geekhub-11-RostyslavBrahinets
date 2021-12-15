@@ -25,7 +25,7 @@ public class ResourcesSource {
         resources.remove(id);
     }
 
-    public Resource getResourceById(int id) {
+    public Resource getResource(int id) {
         return resources.get(id);
     }
 

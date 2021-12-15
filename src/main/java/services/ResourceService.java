@@ -36,12 +36,12 @@ public class ResourceService {
         }
     }
 
-    public Resource getResourceById(int id) {
+    public Resource getResource(int id) {
         Resource resource = null;
 
         try {
             validator.validate(id);
-            resource = resourcesSource.getResourceById(id);
+            resource = resourcesSource.getResource(id);
         } catch (ResourceNotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

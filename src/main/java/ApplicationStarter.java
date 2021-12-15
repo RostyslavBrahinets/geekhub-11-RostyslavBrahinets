@@ -32,11 +32,10 @@ public class ApplicationStarter {
                         useCommand.exit();
                     }
                     case "6" -> Logger.showAllLogs();
-                    default -> throw new CommandNotFoundException("Command Not Found");
+                    default -> throw new CommandNotFoundException("Command not found");
                 }
             } catch (CommandNotFoundException e) {
-                message = "Invalid command!";
-                Logger.error(ApplicationStarter.class.getName(), message, e);
+                Logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
             }
         }
     }

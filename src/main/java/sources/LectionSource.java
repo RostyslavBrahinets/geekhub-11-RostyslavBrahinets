@@ -25,7 +25,7 @@ public class LectionSource {
         lections.remove(id);
     }
 
-    public Lection getLectionById(int id) {
+    public Lection getLection(int id) {
         return lections.get(id);
     }
 
