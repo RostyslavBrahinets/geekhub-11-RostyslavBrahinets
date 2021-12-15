@@ -7,7 +7,7 @@ public class Lection {
     private String describe;
     private List<Resource> resources;
     private Person lecturer;
-    private List<HomeWork> homeWork;
+    private List<Homework> homeWork;
 
     public Lection(String name) {
         this.name = name;
@@ -19,7 +19,7 @@ public class Lection {
     }
 
     public Lection(String name, String describe, List<Resource> resources, Person lecturer,
-                   List<HomeWork> homeWork) {
+                   List<Homework> homeWork) {
         this.name = name;
         this.describe = describe;
         this.resources = resources;
@@ -43,7 +43,7 @@ public class Lection {
         return lecturer;
     }
 
-    public List<HomeWork> getHomeWork() {
+    public List<Homework> getHomeWork() {
         return homeWork;
     }
 }

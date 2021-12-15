@@ -1,9 +1,9 @@
 package models;
 
-public class HomeWork {
+public class Homework {
     private String task;
 
-    public HomeWork(String task) {
+    public Homework(String task) {
         this.task = task;
     }
 
