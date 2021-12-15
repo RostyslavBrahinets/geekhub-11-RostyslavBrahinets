@@ -9,8 +9,8 @@ public class Person {
     private final String email;
     private final Role role;
 
-    protected Person(String firstName, String lastName, List<String> contacts,
-                     String gitHubNickname, Role role) {
+    public Person(String firstName, String lastName, List<String> contacts,
+                  String gitHubNickname, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.contacts = contacts;
