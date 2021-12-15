@@ -4,27 +4,18 @@ import java.util.List;
 
 public class Lection {
     private final String name;
-    private String describe;
-    private List<Resource> resources;
-    private Person lecturer;
-    private List<Homework> homeWork;
-
-    public Lection(String name) {
-        this.name = name;
-    }
-
-    public Lection(String name, List<Resource> resources) {
-        this.name = name;
-        this.resources = resources;
-    }
+    private final String describe;
+    private final List<Resource> resources;
+    private final Person lecturer;
+    private final Homework homework;
 
     public Lection(String name, String describe, List<Resource> resources, Person lecturer,
-                   List<Homework> homeWork) {
+                   Homework homework) {
         this.name = name;
         this.describe = describe;
         this.resources = resources;
         this.lecturer = lecturer;
-        this.homeWork = homeWork;
+        this.homework = homework;
     }
 
     public String getName() {
@@ -43,7 +34,7 @@ public class Lection {
         return lecturer;
     }
 
-    public List<Homework> getHomeWork() {
-        return homeWork;
+    public Homework getHomework() {
+        return homework;
     }
 }

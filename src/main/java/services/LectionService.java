@@ -3,7 +3,9 @@ package services;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import logger.Logger;
+import models.Homework;
 import models.Lection;
+import models.Person;
 import models.Resource;
 import sources.LectionSource;
 import validators.LectionValidator;
@@ -18,10 +20,11 @@ public class LectionService {
         return lectionSource.getLections();
     }
 
-    public void addLection(String name, List<Resource> resources) {
+    public void addLection(String name, String describe, List<Resource> resources, Person lecturer,
+                           Homework homework) {
         try {
-            validator.validate(name, resources);
-            lectionSource.addLection(new Lection(name, resources));
+            validator.validate(name, describe, resources, lecturer, homework);
+            lectionSource.addLection(new Lection(name, describe, resources, lecturer, homework));
         } catch (ValidationException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
