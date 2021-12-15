@@ -1,13 +1,15 @@
 package models;
 
+import java.util.List;
+
 public class Person {
     private final String firstName;
     private final String lastName;
-    private final String[] contacts;
+    private final List<String> contacts;
     private final String email;
     private final Role role;
 
-    protected Person(String firstName, String lastName, String[] contacts,
+    protected Person(String firstName, String lastName, List<String> contacts,
                      String gitHubNickname, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,7 +26,7 @@ public class Person {
         return lastName;
     }
 
-    public String[] getContacts() {
+    public List<String> getContacts() {
         return contacts;
     }
 

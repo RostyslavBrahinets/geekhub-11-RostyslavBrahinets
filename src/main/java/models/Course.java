@@ -1,11 +1,13 @@
 package models;
 
+import java.util.List;
+
 public class Course {
     private final String name;
-    private final Lection[] lections;
-    private final Person[] students;
+    private final List<Lection> lections;
+    private final List<Person> students;
 
-    public Course(String name, Lection[] lections, Person[] students) {
+    public Course(String name, List<Lection> lections, List<Person> students) {
         this.name = name;
         this.lections = lections;
         this.students = students;
@@ -15,11 +17,11 @@ public class Course {
         return name;
     }
 
-    public Lection[] getLections() {
+    public List<Lection> getLections() {
         return lections;
     }
 
-    public Person[] getStudents() {
+    public List<Person> getStudents() {
         return students;
     }
 }

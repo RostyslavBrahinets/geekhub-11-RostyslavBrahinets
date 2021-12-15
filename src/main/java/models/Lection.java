@@ -1,22 +1,25 @@
 package models;
 
+import java.util.List;
+
 public class Lection {
     private final String name;
     private String describe;
-    private Resource[] resources;
+    private List<Resource> resources;
     private Person lecturer;
-    private HomeWork[] homeWork;
+    private List<HomeWork> homeWork;
 
     public Lection(String name) {
         this.name = name;
     }
 
-    public Lection(String name, Resource[] resources) {
+    public Lection(String name, List<Resource> resources) {
         this.name = name;
         this.resources = resources;
     }
 
-    public Lection(String name, String describe, Resource[] resources, Person lecturer, HomeWork[] homeWork) {
+    public Lection(String name, String describe, List<Resource> resources, Person lecturer,
+                   List<HomeWork> homeWork) {
         this.name = name;
         this.describe = describe;
         this.resources = resources;
@@ -32,7 +35,7 @@ public class Lection {
         return describe;
     }
 
-    public Resource[] getResources() {
+    public List<Resource> getResources() {
         return resources;
     }
 
@@ -40,7 +43,7 @@ public class Lection {
         return lecturer;
     }
 
-    public HomeWork[] getHomeWork() {
+    public List<HomeWork> getHomeWork() {
         return homeWork;
     }
 }
