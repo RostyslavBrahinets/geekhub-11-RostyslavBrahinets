@@ -6,11 +6,13 @@ import logger.Logger;
 import models.Lection;
 import models.Resource;
 import sources.LectionSource;
+import validators.LectionValidator;
 
 import java.util.List;
 
 public class LectionService {
     private final LectionSource lectionSource = LectionSource.getInstance();
+    private final LectionValidator validator = new LectionValidator();
 
     public List<Lection> getLections() {
         return lectionSource.getLections();
@@ -18,25 +20,19 @@ public class LectionService {
 
     public void addLection(String name, List<Resource> resources) {
         try {
-            if (name == null || name.isBlank() || resources == null) {
-                throw new ValidationException("Lection is invalid");
-            }
-
+            validator.validate(name, resources);
             lectionSource.addLection(new Lection(name, resources));
         } catch (ValidationException e) {
-            Logger.error(getClass().getName(), "Lection is invalid", e);
+            Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
     public void deleteLection(int id) {
         try {
-            if (id < 0 || id >= lectionSource.getLections().size()) {
-                throw new LessonNotFoundException("Lection not found");
-            }
-
+            validator.validate(id);
             lectionSource.deleteLection(id);
         } catch (LessonNotFoundException e) {
-            Logger.error(getClass().getName(), "Lection not found", e);
+            Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -44,13 +40,10 @@ public class LectionService {
         Lection lection = null;
 
         try {
-            if (id < 0 || id >= lectionSource.getLections().size()) {
-                throw new LessonNotFoundException("Lection not found");
-            }
-
+            validator.validate(id);
             lection = lectionSource.getLectionById(id);
         } catch (LessonNotFoundException e) {
-            Logger.error(getClass().getName(), "Lection not found", e);
+            Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
         return lection;
