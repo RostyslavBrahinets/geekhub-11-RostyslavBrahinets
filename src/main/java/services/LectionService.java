@@ -1,6 +1,6 @@
 package services;
 
-import exceptions.LessonNotFoundException;
+import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import logger.Logger;
 import models.Lection;
@@ -31,7 +31,7 @@ public class LectionService {
         try {
             validator.validate(id);
             lectionSource.deleteLection(id);
-        } catch (LessonNotFoundException e) {
+        } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -42,7 +42,7 @@ public class LectionService {
         try {
             validator.validate(id);
             lection = lectionSource.getLection(id);
-        } catch (LessonNotFoundException e) {
+        } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 

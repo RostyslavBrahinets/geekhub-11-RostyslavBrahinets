@@ -1,6 +1,6 @@
 package validators;
 
-import exceptions.LessonNotFoundException;
+import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import models.Resource;
 import sources.LectionSource;
@@ -19,7 +19,7 @@ public class LectionValidator {
     public void validate(int id) {
         LectionSource lectionSource = LectionSource.getInstance();
         if (id < 0 || id >= lectionSource.getLections().size()) {
-            throw new LessonNotFoundException("Lection not found");
+            throw new NotFoundException("Lection not found");
         }
     }
 }

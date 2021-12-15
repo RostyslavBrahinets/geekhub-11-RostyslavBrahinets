@@ -1,6 +1,6 @@
 package services;
 
-import exceptions.ResourceNotFoundException;
+import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import logger.Logger;
 import models.Resource;
@@ -31,7 +31,7 @@ public class ResourceService {
         try {
             validator.validate(id);
             resourcesSource.deleteResource(id);
-        } catch (ResourceNotFoundException e) {
+        } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -42,7 +42,7 @@ public class ResourceService {
         try {
             validator.validate(id);
             resource = resourcesSource.getResource(id);
-        } catch (ResourceNotFoundException e) {
+        } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 

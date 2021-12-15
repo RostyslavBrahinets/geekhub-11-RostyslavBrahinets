@@ -1,4 +1,4 @@
-import exceptions.CommandNotFoundException;
+import exceptions.NotFoundException;
 import logger.Logger;
 import use.UseLectionService;
 
@@ -11,7 +11,7 @@ public class ApplicationStarter {
         UseLectionService useCommand = new UseLectionService();
 
         String message = """
-            
+                        
             1 - show all lections
             2 - add new lection
             3 - delete lection by number
@@ -32,9 +32,9 @@ public class ApplicationStarter {
                         useCommand.exit();
                     }
                     case "6" -> Logger.showAllLogs();
-                    default -> throw new CommandNotFoundException("Command not found");
+                    default -> throw new NotFoundException("Command not found");
                 }
-            } catch (CommandNotFoundException e) {
+            } catch (NotFoundException e) {
                 Logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
             }
         }

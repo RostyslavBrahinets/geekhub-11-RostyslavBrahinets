@@ -1,7 +1,7 @@
 package validators;
 
 import exceptions.InvalidArgumentException;
-import exceptions.ResourceNotFoundException;
+import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import models.ResourceType;
 import sources.ResourcesSource;
@@ -20,7 +20,7 @@ public class ResourceValidator {
     public void validate(int id) {
         ResourcesSource resourcesSource = ResourcesSource.getInstance();
         if (id < 0 || id >= resourcesSource.getResources().size()) {
-            throw new ResourceNotFoundException("Resource not found");
+            throw new NotFoundException("Resource not found");
         }
     }
 
