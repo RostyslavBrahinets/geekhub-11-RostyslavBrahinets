@@ -6,11 +6,13 @@ import logger.Logger;
 import models.Resource;
 import models.ResourceType;
 import sources.ResourcesSource;
+import validators.ResourceValidator;
 
 import java.util.List;
 
 public class ResourceService {
     private final ResourcesSource resourcesSource = ResourcesSource.getInstance();
+    private final ResourceValidator validator = new ResourceValidator();
 
     public List<Resource> getResources() {
         return resourcesSource.getResources();
@@ -18,38 +20,19 @@ public class ResourceService {
 
     public void addResource(String name, ResourceType type, String data) {
         try {
-            if (name == null || name.isBlank() || data == null || data.isBlank()) {
-                throw new ValidationException("Resource is invalid");
-            }
-
-            boolean invalidType = true;
-
-            for (ResourceType resourceType : ResourceType.values()) {
-                if (resourceType == type) {
-                    invalidType = false;
-                    break;
-                }
-            }
-
-            if (invalidType) {
-                throw new ValidationException("Resource is invalid");
-            }
-
+            validator.validate(name, type, data);
             resourcesSource.addResource(new Resource(name, type, data));
         } catch (ValidationException e) {
-            Logger.error(getClass().getName(), "Resource is invalid", e);
+            Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
     public void deleteResource(int id) {
         try {
-            if (id < 0 || id >= resourcesSource.getResources().size()) {
-                throw new ResourceNotFoundException("Resource not found");
-            }
-
+            validator.validate(id);
             resourcesSource.deleteResource(id);
         } catch (ResourceNotFoundException e) {
-            Logger.error(getClass().getName(), "Resource not found", e);
+            Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -57,13 +40,10 @@ public class ResourceService {
         Resource resource = null;
 
         try {
-            if (id < 0 || id >= resourcesSource.getResources().size()) {
-                throw new ResourceNotFoundException("Resource not found");
-            }
-
+            validator.validate(id);
             resource = resourcesSource.getResourceById(id);
         } catch (ResourceNotFoundException e) {
-            Logger.error(getClass().getName(), "Resource not found", e);
+            Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
         return resource;
