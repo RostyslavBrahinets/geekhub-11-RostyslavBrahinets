@@ -36,7 +36,7 @@ public class UseLectionService {
     public void addNewLection() {
         String name = getNameOfLection();
         String describe = getDescribeOfLection();
-        useResourceService.addResources(getCountOfResources());
+        useResourceService.addResources(getCountOf("resources"));
         Person lecturer = getLecturer();
         Homework homework = getHomework();
 
@@ -64,12 +64,10 @@ public class UseLectionService {
         }
     }
 
-    public void exit() {
-        scanner.close();
+    public void closeScanner() {
         useResourceService.closeScanner();
-        usePersonService.closeScanner();
         useHomeworkService.closeScanner();
-        System.exit(0);
+        scanner.close();
     }
 
     private String getNameOfLection() {
@@ -82,15 +80,15 @@ public class UseLectionService {
         return scanner.nextLine();
     }
 
-    private int getCountOfResources() {
-        System.out.print("Input count of resources: ");
+    private int getCountOf(String s) {
+        System.out.printf("Input count of %s: ", s);
         int count;
 
         try {
             count = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            Logger.warning(getClass().getName(), "Count of resources is invalid");
+            Logger.warning(getClass().getName(), String.format("Count of %s is invalid", s));
             count = 0;
             scanner.nextLine();
         }

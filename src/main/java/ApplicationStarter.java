@@ -1,5 +1,6 @@
 import exceptions.NotFoundException;
 import logger.Logger;
+import use.UseCourseService;
 import use.UseLectionService;
 
 import java.util.Scanner;
@@ -9,6 +10,7 @@ public class ApplicationStarter {
 
     public static void main(String[] args) {
         UseLectionService useCommand = new UseLectionService();
+        UseCourseService service = new UseCourseService();
 
         String message = """
                         
@@ -28,8 +30,9 @@ public class ApplicationStarter {
                     case "3" -> useCommand.deleteLectionById();
                     case "4" -> useCommand.showLectionById();
                     case "5" -> {
+                        service.closeScanner();
                         scanner.close();
-                        useCommand.exit();
+                        System.exit(0);
                     }
                     case "6" -> Logger.showAllLogs();
                     default -> throw new NotFoundException("Command not found");

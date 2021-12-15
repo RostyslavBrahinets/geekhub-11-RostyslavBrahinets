@@ -1,8 +1,10 @@
 package use;
 
+import logger.Logger;
 import services.PersonService;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,13 +39,25 @@ public class UsePersonService {
         return scanner.nextLine();
     }
 
-    private List<String> getContactsOfPerson() {
-        System.out.print("\nInput count of contacts: ");
-        int count = scanner.nextInt();
-        scanner.nextLine();
+    private int getCountOf(String s) {
+        System.out.printf("Input count of %s: ", s);
+        int count;
 
+        try {
+            count = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            Logger.warning(getClass().getName(), String.format("Count of %s is invalid", s));
+            count = 0;
+            scanner.nextLine();
+        }
+
+        return count;
+    }
+
+    private List<String> getContactsOfPerson() {
         List<String> contacts = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < getCountOf("contacts"); i++) {
             System.out.print("Input contact: ");
             contacts.add(scanner.nextLine());
         }
