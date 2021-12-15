@@ -4,10 +4,12 @@ import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import sources.HomeworkSource;
 
+import java.util.List;
+
 public class HomeworkValidator {
-    public void validate(String task) {
-        if (task == null || task.isBlank()) {
-            throw new ValidationException("Task of homework is invalid");
+    public void validate(List<String> tasks) {
+        if (tasks == null) {
+            throw new ValidationException("Tasks of homework are invalid");
         }
     }
 

@@ -17,10 +17,10 @@ public class HomeworkService {
         return homeworkSource.getHomeworks();
     }
 
-    public void addHomework(String task) {
+    public void addHomework(List<String> tasks) {
         try {
-            validator.validate(task);
-            homeworkSource.addHomework(new Homework(task));
+            validator.validate(tasks);
+            homeworkSource.addHomework(new Homework(tasks));
         } catch (ValidationException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

@@ -1,17 +1,19 @@
 package models;
 
+import java.util.List;
+
 public class Homework {
-    private String task;
+    private List<String> tasks;
 
-    public Homework(String task) {
-        this.task = task;
+    public Homework(List<String> tasks) {
+        this.tasks = tasks;
     }
 
-    public String getTask() {
-        return task;
+    public List<String> getTasks() {
+        return tasks;
     }
 
-    public void setTask(String task) {
-        this.task = task;
+    public void setTasks(List<String> tasks) {
+        this.tasks = tasks;
     }
 }
