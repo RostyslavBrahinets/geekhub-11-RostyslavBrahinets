@@ -1,54 +1,32 @@
 package sources;
 
-import exceptions.LessonNotFoundException;
-import exceptions.ValidationException;
 import models.Lection;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LectionSource {
     private static LectionSource instance;
-    private Lection[] lections;
+    private final List<Lection> lections;
 
     public LectionSource() {
-        lections = new Lection[0];
+        lections = new ArrayList<>();
     }
 
-    public Lection[] getLections() {
+    public List<Lection> getLections() {
         return lections;
     }
 
     public void addLection(Lection lection) {
-        if (lection == null || lection.getName().isBlank() || lection.getResources() == null) {
-            throw new ValidationException("Lection is invalid");
-        }
-
-        lections = Arrays.copyOf(lections, lections.length + 1);
-        lections[lections.length - 1] = lection;
+        lections.add(lection);
     }
 
     public void deleteLection(int id) {
-        if (id < 0 || id >= lections.length) {
-            throw new LessonNotFoundException("Lection not found");
-        }
-
-        Lection[] newLections = new Lection[lections.length - 1];
-
-        System.arraycopy(lections, 0, newLections, 0, id);
-
-        if (lections.length - (id + 1) >= 0) {
-            System.arraycopy(lections, id + 1, newLections, id, lections.length - (id + 1));
-        }
-
-        lections = newLections;
+        lections.remove(id);
     }
 
     public Lection getLectionById(int id) {
-        if (id < 0 || id >= lections.length) {
-            throw new LessonNotFoundException("Lection not found");
-        }
-
-        return lections[id];
+        return lections.get(id);
     }
 
     public static LectionSource getInstance() {
