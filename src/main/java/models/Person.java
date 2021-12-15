@@ -6,7 +6,7 @@ public class Person {
     private final String firstName;
     private final String lastName;
     private final List<String> contacts;
-    private final String email;
+    private final String gitHubNickname;
     private final Role role;
 
     public Person(String firstName, String lastName, List<String> contacts,
@@ -14,7 +14,7 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.contacts = contacts;
-        this.email = gitHubNickname;
+        this.gitHubNickname = gitHubNickname;
         this.role = role;
     }
 
@@ -31,7 +31,7 @@ public class Person {
     }
 
     public String getGitHubNickname() {
-        return email;
+        return gitHubNickname;
     }
 
     public Role getRole() {
