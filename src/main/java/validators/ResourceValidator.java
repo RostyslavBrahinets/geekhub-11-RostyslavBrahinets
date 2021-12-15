@@ -6,7 +6,7 @@ import models.ResourceType;
 import sources.ResourcesSource;
 
 public class ResourceValidator {
-    public void validate(String name, ResourceType type, String data) {
+    public void validate(String name, String type, String data) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of resource is invalid");
         } else if (isInvalidType(type)) {
@@ -23,11 +23,11 @@ public class ResourceValidator {
         }
     }
 
-    private boolean isInvalidType(ResourceType type) {
+    private boolean isInvalidType(String type) {
         boolean invalidType = true;
 
         for (ResourceType resourceType : ResourceType.values()) {
-            if (resourceType == type) {
+            if (type.equalsIgnoreCase(String.valueOf(resourceType))) {
                 invalidType = false;
                 break;
             }

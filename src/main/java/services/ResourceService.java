@@ -18,10 +18,10 @@ public class ResourceService {
         return resourcesSource.getResources();
     }
 
-    public void addResource(String name, ResourceType type, String data) {
+    public void addResource(String name, String type, String data) {
         try {
             validator.validate(name, type, data);
-            resourcesSource.addResource(new Resource(name, type, data));
+            resourcesSource.addResource(new Resource(name, ResourceType.valueOf(type), data));
         } catch (ValidationException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
