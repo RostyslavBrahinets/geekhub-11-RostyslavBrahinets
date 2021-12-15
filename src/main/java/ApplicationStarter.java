@@ -25,8 +25,8 @@ public class ApplicationStarter {
                 switch (getCommand()) {
                     case "1" -> useCommand.showAllLections();
                     case "2" -> useCommand.addNewLection();
-                    case "3" -> useCommand.deleteLectionByNumber();
-                    case "4" -> useCommand.showLectionByNumber();
+                    case "3" -> useCommand.deleteLectionById();
+                    case "4" -> useCommand.showLectionById();
                     case "5" -> {
                         scanner.close();
                         useCommand.exit();

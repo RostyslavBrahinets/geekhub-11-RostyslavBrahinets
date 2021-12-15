@@ -1,51 +1,46 @@
 package use;
 
-import exceptions.ValidationException;
 import logger.Logger;
 import models.Lection;
 import services.LectionService;
 import services.ResourceService;
 
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UseLectionService {
     private final Scanner scanner = new Scanner(System.in);
-    LectionService lectionService = new LectionService();
+    private final LectionService lectionService = new LectionService();
+    private final UseResourceService useResourceService = new UseResourceService();
 
     public void showAllLections() {
         for (Lection lection : lectionService.getLections()) {
-            System.out.printf("%s: %s%n", lection.getName(), Arrays.toString(lection.getResources()));
+            Logger.info(getClass().getName(),
+                String.format("%s: %s%n", lection.getName(), lection.getResources()));
         }
     }
 
     public void addNewLection() {
-        try {
-            String name = getNameOfLection();
-            UseResourceService useResourceService = new UseResourceService();
-            useResourceService.addResources();
-            ResourceService resourceService = new ResourceService();
-            Lection lection = new Lection(name, resourceService.getResources());
-            lectionService.addLection(lection);
-        } catch (ValidationException e) {
-            Logger.error(getClass().getName(), "Invalid type of resource", e);
-        }
+        String name = getNameOfLection();
+        useResourceService.addResources(getCountOfResources());
+        ResourceService resourceService = new ResourceService();
+        lectionService.addLection(name, resourceService.getResources());
     }
 
-    public void deleteLectionByNumber() {
-        lectionService.deleteLection(getNumberOfLection());
+    public void deleteLectionById() {
+        lectionService.deleteLection(getIdOfLection());
     }
 
-    public void showLectionByNumber() {
-        Lection lection = lectionService.getLection(getNumberOfLection());
+    public void showLectionById() {
+        Lection lection = lectionService.getLection(getIdOfLection());
         if (lection != null) {
-            System.out.println(lection.getName());
+            Logger.info(getClass().getName(), lection.getName());
         }
     }
 
     public void exit() {
         scanner.close();
+        useResourceService.closeScanner();
         System.exit(0);
     }
 
@@ -54,17 +49,34 @@ public class UseLectionService {
         return scanner.nextLine();
     }
 
-    private int getNumberOfLection() {
-        System.out.print("Input number of lection: ");
-        int number;
+    private int getIdOfLection() {
+        System.out.print("Input id of lection: ");
+        int id;
 
         try {
-            number = scanner.nextInt();
+            id = scanner.nextInt();
+            scanner.nextLine();
         } catch (InputMismatchException e) {
-            number = -1;
+            id = -1;
             scanner.nextLine();
         }
 
-        return number;
+        return id;
+    }
+
+    private int getCountOfResources() {
+        System.out.print("Input count of resources: ");
+        int count;
+
+        try {
+            count = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            Logger.warning(getClass().getName(), "Count of resources is invalid");
+            count = 0;
+            scanner.nextLine();
+        }
+
+        return count;
     }
 }
