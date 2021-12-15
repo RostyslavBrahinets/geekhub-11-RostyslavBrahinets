@@ -11,10 +11,11 @@ import java.util.Scanner;
 public class UseHomeworkService {
     private final Scanner scanner = new Scanner(System.in);
 
-    public void addHomeworks(int countOfHomeworks) {
+    public void addHomeworks() {
         HomeworkService homeworkService = new HomeworkService();
+        int count = getCountOf("homeworks");
 
-        for (int i = 0; i < countOfHomeworks; i++) {
+        for (int i = 0; i < count; i++) {
             homeworkService.addHomework(
                 getHomeworkTasks()
             );
@@ -33,7 +34,7 @@ public class UseHomeworkService {
             count = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            Logger.warning(getClass().getName(), String.format("Count of %s is invalid", s));
+            Logger.error(getClass().getName(), String.format("Count of %s is invalid", s));
             count = 0;
             scanner.nextLine();
         }
@@ -43,8 +44,9 @@ public class UseHomeworkService {
 
     private List<String> getHomeworkTasks() {
         List<String> tasks = new ArrayList<>();
+        int count = getCountOf("tasks");
 
-        for (int i = 0; i < getCountOf("homeworks"); i++) {
+        for (int i = 0; i < count; i++) {
             System.out.print("Input task: ");
             tasks.add(scanner.nextLine());
         }

@@ -88,7 +88,7 @@ public class UseLectionService {
             count = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            Logger.warning(getClass().getName(), String.format("Count of %s is invalid", s));
+            Logger.error(getClass().getName(), String.format("Count of %s is invalid", s));
             count = 0;
             scanner.nextLine();
         }
@@ -97,12 +97,12 @@ public class UseLectionService {
     }
 
     private Person getLecturer() {
-        usePersonService.addPeople(1);
+        usePersonService.addPeople();
         return new PersonService().getPerson(0);
     }
 
     private Homework getHomework() {
-        useHomeworkService.addHomeworks(1);
+        useHomeworkService.addHomeworks();
         return new HomeworkService().getHomework(0);
     }
 

@@ -16,10 +16,11 @@ public class UseCourseService {
     private final UseLectionService useLectionService = new UseLectionService();
     private final UsePersonService usePersonService = new UsePersonService();
 
-    public void addCourses(int countOfCourses) {
+    public void addCourses() {
         CourseService courseService = new CourseService();
+        int count = getCountOf("courses");
 
-        for (int i = 0; i < countOfCourses; i++) {
+        for (int i = 0; i < count; i++) {
             courseService.addCourse(
                 getNameOfCourse(),
                 getLectionsOfCourse(),
@@ -47,7 +48,7 @@ public class UseCourseService {
             count = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            Logger.warning(getClass().getName(), String.format("Count of %s is invalid", s));
+            Logger.error(getClass().getName(), String.format("Count of %s is invalid", s));
             count = 0;
             scanner.nextLine();
         }
@@ -56,7 +57,8 @@ public class UseCourseService {
     }
 
     private List<Lection> getLectionsOfCourse() {
-        for (int i = 0; i < getCountOf("lections"); i++) {
+        int count = getCountOf("lections");
+        for (int i = 0; i < count; i++) {
             useLectionService.addNewLection();
         }
 
@@ -64,7 +66,7 @@ public class UseCourseService {
     }
 
     private List<Person> getStudentsOfCourse() {
-        usePersonService.addPeople(getCountOf("students"));
+        usePersonService.addPeople();
         return new PersonService().getPeople();
     }
 }

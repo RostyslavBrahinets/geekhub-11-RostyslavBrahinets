@@ -11,10 +11,11 @@ import java.util.Scanner;
 public class UsePersonService {
     private final Scanner scanner = new Scanner(System.in);
 
-    public void addPeople(int countOfPerson) {
+    public void addPeople() {
         PersonService personService = new PersonService();
+        int count = getCountOf("person");
 
-        for (int i = 0; i < countOfPerson; i++) {
+        for (int i = 0; i < count; i++) {
             personService.addPerson(
                 getFirstNameOfPerson(),
                 getLastNameOfPerson(),
@@ -47,7 +48,7 @@ public class UsePersonService {
             count = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            Logger.warning(getClass().getName(), String.format("Count of %s is invalid", s));
+            Logger.error(getClass().getName(), String.format("Count of %s is invalid", s));
             count = 0;
             scanner.nextLine();
         }
@@ -57,7 +58,8 @@ public class UsePersonService {
 
     private List<String> getContactsOfPerson() {
         List<String> contacts = new ArrayList<>();
-        for (int i = 0; i < getCountOf("contacts"); i++) {
+        int count = getCountOf("contacts");
+        for (int i = 0; i < count; i++) {
             System.out.print("Input contact: ");
             contacts.add(scanner.nextLine());
         }

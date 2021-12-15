@@ -1,5 +1,6 @@
 package services;
 
+import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import logger.Logger;
@@ -24,7 +25,7 @@ public class PersonService {
             validator.validate(firstName, lastName, contacts, gitHubNickname, role);
             personSource.addPerson(new Person(firstName, lastName, contacts, gitHubNickname,
                 Role.valueOf(role)));
-        } catch (ValidationException e) {
+        } catch (ValidationException | InvalidArgumentException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
