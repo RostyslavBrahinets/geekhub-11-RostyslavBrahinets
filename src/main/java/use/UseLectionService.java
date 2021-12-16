@@ -64,6 +64,16 @@ public class UseLectionService {
         }
     }
 
+    public void showHomeWorksGroupedByLecture() {
+        for (Lection lection : lectionService.getLections()) {
+            Logger.info(getClass().getName(), String.format(
+                "%n%s: %s%n",
+                lection.getName(),
+                lectionService.getHomeWorksGroupedByLecture().get(lection)
+            ));
+        }
+    }
+
     public void closeScanner() {
         useResourceService.closeScanner();
         useHomeworkService.closeScanner();
@@ -78,22 +88,6 @@ public class UseLectionService {
     private String getDescribeOfLection() {
         System.out.print("Input describe of lection: ");
         return scanner.nextLine();
-    }
-
-    private int getCountOf(String s) {
-        System.out.printf("Input count of %s: ", s);
-        int count;
-
-        try {
-            count = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            Logger.error(getClass().getName(), String.format("Count of %s is invalid", s));
-            count = 0;
-            scanner.nextLine();
-        }
-
-        return count;
     }
 
     private Person getLecturer() {

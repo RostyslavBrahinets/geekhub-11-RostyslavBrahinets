@@ -10,7 +10,9 @@ import models.Resource;
 import sources.LectionSource;
 import validators.LectionValidator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LectionService {
     private final LectionSource lectionSource = LectionSource.getInstance();
@@ -50,5 +52,15 @@ public class LectionService {
         }
 
         return lection;
+    }
+
+    public Map<Lection, List<HomeWork>> getHomeWorksGroupedByLecture() {
+        Map<Lection, List<HomeWork>> groupedHomeWorks = new HashMap<>();
+
+        for (Lection lection : lectionSource.getLections()) {
+            groupedHomeWorks.put(lection, lection.getHomeWorks());
+        }
+
+        return groupedHomeWorks;
     }
 }
