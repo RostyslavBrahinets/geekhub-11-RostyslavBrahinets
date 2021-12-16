@@ -54,6 +54,16 @@ public class LectionService {
         return lection;
     }
 
+    public Map<Lection, List<Resource>> getResourcesGroupedByLecture() {
+        Map<Lection, List<Resource>> groupedResources = new HashMap<>();
+
+        for (Lection lection : lectionSource.getLections()) {
+            groupedResources.put(lection, lection.getResources());
+        }
+
+        return groupedResources;
+    }
+
     public Map<Lection, List<HomeWork>> getHomeWorksGroupedByLecture() {
         Map<Lection, List<HomeWork>> groupedHomeWorks = new HashMap<>();
 

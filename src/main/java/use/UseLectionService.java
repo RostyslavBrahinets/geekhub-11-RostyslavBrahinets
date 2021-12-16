@@ -64,6 +64,16 @@ public class UseLectionService {
         }
     }
 
+    public void showResourcesGroupedByLecture() {
+        for (Lection lection : lectionService.getLections()) {
+            Logger.info(getClass().getName(), String.format(
+                "%n%s: %s%n",
+                lection.getName(),
+                lectionService.getResourcesGroupedByLecture().get(lection)
+            ));
+        }
+    }
+
     public void showHomeWorksGroupedByLecture() {
         for (Lection lection : lectionService.getLections()) {
             Logger.info(getClass().getName(), String.format(
