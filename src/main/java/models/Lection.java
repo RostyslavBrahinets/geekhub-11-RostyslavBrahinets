@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Lection {
     private final String name;
@@ -36,6 +37,19 @@ public class Lection {
 
     public List<HomeWork> getHomeWorks() {
         return homeWorks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lection lection = (Lection) o;
+        return Objects.equals(name, lection.name) && Objects.equals(describe, lection.describe) && Objects.equals(resources, lection.resources) && Objects.equals(lecturer, lection.lecturer) && Objects.equals(homeWorks, lection.homeWorks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, describe, resources, lecturer, homeWorks);
     }
 
     @Override
