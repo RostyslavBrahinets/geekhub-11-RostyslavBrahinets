@@ -22,9 +22,10 @@ class HomeWorkServiceTest {
 
     @Test
     void getHomeWorks_DoNothing_WithoutError() {
-        List<HomeWork> homeworks = new ArrayList<>();
-        homeworks.add(new HomeWork(task));
-        assertEquals(homeWorkService.getHomeWorks(), homeworks);
+        List<HomeWork> homeWorks = new ArrayList<>();
+        homeWorks.add(new HomeWork(task));
+
+        assertEquals(homeWorks, homeWorkService.getHomeWorks());
     }
 
     @Test
@@ -48,7 +49,7 @@ class HomeWorkServiceTest {
     }
 
     @Test
-    void deleteHomeWork_LoggingException_ForIdIsNegative() {
+    void deleteHomeWork_LoggingException_ForIdIsLessThenExpected() {
         assertDoesNotThrow(() -> homeWorkService.deleteHomeWork(-1));
     }
 
@@ -59,8 +60,9 @@ class HomeWorkServiceTest {
 
     @Test
     void getHomeWork_DoNothing_WithoutError() {
-        HomeWork homework = new HomeWork(task);
-        assertEquals(homeWorkService.getHomeWork(0), homework);
+        HomeWork homeWork = new HomeWork(task);
+
+        assertEquals(homeWork, homeWorkService.getHomeWork(0));
     }
 
     @Test
