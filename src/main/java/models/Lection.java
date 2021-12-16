@@ -7,15 +7,15 @@ public class Lection {
     private final String describe;
     private final List<Resource> resources;
     private final Person lecturer;
-    private final Homework homework;
+    private final List<HomeWork> homeWorks;
 
     public Lection(String name, String describe, List<Resource> resources, Person lecturer,
-                   Homework homework) {
+                   List<HomeWork> homeWorks) {
         this.name = name;
         this.describe = describe;
         this.resources = resources;
         this.lecturer = lecturer;
-        this.homework = homework;
+        this.homeWorks = homeWorks;
     }
 
     public String getName() {
@@ -34,7 +34,7 @@ public class Lection {
         return lecturer;
     }
 
-    public Homework getHomework() {
-        return homework;
+    public List<HomeWork> getHomeWorks() {
+        return homeWorks;
     }
 }

@@ -1,23 +1,21 @@
 package use;
 
 import logger.Logger;
-import services.HomeworkService;
+import services.HomeWorkService;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
-public class UseHomeworkService {
+public class UseHomeWorkService {
     private final Scanner scanner = new Scanner(System.in);
 
-    public void addHomeworks() {
-        HomeworkService homeworkService = new HomeworkService();
-        int count = getCountOf("homeworks");
+    public void addHomeWorks() {
+        HomeWorkService homeWorkService = new HomeWorkService();
+        int count = getCountOf("home works");
 
         for (int i = 0; i < count; i++) {
-            homeworkService.addHomework(
-                getHomeworkTasks()
+            homeWorkService.addHomeWork(
+                getHomeWorkTask()
             );
         }
     }
@@ -42,15 +40,8 @@ public class UseHomeworkService {
         return count;
     }
 
-    private List<String> getHomeworkTasks() {
-        List<String> tasks = new ArrayList<>();
-        int count = getCountOf("tasks");
-
-        for (int i = 0; i < count; i++) {
-            System.out.print("Input task: ");
-            tasks.add(scanner.nextLine());
-        }
-
-        return tasks;
+    private String getHomeWorkTask() {
+        System.out.print("Input task: ");
+        return scanner.nextLine();
     }
 }

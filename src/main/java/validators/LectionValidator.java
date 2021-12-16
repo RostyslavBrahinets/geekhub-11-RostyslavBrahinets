@@ -2,7 +2,7 @@ package validators;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import models.Homework;
+import models.HomeWork;
 import models.Person;
 import models.Resource;
 import sources.LectionSource;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class LectionValidator {
     public void validate(String name, String describe, List<Resource> resources, Person lecturer,
-                         Homework homework) {
+                         List<HomeWork> homeWorks) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of lection is invalid");
         } else if (describe == null || describe.isBlank()) {
@@ -20,8 +20,8 @@ public class LectionValidator {
             throw new ValidationException("Resources are invalid");
         } else if (lecturer == null) {
             throw new ValidationException("Lecturer is invalid");
-        } else if (homework == null) {
-            throw new ValidationException("Homework is invalid");
+        } else if (homeWorks == null) {
+            throw new ValidationException("Home works are invalid");
         }
     }
 

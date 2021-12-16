@@ -1,10 +1,9 @@
 package use;
 
 import logger.Logger;
-import models.Homework;
 import models.Lection;
 import models.Person;
-import services.HomeworkService;
+import services.HomeWorkService;
 import services.LectionService;
 import services.PersonService;
 import services.ResourceService;
@@ -17,7 +16,7 @@ public class UseLectionService {
     private final LectionService lectionService = new LectionService();
     private final UseResourceService useResourceService = new UseResourceService();
     private final UsePersonService usePersonService = new UsePersonService();
-    private final UseHomeworkService useHomeworkService = new UseHomeworkService();
+    private final UseHomeWorkService useHomeworkService = new UseHomeWorkService();
 
     public void showAllLections() {
         for (Lection lection : lectionService.getLections()) {
@@ -28,7 +27,7 @@ public class UseLectionService {
                     lection.getResources(),
                     lection.getLecturer().getFirstName(),
                     lection.getLecturer().getLastName(),
-                    lection.getHomework().getTasks()
+                    lection.getHomeWorks()
                 ));
         }
     }
@@ -38,11 +37,12 @@ public class UseLectionService {
         String describe = getDescribeOfLection();
         useResourceService.addResources(getCountOf("resources"));
         Person lecturer = getLecturer();
-        Homework homework = getHomework();
+        useHomeworkService.addHomeWorks();
 
         ResourceService resourceService = new ResourceService();
+        HomeWorkService homeWorkService = new HomeWorkService();
         lectionService.addLection(name, describe, resourceService.getResources(),
-            lecturer, homework);
+            lecturer, homeWorkService.getHomeWorks());
     }
 
     public void deleteLectionById() {
@@ -59,7 +59,7 @@ public class UseLectionService {
                     lection.getResources(),
                     lection.getLecturer().getFirstName(),
                     lection.getLecturer().getLastName(),
-                    lection.getHomework().getTasks()
+                    lection.getHomeWorks()
                 ));
         }
     }
@@ -99,11 +99,6 @@ public class UseLectionService {
     private Person getLecturer() {
         usePersonService.addPeople();
         return new PersonService().getPerson(0);
-    }
-
-    private Homework getHomework() {
-        useHomeworkService.addHomeworks();
-        return new HomeworkService().getHomework(0);
     }
 
     private int getIdOfLection() {
