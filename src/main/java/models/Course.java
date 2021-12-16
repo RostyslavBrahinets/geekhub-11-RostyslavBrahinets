@@ -24,4 +24,13 @@ public class Course {
     public List<Person> getStudents() {
         return students;
     }
+
+    @Override
+    public String toString() {
+        return "Course {"
+            + "name: '" + name + '\''
+            + ", lections: " + lections
+            + ", students: " + students
+            + '}';
+    }
 }

@@ -25,6 +25,10 @@ public class Resource {
 
     @Override
     public String toString() {
-        return String.format("%s - %s - %s", name, type, data);
+        return "Resource {"
+            + "name: '" + name + '\''
+            + ", type: " + type
+            + ", data: '" + data + '\''
+            + '}';
     }
 }

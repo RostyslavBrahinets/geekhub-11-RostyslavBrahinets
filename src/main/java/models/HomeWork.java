@@ -28,6 +28,8 @@ public class HomeWork {
 
     @Override
     public String toString() {
-        return "HomeWork {task: '" + task + "'}";
+        return "HomeWork {"
+            + "task: '" + task + '\''
+            + '}';
     }
 }

@@ -37,4 +37,15 @@ public class Lection {
     public List<HomeWork> getHomeWorks() {
         return homeWorks;
     }
+
+    @Override
+    public String toString() {
+        return "Lection {"
+            + "name: '" + name + '\''
+            + ", describe: '" + describe + '\''
+            + ", resources: " + resources
+            + ", lecturer: " + lecturer
+            + ", homeWorks: " + homeWorks
+            + '}';
+    }
 }

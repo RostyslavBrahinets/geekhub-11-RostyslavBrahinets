@@ -37,4 +37,15 @@ public class Person {
     public Role getRole() {
         return role;
     }
+
+    @Override
+    public String toString() {
+        return "Person {"
+            + "firstName: '" + firstName + '\''
+            + ", lastName: '" + lastName + '\''
+            + ", contacts: " + contacts
+            + ", gitHubNickname: '" + gitHubNickname + '\''
+            + ", role: " + role
+            + '}';
+    }
 }
