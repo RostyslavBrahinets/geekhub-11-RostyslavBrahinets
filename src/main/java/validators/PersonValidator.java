@@ -34,6 +34,10 @@ public class PersonValidator {
     private boolean isInvalidRole(String role) {
         boolean invalidRole = true;
 
+        if (role == null) {
+            return true;
+        }
+
         for (Role roleOfPerson : Role.values()) {
             if (role.equalsIgnoreCase(String.valueOf(roleOfPerson))) {
                 invalidRole = false;
