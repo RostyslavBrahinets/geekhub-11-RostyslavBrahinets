@@ -35,7 +35,7 @@ public class UseLectionService {
     public void addNewLection() {
         String name = getNameOfLection();
         String describe = getDescribeOfLection();
-        useResourceService.addResources(getCountOf("resources"));
+        useResourceService.addResources();
         Person lecturer = getLecturer();
         useHomeworkService.addHomeWorks();
 
