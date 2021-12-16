@@ -27,6 +27,10 @@ public class ResourceValidator {
     private boolean isInvalidType(String type) {
         boolean invalidType = true;
 
+        if (type == null) {
+            return true;
+        }
+
         for (ResourceType resourceType : ResourceType.values()) {
             if (type.equalsIgnoreCase(String.valueOf(resourceType))) {
                 invalidType = false;

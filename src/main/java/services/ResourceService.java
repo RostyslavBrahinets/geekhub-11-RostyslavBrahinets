@@ -1,5 +1,6 @@
 package services;
 
+import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import logger.Logger;
@@ -22,7 +23,7 @@ public class ResourceService {
         try {
             validator.validate(name, type, data);
             resourcesSource.addResource(new Resource(name, ResourceType.valueOf(type), data));
-        } catch (ValidationException e) {
+        } catch (ValidationException | InvalidArgumentException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
