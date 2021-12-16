@@ -1,9 +1,7 @@
 package services;
 
-import exceptions.ValidationException;
 import models.Homework;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,67 +11,61 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HomeworkServiceTest {
     private static HomeworkService homeworkService;
+    private static List<String> tasks;
 
     @BeforeAll
     static void setUp() {
         homeworkService = new HomeworkService();
-        List<String> tasks = new ArrayList<>();
+        tasks = new ArrayList<>();
         tasks.add("Task");
         homeworkService.addHomework(tasks);
     }
 
     @Test
-    void getHomeworks_doNothing_withoutError() {
+    void getHomeworks_DoNothing_WithoutError() {
         List<Homework> homeworks = new ArrayList<>();
-        List<String> tasks = new ArrayList<>();
-        tasks.add("Task");
         homeworks.add(new Homework(tasks));
         assertEquals(homeworkService.getHomeworks(), homeworks);
     }
 
     @Test
-    void addHomework_doNothing_withoutError() {
-        List<String> tasks = new ArrayList<>();
-        tasks.add("Task");
+    void addHomework_DoNothing_WithoutError() {
         assertDoesNotThrow(() -> homeworkService.addHomework(tasks));
     }
 
     @Test
-    void addHomework_doNothing_forTasksAreNull() {
+    void addHomework_LoggingException_ForTasksAreNull() {
         assertDoesNotThrow(() -> homeworkService.addHomework(null));
     }
 
     @Test
-    void deleteHomework_doNothing_withoutError() {
+    void deleteHomework_DoNothing_WithoutError() {
         assertDoesNotThrow(() -> homeworkService.deleteHomework(0));
     }
 
     @Test
-    void deleteHomework_doNothing_forIdIsNegative() {
+    void deleteHomework_LoggingException_ForIdIsNegative() {
         assertDoesNotThrow(() -> homeworkService.deleteHomework(-1));
     }
 
     @Test
-    void deleteHomework_doNothing_forIdIsMoreThenExpected() {
+    void deleteHomework_LoggingException_ForIdIsMoreThenExpected() {
         assertDoesNotThrow(() -> homeworkService.deleteHomework(homeworkService.getHomeworks().size()));
     }
 
     @Test
-    void getHomework_doNothing_withoutError() {
-        List<String> tasks = new ArrayList<>();
-        tasks.add("Task");
+    void getHomework_LoggingException_WithoutError() {
         Homework homework = new Homework(tasks);
-
         assertEquals(homeworkService.getHomework(0), homework);
     }
 
     @Test
-    void getHomework_returnNull_forIdIsNegative() {
+    void getHomework_ReturnNull_ForIdIsLessThenExpected() {
         assertNull(homeworkService.getHomework(-1));
     }
 
     @Test
-    void getHomework_returnNull_forIdIsMoreThenExpected() {
+    void getHomework_ReturnNull_ForIdIsMoreThenExpected() {
         assertNull(homeworkService.getHomework(homeworkService.getHomeworks().size()));
     }
 }
