@@ -1,0 +1,21 @@
+2. MethodName_ExpectedBehavior_StateUnderTest
+
+isAdult_False_AgeLessThan18
+withdrawMoney_ThrowsException_IfAccountIsInvalid
+admitStudent_FailToAdmit_IfMandatoryFieldsAreMissing
+
+
+
+4. Feature to be tested
+
+IsNotAnAdultIfAgeLessThan18
+FailToWithdrawMoneyIfAccountIsInvalid
+StudentIsNotAdmittedIfMandatoryFieldsAreMissing
+
+
+
+6. When_StateUnderTest_Expect_ExpectedBehavior
+
+When_AgeLessThan18_Expect_isAdultAsFalse
+When_InvalidAccount_Expect_WithdrawMoneyToFail
+When_MandatoryFieldsAreMissing_Expect_StudentAdmissionToFail
