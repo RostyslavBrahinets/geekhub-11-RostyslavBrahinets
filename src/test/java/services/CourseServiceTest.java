@@ -55,7 +55,6 @@ class CourseServiceTest {
         List<Course> courses = new ArrayList<>();
         courses.add(new Course(name, lections, students));
         courses.add(new Course(name, lections, students));
-        courses.add(new Course(name, lections, students));
 
         assertEquals(courses, courseService.getCourses());
     }
@@ -67,7 +66,7 @@ class CourseServiceTest {
 
     @Test
     void addCourse_LoggingException_ForNameIsNull() {
-        assertDoesNotThrow(() -> courseService.addCourse(name, lections, students));
+        assertDoesNotThrow(() -> courseService.addCourse(null, lections, students));
     }
 
     @Test
@@ -83,41 +82,6 @@ class CourseServiceTest {
     @Test
     void addCourse_LoggingException_ForStudentsAreNull() {
         assertDoesNotThrow(() -> courseService.addCourse(name, lections, null));
-    }
-
-    @Test
-    void addCourse_LoggingException_ForNameIsEmptyAndLectionsAreNull() {
-        assertDoesNotThrow(() -> courseService.addCourse("", null, students));
-    }
-
-    @Test
-    void addCourse_LoggingException_ForNameIsEmptyAndStudentsAreNull() {
-        assertDoesNotThrow(() -> courseService.addCourse("", lections, null));
-    }
-
-    @Test
-    void addCourse_LoggingException_ForNameIsNullAndLectionsAreNull() {
-        assertDoesNotThrow(() -> courseService.addCourse(null, null, students));
-    }
-
-    @Test
-    void addCourse_LoggingException_ForNameIsNullAndStudentsAreNull() {
-        assertDoesNotThrow(() -> courseService.addCourse(null, lections, null));
-    }
-
-    @Test
-    void addCourse_LoggingException_ForLectionsAreNullAndStudentsAreNull() {
-        assertDoesNotThrow(() -> courseService.addCourse(name, null, null));
-    }
-
-    @Test
-    void addCourse_LoggingException_ForNameIsEmptyLectionsAreNullAndStudentsAreNull() {
-        assertDoesNotThrow(() -> courseService.addCourse("", null, null));
-    }
-
-    @Test
-    void addCourse_LoggingException_ForNameIsNullLectionsAreNullAndStudentsAreNull() {
-        assertDoesNotThrow(() -> courseService.addCourse(null, null, null));
     }
 
     @Test
