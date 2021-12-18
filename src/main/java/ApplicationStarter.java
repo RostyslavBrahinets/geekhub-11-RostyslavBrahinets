@@ -18,8 +18,10 @@ public class ApplicationStarter {
             2 - add new lection
             3 - delete lection by number
             4 - show lection by number
-            5 - exit
-            6 - show all logs""";
+            5 - show resources grouped by lecture
+            6 - show home works grouped by lecture
+            7 - exit
+            8 - show all logs""";
         Logger.info(ApplicationStarter.class.getName(), message);
 
         while (true) {
@@ -29,12 +31,14 @@ public class ApplicationStarter {
                     case "2" -> useCommand.addNewLection();
                     case "3" -> useCommand.deleteLectionById();
                     case "4" -> useCommand.showLectionById();
-                    case "5" -> {
+                    case "5" -> useCommand.showResourcesGroupedByLecture();
+                    case "6" -> useCommand.showHomeWorksGroupedByLecture();
+                    case "7" -> {
                         service.closeScanner();
                         scanner.close();
                         System.exit(0);
                     }
-                    case "6" -> Logger.showAllLogs();
+                    case "8" -> Logger.showAllLogs();
                     default -> throw new NotFoundException("Command not found");
                 }
             } catch (NotFoundException e) {
