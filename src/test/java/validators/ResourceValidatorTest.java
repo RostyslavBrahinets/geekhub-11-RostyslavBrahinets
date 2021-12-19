@@ -3,13 +3,11 @@ package validators;
 import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import models.HomeWork;
 import models.Resource;
 import models.ResourceType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sources.HomeWorkSource;
 import sources.ResourcesSource;
 
 import static org.junit.jupiter.api.Assertions.*;
