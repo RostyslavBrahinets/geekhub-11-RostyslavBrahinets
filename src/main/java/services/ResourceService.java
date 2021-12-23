@@ -10,13 +10,14 @@ import sources.ResourcesSource;
 import validators.ResourceValidator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ResourceService {
     private final ResourcesSource resourcesSource = ResourcesSource.getInstance();
     private final ResourceValidator validator = new ResourceValidator();
 
-    public List<Resource> getResources() {
-        return resourcesSource.getResources();
+    public Optional<List<Resource>> getResources() {
+        return Optional.ofNullable(resourcesSource.getResources());
     }
 
     public void addResource(String name, String type, String data) {
@@ -37,7 +38,7 @@ public class ResourceService {
         }
     }
 
-    public Resource getResource(int id) {
+    public Optional<Resource> getResource(int id) {
         Resource resource = null;
 
         try {
@@ -47,6 +48,6 @@ public class ResourceService {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
-        return resource;
+        return Optional.ofNullable(resource);
     }
 }

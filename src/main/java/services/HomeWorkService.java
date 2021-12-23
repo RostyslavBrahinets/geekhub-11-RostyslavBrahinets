@@ -9,13 +9,14 @@ import validators.HomeWorkValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class HomeWorkService {
     private final HomeWorkSource homeWorkSource = HomeWorkSource.getInstance();
     private final HomeWorkValidator validator = new HomeWorkValidator();
 
-    public List<HomeWork> getHomeWorks() {
-        return homeWorkSource.getHomeWorks();
+    public Optional<List<HomeWork>> getHomeWorks() {
+        return Optional.ofNullable(homeWorkSource.getHomeWorks());
     }
 
     public void addHomeWork(String task, LocalDateTime deadLine) {
@@ -36,7 +37,7 @@ public class HomeWorkService {
         }
     }
 
-    public HomeWork getHomeWork(int id) {
+    public Optional<HomeWork> getHomeWork(int id) {
         HomeWork homeWork = null;
 
         try {
@@ -46,6 +47,6 @@ public class HomeWorkService {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
-        return homeWork;
+        return Optional.ofNullable(homeWork);
     }
 }

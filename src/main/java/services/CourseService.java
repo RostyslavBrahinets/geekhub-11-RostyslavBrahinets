@@ -10,13 +10,14 @@ import sources.CourseSource;
 import validators.CourseValidator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CourseService {
     private final CourseSource courseSource = CourseSource.getInstance();
     private final CourseValidator validator = new CourseValidator();
 
-    public List<Course> getCourses() {
-        return courseSource.getCourses();
+    public Optional<List<Course>> getCourses() {
+        return Optional.ofNullable(courseSource.getCourses());
     }
 
     public void addCourse(String name, List<Lection> lections, List<Person> students) {
@@ -37,7 +38,7 @@ public class CourseService {
         }
     }
 
-    public Course getCourse(int id) {
+    public Optional<Course> getCourse(int id) {
         Course course = null;
 
         try {
@@ -47,6 +48,6 @@ public class CourseService {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
-        return course;
+        return Optional.ofNullable(course);
     }
 }

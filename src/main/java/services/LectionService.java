@@ -11,17 +11,14 @@ import sources.LectionSource;
 import validators.LectionValidator;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LectionService {
     private final LectionSource lectionSource = LectionSource.getInstance();
     private final LectionValidator validator = new LectionValidator();
 
-    public List<Lection> getLections() {
-        return lectionSource.getLections();
+    public Optional<List<Lection>> getLections() {
+        return Optional.ofNullable(lectionSource.getLections());
     }
 
     public void addLection(String name, String describe, List<Resource> resources, Person lecturer,
@@ -43,7 +40,7 @@ public class LectionService {
         }
     }
 
-    public Lection getLection(int id) {
+    public Optional<Lection> getLection(int id) {
         Lection lection = null;
 
         try {
@@ -53,7 +50,7 @@ public class LectionService {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
-        return lection;
+        return Optional.ofNullable(lection);
     }
 
     public Map<Lection, List<Resource>> getResourcesGroupedByLecture() {
@@ -76,11 +73,11 @@ public class LectionService {
         return groupedHomeWorks;
     }
 
-    public void sortLectionByDataASC() {
+    public void sortLectionByDateASC() {
         Collections.sort(lectionSource.getLections());
     }
 
-    public void sortLectionByDataDESC() {
+    public void sortLectionByDateDESC() {
         lectionSource.getLections().sort(Collections.reverseOrder());
     }
 }

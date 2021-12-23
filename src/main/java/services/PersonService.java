@@ -10,13 +10,14 @@ import sources.PersonSource;
 import validators.PersonValidator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PersonService {
     private final PersonSource personSource = PersonSource.getInstance();
     private final PersonValidator validator = new PersonValidator();
 
-    public List<Person> getPeople() {
-        return personSource.getPeople();
+    public Optional<List<Person>> getPeople() {
+        return Optional.ofNullable(personSource.getPeople());
     }
 
     public void addPerson(String firstName, String lastName, List<String> contacts,
@@ -39,7 +40,7 @@ public class PersonService {
         }
     }
 
-    public Person getPerson(int id) {
+    public Optional<Person> getPerson(int id) {
         Person person = null;
 
         try {
@@ -49,6 +50,6 @@ public class PersonService {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
-        return person;
+        return Optional.ofNullable(person);
     }
 }

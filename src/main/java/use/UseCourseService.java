@@ -9,6 +9,7 @@ import services.PersonService;
 
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class UseCourseService {
@@ -21,11 +22,16 @@ public class UseCourseService {
         int count = getCountOf("courses");
 
         for (int i = 0; i < count; i++) {
-            courseService.addCourse(
-                getNameOfCourse(),
-                getLectionsOfCourse(),
-                getStudentsOfCourse()
-            );
+            Optional<List<Lection>> lectionsOfCourse = getLectionsOfCourse();
+            Optional<List<Person>> studentsOfCourse = getStudentsOfCourse();
+
+            if (lectionsOfCourse.isPresent() && studentsOfCourse.isPresent()) {
+                courseService.addCourse(
+                    getNameOfCourse(),
+                    lectionsOfCourse.get(),
+                    studentsOfCourse.get()
+                );
+            }
         }
     }
 
@@ -56,7 +62,7 @@ public class UseCourseService {
         return count;
     }
 
-    private List<Lection> getLectionsOfCourse() {
+    private Optional<List<Lection>> getLectionsOfCourse() {
         int count = getCountOf("lections");
         for (int i = 0; i < count; i++) {
             useLectionService.addNewLection();
@@ -65,7 +71,7 @@ public class UseCourseService {
         return new LectionService().getLections();
     }
 
-    private List<Person> getStudentsOfCourse() {
+    private Optional<List<Person>> getStudentsOfCourse() {
         usePersonService.addPeople();
         return new PersonService().getPeople();
     }
