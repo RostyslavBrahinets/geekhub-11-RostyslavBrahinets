@@ -8,6 +8,7 @@ import services.LectionService;
 import services.PersonService;
 import services.ResourceService;
 
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -42,7 +43,7 @@ public class UseLectionService {
         ResourceService resourceService = new ResourceService();
         HomeWorkService homeWorkService = new HomeWorkService();
         lectionService.addLection(name, describe, resourceService.getResources(),
-            lecturer, homeWorkService.getHomeWorks());
+            lecturer, homeWorkService.getHomeWorks(), LocalDate.now());
     }
 
     public void deleteLectionById() {

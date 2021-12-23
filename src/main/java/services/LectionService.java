@@ -10,6 +10,7 @@ import models.Resource;
 import sources.LectionSource;
 import validators.LectionValidator;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,10 @@ public class LectionService {
     }
 
     public void addLection(String name, String describe, List<Resource> resources, Person lecturer,
-                           List<HomeWork> homeWorks) {
+                           List<HomeWork> homeWorks, LocalDate creationDate) {
         try {
             validator.validate(name, describe, resources, lecturer, homeWorks);
-            lectionSource.addLection(new Lection(name, describe, resources, lecturer, homeWorks));
+            lectionSource.addLection(new Lection(name, describe, resources, lecturer, homeWorks, creationDate));
         } catch (ValidationException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
