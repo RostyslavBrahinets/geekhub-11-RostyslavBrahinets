@@ -11,6 +11,7 @@ import sources.LectionSource;
 import validators.LectionValidator;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,5 +74,13 @@ public class LectionService {
         }
 
         return groupedHomeWorks;
+    }
+
+    public void sortLectionByDataASC() {
+        Collections.sort(lectionSource.getLections());
+    }
+
+    public void sortLectionByDataDESC() {
+        lectionSource.getLections().sort(Collections.reverseOrder());
     }
 }
