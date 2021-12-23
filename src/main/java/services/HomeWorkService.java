@@ -7,6 +7,7 @@ import models.HomeWork;
 import sources.HomeWorkSource;
 import validators.HomeWorkValidator;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class HomeWorkService {
@@ -17,10 +18,10 @@ public class HomeWorkService {
         return homeWorkSource.getHomeWorks();
     }
 
-    public void addHomeWork(String task) {
+    public void addHomeWork(String task, LocalDateTime deadLine) {
         try {
             validator.validate(task);
-            homeWorkSource.addHomeWork(new HomeWork(task));
+            homeWorkSource.addHomeWork(new HomeWork(task, deadLine));
         } catch (ValidationException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

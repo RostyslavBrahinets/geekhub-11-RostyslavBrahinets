@@ -3,6 +3,7 @@ package use;
 import logger.Logger;
 import services.HomeWorkService;
 
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -15,7 +16,8 @@ public class UseHomeWorkService {
 
         for (int i = 0; i < count; i++) {
             homeWorkService.addHomeWork(
-                getHomeWorkTask()
+                getHomeWorkTask(),
+                getDeadLine()
             );
         }
     }
@@ -43,5 +45,26 @@ public class UseHomeWorkService {
     private String getHomeWorkTask() {
         System.out.print("Input task: ");
         return scanner.nextLine();
+    }
+
+    private LocalDateTime getDeadLine() {
+        System.out.println("Dead line");
+        System.out.print("Input year: ");
+        int year = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Input month: ");
+        int month = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Input day: ");
+        int day = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Input hour: ");
+        int hour = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Input minute: ");
+        int minute = scanner.nextInt();
+        scanner.nextLine();
+
+        return LocalDateTime.of(year, month, day, hour, minute);
     }
 }
