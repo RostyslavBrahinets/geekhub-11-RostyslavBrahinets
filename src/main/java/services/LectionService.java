@@ -10,22 +10,23 @@ import models.Resource;
 import sources.LectionSource;
 import validators.LectionValidator;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LectionService {
     private final LectionSource lectionSource = LectionSource.getInstance();
     private final LectionValidator validator = new LectionValidator();
 
-    public Optional<List<Lection>> getLections() {
-        return Optional.ofNullable(lectionSource.getLections());
+    public List<Lection> getLections() {
+        return lectionSource.getLections();
     }
 
     public void addLection(String name, String describe, List<Resource> resources, Person lecturer,
-                           List<HomeWork> homeWorks, LocalDate creationDate) {
+                           List<HomeWork> homeWorks) {
         try {
             validator.validate(name, describe, resources, lecturer, homeWorks);
-            lectionSource.addLection(new Lection(name, describe, resources, lecturer, homeWorks, creationDate));
+            lectionSource.addLection(new Lection(name, describe, resources, lecturer, homeWorks));
         } catch (ValidationException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
@@ -40,7 +41,7 @@ public class LectionService {
         }
     }
 
-    public Optional<Lection> getLection(int id) {
+    public Lection getLection(int id) {
         Lection lection = null;
 
         try {
@@ -50,7 +51,7 @@ public class LectionService {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
 
-        return Optional.ofNullable(lection);
+        return lection;
     }
 
     public Map<Lection, List<Resource>> getResourcesGroupedByLecture() {
@@ -71,13 +72,5 @@ public class LectionService {
         }
 
         return groupedHomeWorks;
-    }
-
-    public void sortLectionByDateASC() {
-        Collections.sort(lectionSource.getLections());
-    }
-
-    public void sortLectionByDateDESC() {
-        lectionSource.getLections().sort(Collections.reverseOrder());
     }
 }

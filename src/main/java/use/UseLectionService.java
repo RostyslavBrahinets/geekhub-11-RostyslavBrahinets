@@ -1,17 +1,15 @@
 package use;
 
 import logger.Logger;
-import models.HomeWork;
 import models.Lection;
 import models.Person;
-import models.Resource;
 import services.HomeWorkService;
 import services.LectionService;
 import services.PersonService;
 import services.ResourceService;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class UseLectionService {
     private final Scanner scanner = new Scanner(System.in);
@@ -21,19 +19,16 @@ public class UseLectionService {
     private final UseHomeWorkService useHomeworkService = new UseHomeWorkService();
 
     public void showAllLections() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        if (lections.isPresent()) {
-            for (Lection lection : lections.get()) {
-                Logger.info(getClass().getName(),
-                    String.format("%s: %s; %s; %s %s; %s%n",
-                        lection.getName(),
-                        lection.getDescribe(),
-                        lection.getResources(),
-                        lection.getLecturer().getFirstName(),
-                        lection.getLecturer().getLastName(),
-                        lection.getHomeWorks()
-                    ));
-            }
+        for (Lection lection : lectionService.getLections()) {
+            Logger.info(getClass().getName(),
+                String.format("%s: %s; %s; %s %s; %s%n",
+                    lection.getName(),
+                    lection.getDescribe(),
+                    lection.getResources(),
+                    lection.getLecturer().getFirstName(),
+                    lection.getLecturer().getLastName(),
+                    lection.getHomeWorks()
+                ));
         }
     }
 
@@ -41,20 +36,13 @@ public class UseLectionService {
         String name = getNameOfLection();
         String describe = getDescribeOfLection();
         useResourceService.addResources();
-        Optional<Person> lecturer = getLecturer();
+        Person lecturer = getLecturer();
         useHomeworkService.addHomeWorks();
+
         ResourceService resourceService = new ResourceService();
         HomeWorkService homeWorkService = new HomeWorkService();
-        Optional<List<Resource>> resources = resourceService.getResources();
-        Optional<List<HomeWork>> homeWorks = homeWorkService.getHomeWorks();
-
-        if (lecturer.isPresent() && resources.isPresent() && homeWorks.isPresent()) {
-            lectionService.addLection(name, describe, resources.get(),
-                lecturer.get(), homeWorks.get(), LocalDate.now());
-        }
-
-
-
+        lectionService.addLection(name, describe, resourceService.getResources(),
+            lecturer, homeWorkService.getHomeWorks());
     }
 
     public void deleteLectionById() {
@@ -62,41 +50,37 @@ public class UseLectionService {
     }
 
     public void showLectionById() {
-        Optional<Lection> lection = lectionService.getLection(getIdOfLection());
-        lection.ifPresent(value -> Logger.info(getClass().getName(),
-            String.format("%s: %s; %s; %s %s; %s%n",
-                value.getName(),
-                value.getResources(),
-                value.getLecturer().getFirstName(),
-                value.getLecturer().getLastName(),
-                value.getHomeWorks(),
-                value.getCreationDate()
-            )));
+        Lection lection = lectionService.getLection(getIdOfLection());
+        if (lection != null) {
+            Logger.info(getClass().getName(),
+                String.format("%s: %s; %s; %s %s; %s%n",
+                    lection.getName(),
+                    lection.getDescribe(),
+                    lection.getResources(),
+                    lection.getLecturer().getFirstName(),
+                    lection.getLecturer().getLastName(),
+                    lection.getHomeWorks()
+                ));
+        }
     }
 
     public void showResourcesGroupedByLecture() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        if (lections.isPresent()) {
-            for (Lection lection : lections.get()) {
-                Logger.info(getClass().getName(), String.format(
-                    "%n%s: %s%n",
-                    lection.getName(),
-                    lectionService.getResourcesGroupedByLecture().get(lection)
-                ));
-            }
+        for (Lection lection : lectionService.getLections()) {
+            Logger.info(getClass().getName(), String.format(
+                "%n%s: %s%n",
+                lection.getName(),
+                lectionService.getResourcesGroupedByLecture().get(lection)
+            ));
         }
     }
 
     public void showHomeWorksGroupedByLecture() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        if (lections.isPresent()) {
-            for (Lection lection : lections.get()) {
-                Logger.info(getClass().getName(), String.format(
-                    "%n%s: %s%n",
-                    lection.getName(),
-                    lectionService.getHomeWorksGroupedByLecture().get(lection)
-                ));
-            }
+        for (Lection lection : lectionService.getLections()) {
+            Logger.info(getClass().getName(), String.format(
+                "%n%s: %s%n",
+                lection.getName(),
+                lectionService.getHomeWorksGroupedByLecture().get(lection)
+            ));
         }
     }
 
@@ -116,7 +100,7 @@ public class UseLectionService {
         return scanner.nextLine();
     }
 
-    private Optional<Person> getLecturer() {
+    private Person getLecturer() {
         usePersonService.addPeople();
         return new PersonService().getPerson(0);
     }
