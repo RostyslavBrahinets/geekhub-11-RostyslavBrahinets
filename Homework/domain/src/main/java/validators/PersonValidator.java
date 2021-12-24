@@ -4,7 +4,7 @@ import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import models.Role;
-import sources.PersonSource;
+import repository.PersonRepository;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class PersonValidator {
     }
 
     public void validate(int id) {
-        PersonSource personSource = PersonSource.getInstance();
+        PersonRepository personSource = PersonRepository.getInstance();
         if (id < 0 || id >= personSource.getPeople().size()) {
             throw new NotFoundException("Person not found");
         }

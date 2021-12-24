@@ -6,14 +6,14 @@ import logger.Logger;
 import models.Course;
 import models.Lection;
 import models.Person;
-import sources.CourseSource;
+import repository.CourseRepository;
 import validators.CourseValidator;
 
 import java.util.List;
 import java.util.Optional;
 
 public class CourseService {
-    private final CourseSource courseSource = CourseSource.getInstance();
+    private final CourseRepository courseSource = CourseRepository.getInstance();
     private final CourseValidator validator = new CourseValidator();
 
     public Optional<List<Course>> getCourses() {

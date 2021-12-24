@@ -1,15 +1,15 @@
-package sources;
+package repository;
 
 import models.Person;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonSource {
-    private static PersonSource instance;
+public class PersonRepository {
+    private static PersonRepository instance;
     private final List<Person> people;
 
-    public PersonSource() {
+    public PersonRepository() {
         this.people = new ArrayList<>();
     }
 
@@ -29,9 +29,9 @@ public class PersonSource {
         return people.get(id);
     }
 
-    public static PersonSource getInstance() {
+    public static PersonRepository getInstance() {
         if (instance == null) {
-            instance = new PersonSource();
+            instance = new PersonRepository();
         }
 
         return instance;

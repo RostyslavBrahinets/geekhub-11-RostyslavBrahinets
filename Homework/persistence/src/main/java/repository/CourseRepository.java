@@ -1,15 +1,15 @@
-package sources;
+package repository;
 
 import models.Course;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseSource {
-    private static CourseSource instance;
+public class CourseRepository {
+    private static CourseRepository instance;
     private final List<Course> courses;
 
-    public CourseSource() {
+    public CourseRepository() {
         this.courses = new ArrayList<>();
     }
 
@@ -29,9 +29,9 @@ public class CourseSource {
         return courses.get(id);
     }
 
-    public static CourseSource getInstance() {
+    public static CourseRepository getInstance() {
         if (instance == null) {
-            instance = new CourseSource();
+            instance = new CourseRepository();
         }
 
         return instance;

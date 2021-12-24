@@ -7,7 +7,7 @@ import models.HomeWork;
 import models.Lection;
 import models.Person;
 import models.Resource;
-import sources.LectionSource;
+import repository.LectionRepository;
 import validators.LectionValidator;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LectionService {
-    private final LectionSource lectionSource = LectionSource.getInstance();
+    private final LectionRepository lectionSource = LectionRepository.getInstance();
     private final LectionValidator validator = new LectionValidator();
 
     public List<Lection> getLections() {

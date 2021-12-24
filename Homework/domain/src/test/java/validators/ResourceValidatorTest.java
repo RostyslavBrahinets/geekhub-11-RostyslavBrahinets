@@ -8,7 +8,7 @@ import models.ResourceType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sources.ResourcesSource;
+import repository.ResourcesRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +17,7 @@ class ResourceValidatorTest {
 
     @BeforeAll
     static void setDataInSource() {
-        ResourcesSource resourcesSource = ResourcesSource.getInstance();
+        ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
         resourcesSource.addResource(new Resource("Resource", ResourceType.URL, "Data"));
     }
 

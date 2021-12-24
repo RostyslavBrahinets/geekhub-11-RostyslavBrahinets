@@ -5,7 +5,7 @@ import exceptions.ValidationException;
 import models.HomeWork;
 import models.Person;
 import models.Resource;
-import sources.LectionSource;
+import repository.LectionRepository;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class LectionValidator {
     }
 
     public void validate(int id) {
-        LectionSource lectionSource = LectionSource.getInstance();
+        LectionRepository lectionSource = LectionRepository.getInstance();
         if (id < 0 || id >= lectionSource.getLections().size()) {
             throw new NotFoundException("Lection not found");
         }

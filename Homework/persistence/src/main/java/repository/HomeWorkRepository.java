@@ -1,15 +1,15 @@
-package sources;
+package repository;
 
 import models.HomeWork;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeWorkSource {
-    private static HomeWorkSource instance;
+public class HomeWorkRepository {
+    private static HomeWorkRepository instance;
     private final List<HomeWork> homeWorks;
 
-    public HomeWorkSource() {
+    public HomeWorkRepository() {
         this.homeWorks = new ArrayList<>();
     }
 
@@ -29,9 +29,9 @@ public class HomeWorkSource {
         return homeWorks.get(id);
     }
 
-    public static HomeWorkSource getInstance() {
+    public static HomeWorkRepository getInstance() {
         if (instance == null) {
-            instance = new HomeWorkSource();
+            instance = new HomeWorkRepository();
         }
 
         return instance;

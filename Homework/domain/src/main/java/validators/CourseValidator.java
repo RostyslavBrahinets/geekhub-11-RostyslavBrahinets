@@ -4,7 +4,7 @@ import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import models.Lection;
 import models.Person;
-import sources.CourseSource;
+import repository.CourseRepository;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class CourseValidator {
     }
 
     public void validate(int id) {
-        CourseSource courseSource = CourseSource.getInstance();
+        CourseRepository courseSource = CourseRepository.getInstance();
         if (id < 0 || id >= courseSource.getCourses().size()) {
             throw new NotFoundException("Course not found");
         }

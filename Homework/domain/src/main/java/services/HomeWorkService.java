@@ -4,7 +4,7 @@ import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import logger.Logger;
 import models.HomeWork;
-import sources.HomeWorkSource;
+import repository.HomeWorkRepository;
 import validators.HomeWorkValidator;
 
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class HomeWorkService {
-    private final HomeWorkSource homeWorkSource = HomeWorkSource.getInstance();
+    private final HomeWorkRepository homeWorkSource = HomeWorkRepository.getInstance();
     private final HomeWorkValidator validator = new HomeWorkValidator();
 
     public Optional<List<HomeWork>> getHomeWorks() {

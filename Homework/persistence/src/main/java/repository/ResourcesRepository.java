@@ -1,15 +1,15 @@
-package sources;
+package repository;
 
 import models.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResourcesSource {
-    private static ResourcesSource instance;
+public class ResourcesRepository {
+    private static ResourcesRepository instance;
     private final List<Resource> resources;
 
-    public ResourcesSource() {
+    public ResourcesRepository() {
         resources = new ArrayList<>();
     }
 
@@ -29,9 +29,9 @@ public class ResourcesSource {
         return resources.get(id);
     }
 
-    public static ResourcesSource getInstance() {
+    public static ResourcesRepository getInstance() {
         if (instance == null) {
-            instance = new ResourcesSource();
+            instance = new ResourcesRepository();
         }
 
         return instance;

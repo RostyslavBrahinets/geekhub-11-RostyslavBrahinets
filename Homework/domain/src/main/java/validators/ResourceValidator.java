@@ -4,7 +4,7 @@ import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import models.ResourceType;
-import sources.ResourcesSource;
+import repository.ResourcesRepository;
 
 public class ResourceValidator {
     public void validate(String name, String type, String data) {
@@ -18,7 +18,7 @@ public class ResourceValidator {
     }
 
     public void validate(int id) {
-        ResourcesSource resourcesSource = ResourcesSource.getInstance();
+        ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
         if (id < 0 || id >= resourcesSource.getResources().size()) {
             throw new NotFoundException("Resource not found");
         }

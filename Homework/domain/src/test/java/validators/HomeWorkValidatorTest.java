@@ -6,7 +6,7 @@ package validators;//package validators;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
-//import sources.HomeWorkSource;
+//import sources.HomeWorkRepository;
 //
 //import static org.junit.jupiter.api.Assertions.*;
 //
@@ -15,7 +15,7 @@ package validators;//package validators;
 //
 //    @BeforeAll
 //    static void setDataInSource() {
-//        HomeWorkSource homeworkSource = HomeWorkSource.getInstance();
+//        HomeWorkRepository homeworkSource = HomeWorkRepository.getInstance();
 //        homeworkSource.addHomeWork(new HomeWork("Task", deadLine));
 //    }
 //

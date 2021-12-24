@@ -8,7 +8,7 @@ import models.Role;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sources.PersonSource;
+import repository.PersonRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ class PersonValidatorTest {
 
     @BeforeAll
     static void setDataInSource() {
-        PersonSource personSource = PersonSource.getInstance();
+        PersonRepository personSource = PersonRepository.getInstance();
         contacts = new ArrayList<>();
         contacts.add("Contact");
         personSource.addPerson(new Person(

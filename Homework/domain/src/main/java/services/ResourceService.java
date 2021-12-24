@@ -6,14 +6,14 @@ import exceptions.ValidationException;
 import logger.Logger;
 import models.Resource;
 import models.ResourceType;
-import sources.ResourcesSource;
+import repository.ResourcesRepository;
 import validators.ResourceValidator;
 
 import java.util.List;
 import java.util.Optional;
 
 public class ResourceService {
-    private final ResourcesSource resourcesSource = ResourcesSource.getInstance();
+    private final ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
     private final ResourceValidator validator = new ResourceValidator();
 
     public Optional<List<Resource>> getResources() {

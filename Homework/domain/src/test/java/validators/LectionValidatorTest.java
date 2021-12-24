@@ -6,7 +6,7 @@ package validators;//package validators;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
-//import sources.LectionSource;
+//import sources.LectionRepository;
 //
 //import java.util.ArrayList;
 //import java.util.List;
@@ -33,7 +33,7 @@ package validators;//package validators;
 //        homeWorks.add(new HomeWork("Task"));
 //        name = "Lection";
 //        describe = "Describe";
-//        LectionSource lectionSource = LectionSource.getInstance();
+//        LectionRepository lectionSource = LectionRepository.getInstance();
 //        lectionSource.addLection(new Lection(name, describe,
 //            resources, lecturer, homeWorks, creationDate));
 //

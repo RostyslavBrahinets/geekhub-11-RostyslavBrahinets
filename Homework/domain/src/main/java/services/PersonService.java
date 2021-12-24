@@ -6,14 +6,14 @@ import exceptions.ValidationException;
 import logger.Logger;
 import models.Person;
 import models.Role;
-import sources.PersonSource;
+import repository.PersonRepository;
 import validators.PersonValidator;
 
 import java.util.List;
 import java.util.Optional;
 
 public class PersonService {
-    private final PersonSource personSource = PersonSource.getInstance();
+    private final PersonRepository personSource = PersonRepository.getInstance();
     private final PersonValidator validator = new PersonValidator();
 
     public Optional<List<Person>> getPeople() {

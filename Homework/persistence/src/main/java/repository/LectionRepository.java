@@ -1,15 +1,15 @@
-package sources;
+package repository;
 
 import models.Lection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LectionSource {
-    private static LectionSource instance;
+public class LectionRepository {
+    private static LectionRepository instance;
     private final List<Lection> lections;
 
-    public LectionSource() {
+    public LectionRepository() {
         lections = new ArrayList<>();
     }
 
@@ -29,9 +29,9 @@ public class LectionSource {
         return lections.get(id);
     }
 
-    public static LectionSource getInstance() {
+    public static LectionRepository getInstance() {
         if (instance == null) {
-            instance = new LectionSource();
+            instance = new LectionRepository();
         }
 
         return instance;
