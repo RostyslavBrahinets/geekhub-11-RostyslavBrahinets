@@ -1,14 +1,18 @@
 package use;
 
 import logger.Logger;
+import models.HomeWork;
 import models.Lection;
 import models.Person;
+import models.Resource;
 import services.HomeWorkService;
 import services.LectionService;
 import services.PersonService;
 import services.ResourceService;
 
 import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class UseLectionService {
@@ -21,13 +25,14 @@ public class UseLectionService {
     public void showAllLections() {
         for (Lection lection : lectionService.getLections()) {
             Logger.info(getClass().getName(),
-                String.format("%s: %s; %s; %s %s; %s%n",
+                String.format("%s: %s; %s; %s %s; %s; %s%n",
                     lection.getName(),
                     lection.getDescribe(),
                     lection.getResources(),
                     lection.getLecturer().getFirstName(),
                     lection.getLecturer().getLastName(),
-                    lection.getHomeWorks()
+                    lection.getHomeWorks(),
+                    lection.getCreationDate()
                 ));
         }
     }
@@ -36,13 +41,19 @@ public class UseLectionService {
         String name = getNameOfLection();
         String describe = getDescribeOfLection();
         useResourceService.addResources();
-        Person lecturer = getLecturer();
+        Optional<Person> lecturer = getLecturer();
         useHomeworkService.addHomeWorks();
 
         ResourceService resourceService = new ResourceService();
         HomeWorkService homeWorkService = new HomeWorkService();
-        lectionService.addLection(name, describe, resourceService.getResources(),
-            lecturer, homeWorkService.getHomeWorks());
+
+        Optional<List<Resource>> resources = resourceService.getResources();
+        Optional<List<HomeWork>> homeWorks = homeWorkService.getHomeWorks();
+
+        if (lecturer.isPresent() && resources.isPresent() && homeWorks.isPresent()) {
+            lectionService.addLection(name, describe, resources.get(),
+                lecturer.get(), homeWorks.get());
+        }
     }
 
     public void deleteLectionById() {
@@ -100,7 +111,7 @@ public class UseLectionService {
         return scanner.nextLine();
     }
 
-    private Person getLecturer() {
+    private Optional<Person> getLecturer() {
         usePersonService.addPeople();
         return new PersonService().getPerson(0);
     }

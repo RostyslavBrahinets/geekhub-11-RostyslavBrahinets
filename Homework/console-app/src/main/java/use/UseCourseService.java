@@ -68,7 +68,7 @@ public class UseCourseService {
             useLectionService.addNewLection();
         }
 
-        return new LectionService().getLections();
+        return Optional.ofNullable(new LectionService().getLections());
     }
 
     private Optional<List<Person>> getStudentsOfCourse() {
