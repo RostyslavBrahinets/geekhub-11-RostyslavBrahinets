@@ -39,7 +39,7 @@ public class HomeWork {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         return "HomeWork {"
             + "task: '" + task + '\''
-            + "deadLine: '" + deadLine.format(formatter) +
+            + "deadLine: '" + deadLine.format(formatter)
             + '}';
     }
 }
