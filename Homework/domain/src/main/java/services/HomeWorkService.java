@@ -1,8 +1,5 @@
 package services;
 
-import exceptions.NotFoundException;
-import exceptions.ValidationException;
-import logger.Logger;
 import models.HomeWork;
 import repository.HomeWorkRepository;
 import validators.HomeWorkValidator;
@@ -20,33 +17,17 @@ public class HomeWorkService {
     }
 
     public void addHomeWork(String task, LocalDateTime deadLine) {
-        try {
-            validator.validate(task);
-            homeWorkSource.addHomeWork(new HomeWork(task, deadLine));
-        } catch (ValidationException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
-        }
+        validator.validate(task);
+        homeWorkSource.addHomeWork(new HomeWork(task, deadLine));
     }
 
     public void deleteHomeWork(int id) {
-        try {
-            validator.validate(id);
-            homeWorkSource.deleteHomeWork(id);
-        } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
-        }
+        validator.validate(id);
+        homeWorkSource.deleteHomeWork(id);
     }
 
     public Optional<HomeWork> getHomeWork(int id) {
-        HomeWork homeWork = null;
-
-        try {
-            validator.validate(id);
-            homeWork = homeWorkSource.getHomeWork(id);
-        } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
-        }
-
-        return Optional.ofNullable(homeWork);
+        validator.validate(id);
+        return Optional.ofNullable(homeWorkSource.getHomeWork(id));
     }
 }

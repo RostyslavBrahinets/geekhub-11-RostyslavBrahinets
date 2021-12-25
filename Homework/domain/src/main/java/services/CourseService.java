@@ -1,8 +1,5 @@
 package services;
 
-import exceptions.NotFoundException;
-import exceptions.ValidationException;
-import logger.Logger;
 import models.Course;
 import models.Lection;
 import models.Person;
@@ -21,33 +18,17 @@ public class CourseService {
     }
 
     public void addCourse(String name, List<Lection> lections, List<Person> students) {
-        try {
-            validator.validate(name, lections, students);
-            courseSource.addCourse(new Course(name, lections, students));
-        } catch (ValidationException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
-        }
+        validator.validate(name, lections, students);
+        courseSource.addCourse(new Course(name, lections, students));
     }
 
     public void deleteCourse(int id) {
-        try {
-            validator.validate(id);
-            courseSource.deleteCourse(id);
-        } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
-        }
+        validator.validate(id);
+        courseSource.deleteCourse(id);
     }
 
     public Optional<Course> getCourse(int id) {
-        Course course = null;
-
-        try {
-            validator.validate(id);
-            course = courseSource.getCourse(id);
-        } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
-        }
-
-        return Optional.ofNullable(course);
+        validator.validate(id);
+        return Optional.ofNullable(courseSource.getCourse(id));
     }
 }
