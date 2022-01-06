@@ -16,9 +16,9 @@ public class HomeWorkService {
         return Optional.ofNullable(homeWorkSource.getHomeWorks());
     }
 
-    public void addHomeWork(String task, LocalDateTime deadLine) {
-        validator.validate(task);
-        homeWorkSource.addHomeWork(new HomeWork(task, deadLine));
+    public void addHomeWork(String task, LocalDateTime deadline) {
+        validator.validate(task, deadline);
+        homeWorkSource.addHomeWork(new HomeWork(task, deadline));
     }
 
     public void deleteHomeWork(int id) {

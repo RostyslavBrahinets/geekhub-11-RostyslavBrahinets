@@ -4,10 +4,14 @@ import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import repository.HomeWorkRepository;
 
+import java.time.LocalDateTime;
+
 public class HomeWorkValidator {
-    public void validate(String task) {
+    public void validate(String task, LocalDateTime deadline) {
         if (task == null || task.isBlank()) {
             throw new ValidationException("Task of homework is invalid");
+        } else if (deadline == null) {
+            throw new ValidationException("Deadline of homework is invalid");
         }
     }
 
