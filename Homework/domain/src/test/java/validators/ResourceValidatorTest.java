@@ -10,15 +10,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import repository.ResourcesRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ResourceValidatorTest {
     private ResourceValidator validator;
 
     @BeforeAll
-    static void setDataInSource() {
+    static void setDataInRepository() {
         ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
-        resourcesSource.addResource(new Resource("Resource", ResourceType.URL, "Data"));
+        resourcesSource.addResource(
+            new Resource("Resource", ResourceType.URL, "Data")
+        );
     }
 
     @BeforeEach
@@ -28,56 +31,87 @@ class ResourceValidatorTest {
 
     @Test
     void validate_DoNothing_WithoutError() {
-        assertDoesNotThrow(() -> validator.validate("Resource", "URL", "Data"));
+        assertDoesNotThrow(
+            () -> validator.validate("Resource", "URL", "Data")
+        );
     }
 
     @Test
     void validate_ThrowsValidationException_ForNameIsNull() {
-        assertThrows(ValidationException.class, () -> validator.validate(null, "URL", "Data"));
+        assertThrows(
+            ValidationException.class,
+            () -> validator.validate(null, "URL", "Data")
+        );
     }
 
     @Test
-    void validate_ThrowsValidationException_ForTypeIsNull() {
-        assertThrows(InvalidArgumentException.class, () -> validator.validate("Resource", null, "Data"));
+    void validate_ThrowsInvalidArgumentException_ForTypeIsNull() {
+        assertThrows(
+            InvalidArgumentException.class,
+            () -> validator.validate("Resource", null, "Data")
+        );
     }
 
     @Test
     void validate_ThrowsValidationException_ForDataIsNull() {
-        assertThrows(ValidationException.class, () -> validator.validate("Resource", "URL", null));
+        assertThrows(
+            ValidationException.class,
+            () -> validator.validate("Resource", "URL", null)
+        );
     }
 
     @Test
     void validate_ThrowsValidationException_ForNameIsEmpty() {
-        assertThrows(ValidationException.class, () -> validator.validate("", "URL", "Data"));
+        assertThrows(
+            ValidationException.class,
+            () -> validator.validate("", "URL", "Data")
+        );
     }
 
     @Test
-    void validate_ThrowsValidationException_ForTypeIsEmpty() {
-        assertThrows(InvalidArgumentException.class, () -> validator.validate("Resource", "", "Data"));
+    void validate_ThrowsInvalidArgumentException_ForTypeIsEmpty() {
+        assertThrows(
+            InvalidArgumentException.class,
+            () -> validator.validate("Resource", "", "Data")
+        );
     }
 
     @Test
     void validate_ThrowsValidationException_ForDataIsEmpty() {
-        assertThrows(ValidationException.class, () -> validator.validate("Resource", "URL", ""));
+        assertThrows(
+            ValidationException.class,
+            () -> validator.validate("Resource", "URL", "")
+        );
     }
 
     @Test
-    void validate_ThrowsValidationException_ForTypeIsNotInListOfTypes() {
-        assertThrows(InvalidArgumentException.class, () -> validator.validate("Resource", "TYPE", "Data"));
+    void validate_ThrowsInvalidArgumentException_ForTypeIsNotInListOfTypes() {
+        assertThrows(
+            InvalidArgumentException.class,
+            () -> validator.validate("Resource", "TYPE", "Data")
+        );
     }
 
     @Test
     void validateId_DoNothing_WithoutError() {
-        assertDoesNotThrow(() -> validator.validate(0));
+        assertDoesNotThrow(
+            () -> validator.validate(0)
+        );
     }
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsLessThenExpected() {
-        assertThrows(NotFoundException.class, () -> validator.validate(-1));
+        assertThrows(
+            NotFoundException.class,
+            () -> validator.validate(-1)
+        );
     }
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsMoreThenExpected() {
-        assertThrows(NotFoundException.class, () -> validator.validate(1));
+        assertThrows(
+            NotFoundException.class,
+            () -> validator.validate(1)
+        );
     }
 }
