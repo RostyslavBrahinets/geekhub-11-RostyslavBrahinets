@@ -13,7 +13,8 @@ import repository.PersonRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PersonValidatorTest {
 
@@ -21,17 +22,19 @@ class PersonValidatorTest {
     private static List<String> contacts;
 
     @BeforeAll
-    static void setDataInSource() {
+    static void setDataInRepository() {
         PersonRepository personSource = PersonRepository.getInstance();
         contacts = new ArrayList<>();
         contacts.add("Contact");
-        personSource.addPerson(new Person(
-            "First name",
-            "Last name",
-            contacts,
-            "Nickname",
-            Role.STUDENT
-        ));
+        personSource.addPerson(
+            new Person(
+                "First name",
+                "Last name",
+                contacts,
+                "Nickname",
+                Role.STUDENT
+            )
+        );
     }
 
     @BeforeEach
@@ -182,16 +185,24 @@ class PersonValidatorTest {
 
     @Test
     void validateId_DoNothing_WithoutError() {
-        assertDoesNotThrow(() -> validator.validate(0));
+        assertDoesNotThrow(
+            () -> validator.validate(0)
+        );
     }
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsLessThenExpected() {
-        assertThrows(NotFoundException.class, () -> validator.validate(-1));
+        assertThrows(
+            NotFoundException.class,
+            () -> validator.validate(-1)
+        );
     }
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsMoreThenExpected() {
-        assertThrows(NotFoundException.class, () -> validator.validate(1));
+        assertThrows(
+            NotFoundException.class,
+            () -> validator.validate(1)
+        );
     }
 }
