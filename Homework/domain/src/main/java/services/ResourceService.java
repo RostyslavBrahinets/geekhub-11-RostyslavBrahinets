@@ -9,25 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 public class ResourceService {
-    private final ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
+    private final ResourcesRepository resourcesRepository = ResourcesRepository.getInstance();
     private final ResourceValidator validator = new ResourceValidator();
 
     public Optional<List<Resource>> getResources() {
-        return Optional.ofNullable(resourcesSource.getResources());
+        return Optional.ofNullable(resourcesRepository.getResources());
     }
 
     public void addResource(String name, String type, String data) {
         validator.validate(name, type, data);
-        resourcesSource.addResource(new Resource(name, ResourceType.valueOf(type), data));
+        resourcesRepository.addResource(new Resource(name, ResourceType.valueOf(type), data));
     }
 
     public void deleteResource(int id) {
         validator.validate(id);
-        resourcesSource.deleteResource(id);
+        resourcesRepository.deleteResource(id);
     }
 
     public Optional<Resource> getResource(int id) {
         validator.validate(id);
-        return Optional.ofNullable(resourcesSource.getResource(id));
+        return Optional.ofNullable(resourcesRepository.getResource(id));
     }
 }

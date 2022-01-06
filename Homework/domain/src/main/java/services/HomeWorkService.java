@@ -9,25 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 public class HomeWorkService {
-    private final HomeWorkRepository homeWorkSource = HomeWorkRepository.getInstance();
+    private final HomeWorkRepository homeWorkRepository = HomeWorkRepository.getInstance();
     private final HomeWorkValidator validator = new HomeWorkValidator();
 
     public Optional<List<HomeWork>> getHomeWorks() {
-        return Optional.ofNullable(homeWorkSource.getHomeWorks());
+        return Optional.ofNullable(homeWorkRepository.getHomeWorks());
     }
 
     public void addHomeWork(String task, LocalDateTime deadline) {
         validator.validate(task, deadline);
-        homeWorkSource.addHomeWork(new HomeWork(task, deadline));
+        homeWorkRepository.addHomeWork(new HomeWork(task, deadline));
     }
 
     public void deleteHomeWork(int id) {
         validator.validate(id);
-        homeWorkSource.deleteHomeWork(id);
+        homeWorkRepository.deleteHomeWork(id);
     }
 
     public Optional<HomeWork> getHomeWork(int id) {
         validator.validate(id);
-        return Optional.ofNullable(homeWorkSource.getHomeWork(id));
+        return Optional.ofNullable(homeWorkRepository.getHomeWork(id));
     }
 }

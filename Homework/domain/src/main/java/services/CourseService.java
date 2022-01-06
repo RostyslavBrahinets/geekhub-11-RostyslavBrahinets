@@ -10,25 +10,25 @@ import java.util.List;
 import java.util.Optional;
 
 public class CourseService {
-    private final CourseRepository courseSource = CourseRepository.getInstance();
+    private final CourseRepository courseRepository = CourseRepository.getInstance();
     private final CourseValidator validator = new CourseValidator();
 
     public Optional<List<Course>> getCourses() {
-        return Optional.ofNullable(courseSource.getCourses());
+        return Optional.ofNullable(courseRepository.getCourses());
     }
 
     public void addCourse(String name, List<Lection> lections, List<Person> students) {
         validator.validate(name, lections, students);
-        courseSource.addCourse(new Course(name, lections, students));
+        courseRepository.addCourse(new Course(name, lections, students));
     }
 
     public void deleteCourse(int id) {
         validator.validate(id);
-        courseSource.deleteCourse(id);
+        courseRepository.deleteCourse(id);
     }
 
     public Optional<Course> getCourse(int id) {
         validator.validate(id);
-        return Optional.ofNullable(courseSource.getCourse(id));
+        return Optional.ofNullable(courseRepository.getCourse(id));
     }
 }
