@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import repository.HomeWorkRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -79,9 +80,13 @@ class HomeWorkValidatorTest {
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsMoreThenExpected() {
+        HomeWorkRepository homeWorkRepository = HomeWorkRepository.getInstance();
+        List<HomeWork> homeWorks = homeWorkRepository.getHomeWorks();
+        int size = homeWorks.size();
+
         assertThrows(
             NotFoundException.class,
-            () -> validator.validate(1)
+            () -> validator.validate(size)
         );
     }
 }

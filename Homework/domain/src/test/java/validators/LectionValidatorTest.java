@@ -142,9 +142,13 @@ class LectionValidatorTest {
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsMoreThenExpected() {
+        LectionRepository lectionRepository = LectionRepository.getInstance();
+        List<Lection> lections = lectionRepository.getLections();
+        int size = lections.size();
+
         assertThrows(
             NotFoundException.class,
-            () -> validator.validate(1)
+            () -> validator.validate(size)
         );
     }
 }

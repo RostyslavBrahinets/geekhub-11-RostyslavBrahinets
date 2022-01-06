@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import repository.ResourcesRepository;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -109,9 +111,13 @@ class ResourceValidatorTest {
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsMoreThenExpected() {
+        ResourcesRepository resourcesRepository = ResourcesRepository.getInstance();
+        List<Resource> resources = resourcesRepository.getResources();
+        int size = resources.size();
+
         assertThrows(
             NotFoundException.class,
-            () -> validator.validate(1)
+            () -> validator.validate(size)
         );
     }
 }

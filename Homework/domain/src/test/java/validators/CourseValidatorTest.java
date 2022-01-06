@@ -127,9 +127,13 @@ class CourseValidatorTest {
 
     @Test
     void validateId_ThrowsNotFoundException_ForIdIsMoreThenExpected() {
+        CourseRepository courseRepository = CourseRepository.getInstance();
+        List<Course> courses = courseRepository.getCourses();
+        int size = courses.size();
+
         assertThrows(
             NotFoundException.class,
-            () -> validator.validate(1)
+            () -> validator.validate(size)
         );
     }
 }
