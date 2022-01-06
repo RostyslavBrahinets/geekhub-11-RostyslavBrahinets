@@ -1,104 +1,185 @@
-package services;//package services;
-//
-//import models.Resource;
-//import models.ResourceType;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//class ResourceServiceTest {
-//    private static ResourceService resourceService;
-//    private static String name;
-//    private static String type;
-//    private static String data;
-//
-//    @BeforeAll
-//    static void setUp() {
-//        resourceService = new ResourceService();
-//        name = "Resource";
-//        type = "URL";
-//        data = "Data";
-//        resourceService.addResource(name, type, data);
-//        resourceService.addResource(name, type, data);
-//    }
-//
-//    @Test
-//    void getResources_DoNothing_WithoutError() {
-//        List<Resource> resources = new ArrayList<>();
-//        resources.add(new Resource(name, ResourceType.valueOf(type), data));
-//        resources.add(new Resource(name, ResourceType.valueOf(type), data));
-//
-//        assertEquals(resources, resourceService.getResources());
-//    }
-//
-//    @Test
-//    void addResource_DoNothing_WithoutError() {
-//        assertDoesNotThrow(() -> resourceService.addResource(name, type, data));
-//    }
-//
-//    @Test
-//    void addResource_LoggingException_ForNameIsNull() {
-//        assertDoesNotThrow(() -> resourceService.addResource(null, type, data));
-//    }
-//
-//    @Test
-//    void addResource_LoggingException_ForTypeIsNull() {
-//        assertDoesNotThrow(() -> resourceService.addResource(name, null, data));
-//    }
-//
-//    @Test
-//    void addResource_LoggingException_ForDataIsNull() {
-//        assertDoesNotThrow(() -> resourceService.addResource(name, type, null));
-//    }
-//
-//    @Test
-//    void addResource_LoggingException_ForNameIsEmpty() {
-//        assertDoesNotThrow(() -> resourceService.addResource("", type, data));
-//    }
-//
-//    @Test
-//    void addResource_LoggingException_ForTypeIsEmpty() {
-//        assertDoesNotThrow(() -> resourceService.addResource(name, "", data));
-//    }
-//
-//    @Test
-//    void addResource_LoggingException_ForDataIsEmpty() {
-//        assertDoesNotThrow(() -> resourceService.addResource(name, type, ""));
-//    }
-//
-//    @Test
-//    void deleteResource_DoNothing_WithoutError() {
-//        assertDoesNotThrow(() -> resourceService.deleteResource(0));
-//    }
-//
-//    @Test
-//    void deleteResource_LoggingException_ForIdIsLessThenExpected() {
-//        assertDoesNotThrow(() -> resourceService.deleteResource(-1));
-//    }
-//
-//    @Test
-//    void deleteResource_LoggingException_ForIdIsMoreThenExpected() {
-//        assertDoesNotThrow(() -> resourceService.deleteResource(resourceService.getResources().size()));
-//    }
-//
-//    @Test
-//    void getResource_DoNothing_WithoutError() {
-//        Resource resource = new Resource(name, ResourceType.valueOf(type), data);
-//
-//        assertEquals(resource, resourceService.getResource(0));
-//    }
-//
-//    @Test
-//    void getResource_ReturnNull_ForIdIsLessThenExpected() {
-//        assertNull(resourceService.getResource(-1));
-//    }
-//
-//    @Test
-//    void getResource_ReturnNull_ForIdIsMoreThenExpected() {
-//        assertNull(resourceService.getResource(resourceService.getResources().size()));
-//    }
-//}
+package services;
+
+import exceptions.InvalidArgumentException;
+import exceptions.NotFoundException;
+import exceptions.ValidationException;
+import models.Resource;
+import models.ResourceType;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import repository.ResourcesRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ResourceServiceTest {
+    private ResourceService resourceService;
+    private static String name;
+    private static String type;
+    private static String data;
+
+    @BeforeAll
+    static void setDataInRepository() {
+        ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
+        name = "Resource";
+        type = "URL";
+        data = "Data";
+        resourcesSource.addResource(
+            new Resource(name, ResourceType.valueOf(type), data)
+        );
+        resourcesSource.addResource(
+            new Resource(name, ResourceType.valueOf(type), data)
+        );
+    }
+
+    @BeforeEach
+    void setUp() {
+        resourceService = new ResourceService();
+    }
+
+    @Test
+    void getResources_DoNothing_WithoutError() {
+        Optional<List<Resource>> resources = Optional.of(new ArrayList<>());
+        resources.get().add(
+            new Resource(name, ResourceType.valueOf(type), data)
+        );
+        resources.get().add(
+            new Resource(name, ResourceType.valueOf(type), data)
+        );
+
+        assertEquals(resources, resourceService.getResources());
+    }
+
+    @Test
+    void addResource_DoNothing_WithoutError() {
+        assertDoesNotThrow(
+            () -> resourceService.addResource(name, type, data)
+        );
+    }
+
+    @Test
+    void addResource_ThrowValidationException_ForNameIsNull() {
+        assertThrows(
+            ValidationException.class,
+            () -> resourceService.addResource(null, type, data)
+        );
+    }
+
+    @Test
+    void addResource_ThrowInvalidArgumentException_ForTypeIsNull() {
+        assertThrows(
+            InvalidArgumentException.class,
+            () -> resourceService.addResource(name, null, data)
+        );
+    }
+
+    @Test
+    void addResource_ThrowValidationException_ForDataIsNull() {
+        assertThrows(
+            ValidationException.class,
+            () -> resourceService.addResource(name, type, null)
+        );
+    }
+
+    @Test
+    void addResource_ThrowValidationException_ForNameIsEmpty() {
+        assertThrows(
+            ValidationException.class,
+            () -> resourceService.addResource("", type, data)
+        );
+    }
+
+    @Test
+    void addResource_ThrowInvalidArgumentException_ForTypeIsEmpty() {
+        assertThrows(
+            InvalidArgumentException.class,
+            () -> resourceService.addResource(name, "", data)
+        );
+    }
+
+    @Test
+    void addResource_ThrowValidationException_ForDataIsEmpty() {
+        assertThrows(
+            ValidationException.class,
+            () -> resourceService.addResource(name, type, "")
+        );
+    }
+
+    @Test
+    void addResource_ThrowInvalidArgumentException_ForTypeIsInvalid() {
+        assertThrows(
+            InvalidArgumentException.class,
+            () -> resourceService.addResource(name, "TYPE", data)
+        );
+    }
+
+    @Test
+    void deleteResource_DoNothing_WithoutError() {
+        assertDoesNotThrow(
+            () -> resourceService.deleteResource(0)
+        );
+    }
+
+    @Test
+    void deleteResource_ThrowNotFoundException_ForIdIsLessThenExpected() {
+        assertThrows(
+            NotFoundException.class,
+            () -> resourceService.deleteResource(-1)
+        );
+    }
+
+    @Test
+    void deleteResource_ThrowNotFoundException_ForIdIsMoreThenExpected() {
+        Optional<List<Resource>> resources = resourceService.getResources();
+        int resourcesSize = Integer.MAX_VALUE;
+        if (resources.isPresent()) {
+            resourcesSize = resources.get().size();
+        }
+        int size = resourcesSize;
+
+        assertThrows(
+            NotFoundException.class,
+            () -> resourceService.deleteResource(size)
+        );
+    }
+
+    @Test
+    void getResource_DoNothing_WithoutError() {
+        Resource expectedResource = new Resource(name, ResourceType.valueOf(type), data);
+        Optional<Resource> resource = resourceService.getResource(0);
+
+        Resource actualResource = null;
+        if (resource.isPresent()) {
+            actualResource = resource.get();
+        }
+
+        assertEquals(expectedResource, actualResource);
+    }
+
+    @Test
+    void getResource_ThrowNotFoundException_ForIdIsLessThenExpected() {
+        assertThrows(
+            NotFoundException.class,
+            () -> resourceService.getResource(-1)
+        );
+    }
+
+    @Test
+    void getResource_ThrowNotFoundException_ForIdIsMoreThenExpected() {
+        Optional<List<Resource>> resources = resourceService.getResources();
+        int resourcesSize = Integer.MAX_VALUE;
+        if (resources.isPresent()) {
+            resourcesSize = resources.get().size();
+        }
+        int size = resourcesSize;
+
+        assertThrows(
+            NotFoundException.class,
+            () -> resourceService.getResource(size)
+        );
+    }
+}
