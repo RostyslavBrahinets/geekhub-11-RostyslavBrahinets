@@ -12,8 +12,8 @@ public class PersonService {
     private final PersonRepository personRepository = PersonRepository.getInstance();
     private final PersonValidator validator = new PersonValidator();
 
-    public Optional<List<Person>> getPeople() {
-        return Optional.ofNullable(personRepository.getPeople());
+    public List<Person> getPeople() {
+        return personRepository.getPeople();
     }
 
     public void addPerson(String firstName, String lastName, List<String> contacts,

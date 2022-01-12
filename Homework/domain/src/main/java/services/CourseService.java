@@ -13,8 +13,8 @@ public class CourseService {
     private final CourseRepository courseRepository = CourseRepository.getInstance();
     private final CourseValidator validator = new CourseValidator();
 
-    public Optional<List<Course>> getCourses() {
-        return Optional.ofNullable(courseRepository.getCourses());
+    public List<Course> getCourses() {
+        return courseRepository.getCourses();
     }
 
     public void addCourse(String name, List<Lection> lections, List<Person> students) {

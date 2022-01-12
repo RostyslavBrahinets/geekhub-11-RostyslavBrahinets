@@ -37,18 +37,16 @@ public class PeopleMenu extends Menu {
     }
 
     private void showPeople() {
-        Optional<List<Person>> people = personService.getPeople();
-        if (people.isPresent()) {
-            for (Person person : people.get()) {
-                System.out.printf(
-                    "%s %s, %s, %s, %s%n",
-                    person.getFirstName(),
-                    person.getLastName(),
-                    person.getContacts(),
-                    person.getGitHubNickname(),
-                    person.getRole()
-                );
-            }
+        List<Person> people = personService.getPeople();
+        for (Person person : people) {
+            System.out.printf(
+                "%s %s, %s, %s, %s%n",
+                person.getFirstName(),
+                person.getLastName(),
+                person.getContacts(),
+                person.getGitHubNickname(),
+                person.getRole()
+            );
         }
     }
 

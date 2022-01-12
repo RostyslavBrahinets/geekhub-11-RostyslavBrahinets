@@ -37,8 +37,8 @@ class HomeWorkServiceTest {
 
     @Test
     void getHomeWorks_DoNothing_WithoutError() {
-        Optional<List<HomeWork>> homeWorks = Optional.of(new ArrayList<>());
-        homeWorks.get().add(new HomeWork(task, deadline));
+        List<HomeWork> homeWorks = new ArrayList<>();
+        homeWorks.add(new HomeWork(task, deadline));
 
         assertEquals(homeWorks, homeWorkService.getHomeWorks());
     }
@@ -91,12 +91,8 @@ class HomeWorkServiceTest {
 
     @Test
     void deleteHomeWork_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<HomeWork>> homeWorks = homeWorkService.getHomeWorks();
-        int homeWorksSize = Integer.MAX_VALUE;
-        if (homeWorks.isPresent()) {
-            homeWorksSize = homeWorks.get().size();
-        }
-        int size = homeWorksSize;
+        List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
+        int size = homeWorks.size();
 
         assertThrows(
             NotFoundException.class,
@@ -127,12 +123,8 @@ class HomeWorkServiceTest {
 
     @Test
     void getHomeWork_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<HomeWork>> homeWorks = homeWorkService.getHomeWorks();
-        int homeWorksSize = Integer.MAX_VALUE;
-        if (homeWorks.isPresent()) {
-            homeWorksSize = homeWorks.get().size();
-        }
-        int size = homeWorksSize;
+        List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
+        int size = homeWorks.size();
 
         assertThrows(
             NotFoundException.class,

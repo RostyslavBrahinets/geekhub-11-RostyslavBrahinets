@@ -43,11 +43,11 @@ class ResourceServiceTest {
 
     @Test
     void getResources_DoNothing_WithoutError() {
-        Optional<List<Resource>> resources = Optional.of(new ArrayList<>());
-        resources.get().add(
+        List<Resource> resources = new ArrayList<>();
+        resources.add(
             new Resource(name, ResourceType.valueOf(type), data)
         );
-        resources.get().add(
+        resources.add(
             new Resource(name, ResourceType.valueOf(type), data)
         );
 
@@ -134,12 +134,8 @@ class ResourceServiceTest {
 
     @Test
     void deleteResource_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Resource>> resources = resourceService.getResources();
-        int resourcesSize = Integer.MAX_VALUE;
-        if (resources.isPresent()) {
-            resourcesSize = resources.get().size();
-        }
-        int size = resourcesSize;
+        List<Resource> resources = resourceService.getResources();
+        int size = resources.size();
 
         assertThrows(
             NotFoundException.class,
@@ -170,12 +166,8 @@ class ResourceServiceTest {
 
     @Test
     void getResource_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Resource>> resources = resourceService.getResources();
-        int resourcesSize = Integer.MAX_VALUE;
-        if (resources.isPresent()) {
-            resourcesSize = resources.get().size();
-        }
-        int size = resourcesSize;
+        List<Resource> resources = resourceService.getResources();
+        int size = resources.size();
 
         assertThrows(
             NotFoundException.class,

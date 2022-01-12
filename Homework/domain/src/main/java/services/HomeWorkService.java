@@ -12,8 +12,8 @@ public class HomeWorkService {
     private final HomeWorkRepository homeWorkRepository = HomeWorkRepository.getInstance();
     private final HomeWorkValidator validator = new HomeWorkValidator();
 
-    public Optional<List<HomeWork>> getHomeWorks() {
-        return Optional.ofNullable(homeWorkRepository.getHomeWorks());
+    public List<HomeWork> getHomeWorks() {
+        return homeWorkRepository.getHomeWorks();
     }
 
     public void addHomeWork(String task, LocalDateTime deadline) {

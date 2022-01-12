@@ -62,8 +62,8 @@ class LectionServiceTest {
 
     @Test
     void getLections_DoNothing_WithoutError() {
-        Optional<List<Lection>> lections = Optional.of(new ArrayList<>());
-        lections.get().add(
+        List<Lection> lections = new ArrayList<>();
+        lections.add(
             new Lection(name, describe, resources, lecturer, homeWorks, creationDate)
         );
 
@@ -150,12 +150,8 @@ class LectionServiceTest {
 
     @Test
     void deleteLection_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        int lectionsSize = Integer.MAX_VALUE;
-        if (lections.isPresent()) {
-            lectionsSize = lections.get().size();
-        }
-        int size = lectionsSize;
+        List<Lection> lections = lectionService.getLections();
+        int size = lections.size();
 
         assertThrows(
             NotFoundException.class,
@@ -186,12 +182,8 @@ class LectionServiceTest {
 
     @Test
     void getLection_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        int lectionsSize = Integer.MAX_VALUE;
-        if (lections.isPresent()) {
-            lectionsSize = lections.get().size();
-        }
-        int size = lectionsSize;
+        List<Lection> lections = lectionService.getLections();
+        int size = lections.size();
 
         assertThrows(
             NotFoundException.class,

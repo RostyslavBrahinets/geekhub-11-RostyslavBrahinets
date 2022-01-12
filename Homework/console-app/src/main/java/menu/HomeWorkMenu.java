@@ -36,15 +36,13 @@ public class HomeWorkMenu extends Menu {
     }
 
     private void showHomeWorks() {
-        Optional<List<HomeWork>> homeWorks = homeWorkService.getHomeWorks();
-        if (homeWorks.isPresent()) {
-            for (HomeWork homeWork : homeWorks.get()) {
-                System.out.printf(
-                    "%s: %s%n",
-                    homeWork.getTask(),
-                    homeWork.getDeadLine()
-                );
-            }
+        List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
+        for (HomeWork homeWork : homeWorks) {
+            System.out.printf(
+                "%s: %s%n",
+                homeWork.getTask(),
+                homeWork.getDeadLine()
+            );
         }
     }
 

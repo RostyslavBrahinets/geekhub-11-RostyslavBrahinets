@@ -54,19 +54,17 @@ public class LectionsMenu extends Menu {
     }
 
     private void showLections() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        if (lections.isPresent()) {
-            for (Lection lection : lections.get()) {
-                System.out.printf(
-                    "%s: %s; %s; %s %s; %s%n",
-                    lection.getName(),
-                    lection.getDescribe(),
-                    lection.getResources(),
-                    lection.getLecturer().getFirstName(),
-                    lection.getLecturer().getLastName(),
-                    lection.getHomeWorks()
-                );
-            }
+        List<Lection> lections = lectionService.getLections();
+        for (Lection lection : lections) {
+            System.out.printf(
+                "%s: %s; %s; %s %s; %s%n",
+                lection.getName(),
+                lection.getDescribe(),
+                lection.getResources(),
+                lection.getLecturer().getFirstName(),
+                lection.getLecturer().getLastName(),
+                lection.getHomeWorks()
+            );
         }
     }
 
@@ -89,12 +87,11 @@ public class LectionsMenu extends Menu {
                 ResourceService resourceService = new ResourceService();
                 HomeWorkService homeWorkService = new HomeWorkService();
 
-                Optional<List<Resource>> resources = resourceService.getResources();
-                Optional<List<HomeWork>> homeWorks = homeWorkService.getHomeWorks();
+                List<Resource> resources = resourceService.getResources();
+                List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
 
-                if (lecturer.isPresent() && resources.isPresent() && homeWorks.isPresent()) {
-                    lectionService.addLection(name, describe, resources.get(),
-                        lecturer.get(), homeWorks.get());
+                if (lecturer.isPresent()) {
+                    lectionService.addLection(name, describe, resources, lecturer.get(), homeWorks);
                 }
             }
         } catch (ValidationException e) {
@@ -130,28 +127,24 @@ public class LectionsMenu extends Menu {
     }
 
     private void showResourcesGroupedByLection() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        if (lections.isPresent()) {
-            for (Lection lection : lections.get()) {
-                System.out.printf(
-                    "%n%s: %s%n",
-                    lection.getName(),
-                    lectionService.getResourcesGroupedByLecture().get(lection)
-                );
-            }
+        List<Lection> lections = lectionService.getLections();
+        for (Lection lection : lections) {
+            System.out.printf(
+                "%n%s: %s%n",
+                lection.getName(),
+                lectionService.getResourcesGroupedByLecture().get(lection)
+            );
         }
     }
 
     private void showHomeWorksGroupedByLection() {
-        Optional<List<Lection>> lections = lectionService.getLections();
-        if (lections.isPresent()) {
-            for (Lection lection : lections.get()) {
-                System.out.printf(
-                    "%n%s: %s%n",
-                    lection.getName(),
-                    lectionService.getHomeWorksGroupedByLecture().get(lection)
-                );
-            }
+        List<Lection> lections = lectionService.getLections();
+        for (Lection lection : lections) {
+            System.out.printf(
+                "%n%s: %s%n",
+                lection.getName(),
+                lectionService.getHomeWorksGroupedByLecture().get(lection)
+            );
         }
     }
 

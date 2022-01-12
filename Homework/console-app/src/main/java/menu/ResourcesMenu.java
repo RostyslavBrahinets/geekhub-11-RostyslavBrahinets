@@ -37,17 +37,16 @@ public class ResourcesMenu extends Menu {
     }
 
     private void showResources() {
-        Optional<List<Resource>> resources = resourceService.getResources();
-        if (resources.isPresent()) {
-            for (Resource resource : resources.get()) {
-                System.out.printf(
-                    "%s: %s, %s%n",
-                    resource.getName(),
-                    resource.getType(),
-                    resource.getData()
-                );
-            }
+        List<Resource> resources = resourceService.getResources();
+        for (Resource resource : resources) {
+            System.out.printf(
+                "%s: %s, %s%n",
+                resource.getName(),
+                resource.getType(),
+                resource.getData()
+            );
         }
+
     }
 
     public void addResource() {

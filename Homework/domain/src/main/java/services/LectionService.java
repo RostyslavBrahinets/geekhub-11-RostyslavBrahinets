@@ -17,8 +17,8 @@ public class LectionService {
     private final LectionRepository lectionRepository = LectionRepository.getInstance();
     private final LectionValidator validator = new LectionValidator();
 
-    public Optional<List<Lection>> getLections() {
-        return Optional.ofNullable(lectionRepository.getLections());
+    public List<Lection> getLections() {
+        return lectionRepository.getLections();
     }
 
     public void addLection(String name, String describe, List<Resource> resources, Person lecturer,

@@ -45,8 +45,8 @@ class PersonServiceTest {
 
     @Test
     void getPeople_DoNothing_WithoutError() {
-        Optional<List<Person>> people = Optional.of(new ArrayList<>());
-        people.get().add(
+        List<Person> people = new ArrayList<>();
+        people.add(
             new Person(firstName, lastName, contacts, nickname, Role.valueOf(role))
         );
 
@@ -157,12 +157,8 @@ class PersonServiceTest {
 
     @Test
     void deletePerson_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Person>> people = personService.getPeople();
-        int peopleSize = Integer.MAX_VALUE;
-        if (people.isPresent()) {
-            peopleSize = people.get().size();
-        }
-        int size = peopleSize;
+        List<Person> people = personService.getPeople();
+        int size = people.size();
 
         assertThrows(
             NotFoundException.class,
@@ -193,12 +189,8 @@ class PersonServiceTest {
 
     @Test
     void getPerson_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Person>> people = personService.getPeople();
-        int peopleSize = Integer.MAX_VALUE;
-        if (people.isPresent()) {
-            peopleSize = people.get().size();
-        }
-        int size = peopleSize;
+        List<Person> people = personService.getPeople();
+        int size = people.size();
 
         assertThrows(
             NotFoundException.class,

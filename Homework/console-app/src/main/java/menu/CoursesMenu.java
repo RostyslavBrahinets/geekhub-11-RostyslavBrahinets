@@ -40,16 +40,14 @@ public class CoursesMenu extends Menu {
     }
 
     private void showCourses() {
-        Optional<List<Course>> courses = courseService.getCourses();
-        if (courses.isPresent()) {
-            for (Course course : courses.get()) {
-                System.out.printf(
-                    "%s: %s, %s%n",
-                    course.getName(),
-                    course.getLections(),
-                    course.getStudents()
-                );
-            }
+        List<Course> courses = courseService.getCourses();
+        for (Course course : courses) {
+            System.out.printf(
+                "%s: %s, %s%n",
+                course.getName(),
+                course.getLections(),
+                course.getStudents()
+            );
         }
     }
 
@@ -60,16 +58,13 @@ public class CoursesMenu extends Menu {
             for (int i = 0; i < count; i++) {
                 System.out.print("\nName: ");
                 String name = getFromScanner();
-                Optional<List<Lection>> lectionsOfCourse = getLectionsOfCourse();
-                Optional<List<Person>> studentsOfCourse = getStudentsOfCourse();
-
-                if (lectionsOfCourse.isPresent() && studentsOfCourse.isPresent()) {
-                    courseService.addCourse(
-                        name,
-                        lectionsOfCourse.get(),
-                        studentsOfCourse.get()
-                    );
-                }
+                List<Lection> lectionsOfCourse = getLectionsOfCourse();
+                List<Person> studentsOfCourse = getStudentsOfCourse();
+                courseService.addCourse(
+                    name,
+                    lectionsOfCourse,
+                    studentsOfCourse
+                );
             }
         } catch (
             ValidationException e) {
@@ -101,13 +96,13 @@ public class CoursesMenu extends Menu {
         }
     }
 
-    private Optional<List<Lection>> getLectionsOfCourse() {
+    private List<Lection> getLectionsOfCourse() {
         LectionsMenu lectionsMenu = new LectionsMenu();
         lectionsMenu.addLection();
         return new LectionService().getLections();
     }
 
-    private Optional<List<Person>> getStudentsOfCourse() {
+    private List<Person> getStudentsOfCourse() {
         PeopleMenu peopleMenu = new PeopleMenu();
         peopleMenu.addPerson();
         return new PersonService().getPeople();

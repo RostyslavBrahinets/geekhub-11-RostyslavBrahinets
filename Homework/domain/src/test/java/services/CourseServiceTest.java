@@ -67,9 +67,9 @@ class CourseServiceTest {
 
     @Test
     void getCourses_DoNothing_WithoutError() {
-        Optional<List<Course>> courses = Optional.of(new ArrayList<>());
-        courses.get().add(new Course(name, lections, students));
-        courses.get().add(new Course(name, lections, students));
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course(name, lections, students));
+        courses.add(new Course(name, lections, students));
 
         assertEquals(courses, courseService.getCourses());
     }
@@ -130,12 +130,8 @@ class CourseServiceTest {
 
     @Test
     void deleteCourse_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Course>> courses = courseService.getCourses();
-        int coursesSize = Integer.MAX_VALUE;
-        if (courses.isPresent()) {
-            coursesSize = courses.get().size();
-        }
-        int size = coursesSize;
+        List<Course> courses = courseService.getCourses();
+        int size = courses.size();
 
         assertThrows(
             NotFoundException.class,
@@ -166,12 +162,8 @@ class CourseServiceTest {
 
     @Test
     void getCourse_ThrowNotFoundException_ForIdIsMoreThenExpected() {
-        Optional<List<Course>> courses = courseService.getCourses();
-        int coursesSize = Integer.MAX_VALUE;
-        if (courses.isPresent()) {
-            coursesSize = courses.get().size();
-        }
-        int size = coursesSize;
+        List<Course> courses = courseService.getCourses();
+        int size = courses.size();
 
         assertThrows(
             NotFoundException.class,

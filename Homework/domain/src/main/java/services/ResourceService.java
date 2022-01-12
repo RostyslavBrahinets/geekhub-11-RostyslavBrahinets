@@ -12,8 +12,8 @@ public class ResourceService {
     private final ResourcesRepository resourcesRepository = ResourcesRepository.getInstance();
     private final ResourceValidator validator = new ResourceValidator();
 
-    public Optional<List<Resource>> getResources() {
-        return Optional.ofNullable(resourcesRepository.getResources());
+    public List<Resource> getResources() {
+        return resourcesRepository.getResources();
     }
 
     public void addResource(String name, String type, String data) {
