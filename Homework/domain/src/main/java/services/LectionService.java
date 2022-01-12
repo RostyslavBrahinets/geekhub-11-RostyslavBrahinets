@@ -34,7 +34,7 @@ public class LectionService {
 
     public Optional<Lection> getLection(int id) {
         validator.validate(id);
-        return Optional.ofNullable(lectionRepository.getLection(id));
+        return lectionRepository.getLection(id);
     }
 
     public Map<Lection, List<Resource>> getResourcesGroupedByLecture() {

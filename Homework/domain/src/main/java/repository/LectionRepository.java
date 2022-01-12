@@ -4,6 +4,7 @@ import models.Lection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class LectionRepository {
     private static LectionRepository instance;
@@ -25,8 +26,8 @@ public class LectionRepository {
         lections.remove(id);
     }
 
-    public Lection getLection(int id) {
-        return lections.get(id);
+    public Optional<Lection> getLection(int id) {
+        return Optional.ofNullable(lections.get(id));
     }
 
     public static LectionRepository getInstance() {

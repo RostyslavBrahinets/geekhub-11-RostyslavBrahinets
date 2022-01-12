@@ -29,6 +29,6 @@ public class PersonService {
 
     public Optional<Person> getPerson(int id) {
         validator.validate(id);
-        return Optional.ofNullable(personRepository.getPerson(id));
+        return personRepository.getPerson(id);
     }
 }

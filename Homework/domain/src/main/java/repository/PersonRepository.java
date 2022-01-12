@@ -4,6 +4,7 @@ import models.Person;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PersonRepository {
     private static PersonRepository instance;
@@ -25,8 +26,8 @@ public class PersonRepository {
         people.remove(id);
     }
 
-    public Person getPerson(int id) {
-        return people.get(id);
+    public Optional<Person> getPerson(int id) {
+        return Optional.ofNullable(people.get(id));
     }
 
     public static PersonRepository getInstance() {

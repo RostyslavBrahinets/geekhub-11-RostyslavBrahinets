@@ -28,6 +28,6 @@ public class HomeWorkService {
 
     public Optional<HomeWork> getHomeWork(int id) {
         validator.validate(id);
-        return Optional.ofNullable(homeWorkRepository.getHomeWork(id));
+        return homeWorkRepository.getHomeWork(id);
     }
 }

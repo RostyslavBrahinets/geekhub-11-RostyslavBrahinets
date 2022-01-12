@@ -4,6 +4,7 @@ import models.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ResourcesRepository {
     private static ResourcesRepository instance;
@@ -25,8 +26,8 @@ public class ResourcesRepository {
         resources.remove(id);
     }
 
-    public Resource getResource(int id) {
-        return resources.get(id);
+    public Optional<Resource> getResource(int id) {
+        return Optional.ofNullable(resources.get(id));
     }
 
     public static ResourcesRepository getInstance() {

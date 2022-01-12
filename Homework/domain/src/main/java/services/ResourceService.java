@@ -28,6 +28,6 @@ public class ResourceService {
 
     public Optional<Resource> getResource(int id) {
         validator.validate(id);
-        return Optional.ofNullable(resourcesRepository.getResource(id));
+        return resourcesRepository.getResource(id);
     }
 }

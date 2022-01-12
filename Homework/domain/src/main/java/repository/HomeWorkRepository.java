@@ -4,6 +4,7 @@ import models.HomeWork;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class HomeWorkRepository {
     private static HomeWorkRepository instance;
@@ -25,8 +26,8 @@ public class HomeWorkRepository {
         homeWorks.remove(id);
     }
 
-    public HomeWork getHomeWork(int id) {
-        return homeWorks.get(id);
+    public Optional<HomeWork> getHomeWork(int id) {
+        return Optional.ofNullable(homeWorks.get(id));
     }
 
     public static HomeWorkRepository getInstance() {

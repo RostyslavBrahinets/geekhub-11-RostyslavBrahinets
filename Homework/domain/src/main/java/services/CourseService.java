@@ -29,6 +29,6 @@ public class CourseService {
 
     public Optional<Course> getCourse(int id) {
         validator.validate(id);
-        return Optional.ofNullable(courseRepository.getCourse(id));
+        return courseRepository.getCourse(id);
     }
 }

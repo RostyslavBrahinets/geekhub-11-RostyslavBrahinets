@@ -4,6 +4,7 @@ import models.Course;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CourseRepository {
     private static CourseRepository instance;
@@ -25,8 +26,8 @@ public class CourseRepository {
         courses.remove(id);
     }
 
-    public Course getCourse(int id) {
-        return courses.get(id);
+    public Optional<Course> getCourse(int id) {
+        return Optional.ofNullable(courses.get(id));
     }
 
     public static CourseRepository getInstance() {
