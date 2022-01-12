@@ -8,7 +8,10 @@ import repository.LectionRepository;
 import validators.LectionValidator;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class LectionService {
     private final LectionRepository lectionRepository = LectionRepository.getInstance();
@@ -34,24 +37,16 @@ public class LectionService {
         return lectionRepository.getLection(id);
     }
 
-    public Map<Lection, List<Resource>> getResourcesGroupedByLecture() {
-        Map<Lection, List<Resource>> groupedResources = new HashMap<>();
-
-        for (Lection lection : lectionRepository.getLections()) {
-            groupedResources.put(lection, lection.getResources());
-        }
-
-        return groupedResources;
+    public Map<String, List<Resource>> getResourcesGroupedByLecture() {
+        return lectionRepository.getLections()
+            .stream()
+            .collect(Collectors.toMap(Lection::getName, Lection::getResources));
     }
 
-    public Map<Lection, List<HomeWork>> getHomeWorksGroupedByLecture() {
-        Map<Lection, List<HomeWork>> groupedHomeWorks = new HashMap<>();
-
-        for (Lection lection : lectionRepository.getLections()) {
-            groupedHomeWorks.put(lection, lection.getHomeWorks());
-        }
-
-        return groupedHomeWorks;
+    public Map<String, List<HomeWork>> getHomeWorksGroupedByLecture() {
+        return lectionRepository.getLections()
+            .stream()
+            .collect(Collectors.toMap(Lection::getName, Lection::getHomeWorks));
     }
 
     public void sortLectionsByDateASC() {
