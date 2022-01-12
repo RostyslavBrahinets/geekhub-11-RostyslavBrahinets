@@ -83,14 +83,12 @@ public class CoursesMenu extends Menu {
     private void showCourse() {
         try {
             Optional<Course> course = courseService.getCourse(getId());
-            if (course.isPresent()) {
-                System.out.printf(
-                    "%s: %s, %s%n",
-                    course.get().getName(),
-                    course.get().getLections(),
-                    course.get().getStudents()
-                );
-            }
+            course.ifPresent(value -> System.out.printf(
+                "%s: %s, %s%n",
+                value.getName(),
+                value.getLections(),
+                value.getStudents()
+            ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

@@ -78,14 +78,12 @@ public class ResourcesMenu extends Menu {
     private void showResource() {
         try {
             Optional<Resource> resource = resourceService.getResource(getId());
-            if (resource.isPresent()) {
-                System.out.printf(
-                    "%s: %s, %s%n",
-                    resource.get().getName(),
-                    resource.get().getType(),
-                    resource.get().getData()
-                );
-            }
+            resource.ifPresent(value -> System.out.printf(
+                "%s: %s, %s%n",
+                value.getName(),
+                value.getType(),
+                value.getData()
+            ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

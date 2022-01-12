@@ -82,16 +82,14 @@ public class PeopleMenu extends Menu {
     private void showPerson() {
         try {
             Optional<Person> person = personService.getPerson(getId());
-            if (person.isPresent()) {
-                System.out.printf(
-                    "%s %s, %s, %s, %s%n",
-                    person.get().getFirstName(),
-                    person.get().getLastName(),
-                    person.get().getContacts(),
-                    person.get().getGitHubNickname(),
-                    person.get().getRole()
-                );
-            }
+            person.ifPresent(value -> System.out.printf(
+                "%s %s, %s, %s, %s%n",
+                value.getFirstName(),
+                value.getLastName(),
+                value.getContacts(),
+                value.getGitHubNickname(),
+                value.getRole()
+            ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

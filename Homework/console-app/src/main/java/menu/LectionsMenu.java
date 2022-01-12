@@ -98,9 +98,7 @@ public class LectionsMenu extends Menu {
                 List<Resource> resources = resourceService.getResources();
                 List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
 
-                if (lecturer.isPresent()) {
-                    lectionService.addLection(name, describe, resources, lecturer.get(), homeWorks);
-                }
+                lecturer.ifPresent(person -> lectionService.addLection(name, describe, resources, person, homeWorks));
             }
         } catch (ValidationException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
@@ -118,17 +116,15 @@ public class LectionsMenu extends Menu {
     private void showLection() {
         try {
             Optional<Lection> lection = lectionService.getLection(getId());
-            if (lection.isPresent()) {
-                System.out.printf(
-                    "%s: %s; %s; %s %s; %s%n",
-                    lection.get().getName(),
-                    lection.get().getDescribe(),
-                    lection.get().getResources(),
-                    lection.get().getLecturer().getFirstName(),
-                    lection.get().getLecturer().getLastName(),
-                    lection.get().getHomeWorks()
-                );
-            }
+            lection.ifPresent(value -> System.out.printf(
+                "%s: %s; %s; %s %s; %s%n",
+                value.getName(),
+                value.getDescribe(),
+                value.getResources(),
+                value.getLecturer().getFirstName(),
+                value.getLecturer().getLastName(),
+                value.getHomeWorks()
+            ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }

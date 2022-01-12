@@ -71,13 +71,11 @@ public class HomeWorkMenu extends Menu {
     private void showHomeWork() {
         try {
             Optional<HomeWork> homeWork = homeWorkService.getHomeWork(getId());
-            if (homeWork.isPresent()) {
-                System.out.printf(
-                    "%s: %s%n",
-                    homeWork.get().getTask(),
-                    homeWork.get().getDeadLine()
-                );
-            }
+            homeWork.ifPresent(work -> System.out.printf(
+                "%s: %s%n",
+                work.getTask(),
+                work.getDeadLine()
+            ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
         }
