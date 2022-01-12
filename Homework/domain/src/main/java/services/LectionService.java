@@ -8,10 +8,7 @@ import repository.LectionRepository;
 import validators.LectionValidator;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class LectionService {
     private final LectionRepository lectionRepository = LectionRepository.getInstance();
@@ -55,5 +52,13 @@ public class LectionService {
         }
 
         return groupedHomeWorks;
+    }
+
+    public void sortLectionsByDateASC() {
+        lectionRepository.getLections().sort(Comparator.comparing(Lection::getCreationDate));
+    }
+
+    public void sortLectionsByDateDESC() {
+        lectionRepository.getLections().sort(Comparator.comparing(Lection::getCreationDate).reversed());
     }
 }

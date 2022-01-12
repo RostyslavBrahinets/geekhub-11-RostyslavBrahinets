@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class Lection implements Comparable<Lection> {
+public class Lection {
     private final String name;
     private final String describe;
     private final List<Resource> resources;
@@ -74,13 +74,5 @@ public class Lection implements Comparable<Lection> {
             + ", homeWorks: " + homeWorks
             + ", creationDate: " + creationDate
             + '}';
-    }
-
-    @Override
-    public int compareTo(Lection lection) {
-        if (getCreationDate() == null || lection.getCreationDate() == null) {
-            return 0;
-        }
-        return getCreationDate().compareTo(lection.getCreationDate());
     }
 }

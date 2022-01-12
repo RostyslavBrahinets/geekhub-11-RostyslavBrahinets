@@ -36,7 +36,15 @@ public class LectionsMenu extends Menu {
         );
 
         switch (getCommand()) {
-            case "1" -> showLections();
+            case "1" -> {
+                System.out.println("\nShow Menu\n1 - Sorted ASC\n2 - Sorted DESC");
+                switch (getCommand()) {
+                    case "1" -> lectionService.sortLectionsByDateASC();
+                    case "2" -> lectionService.sortLectionsByDateDESC();
+                    default -> throw new NotFoundException("Command not found");
+                }
+                showLections();
+            }
             case "2" -> addLection();
             case "3" -> deleteLection();
             case "4" -> showLection();
