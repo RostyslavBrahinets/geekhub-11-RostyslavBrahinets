@@ -55,10 +55,10 @@ public class LectionService {
     }
 
     public void sortLectionsByDateASC() {
-        lectionRepository.getLections().sort(Comparator.comparing(Lection::getCreationDate));
+        lectionRepository.sortLectionsByDateASC();
     }
 
     public void sortLectionsByDateDESC() {
-        lectionRepository.getLections().sort(Comparator.comparing(Lection::getCreationDate).reversed());
+        lectionRepository.sortLectionsByDateDESC();
     }
 }
