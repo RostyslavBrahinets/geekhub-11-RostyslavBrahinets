@@ -3,13 +3,12 @@ package repository;
 import models.Lection;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 public class LectionRepository {
     private static LectionRepository instance;
-    private List<Lection> lections;
+    private final List<Lection> lections;
 
     public LectionRepository() {
         lections = new ArrayList<>();
@@ -29,18 +28,6 @@ public class LectionRepository {
 
     public Optional<Lection> getLection(int id) {
         return Optional.ofNullable(lections.get(id));
-    }
-
-    public void sortLectionsByDateASC() {
-        lections = lections.stream()
-            .sorted(Comparator.comparing(Lection::getCreationDate))
-            .toList();
-    }
-
-    public void sortLectionsByDateDESC() {
-        lections = lections.stream()
-            .sorted(Comparator.comparing(Lection::getCreationDate).reversed())
-            .toList();
     }
 
     public static LectionRepository getInstance() {
