@@ -8,6 +8,7 @@ import repository.LectionRepository;
 import validators.LectionValidator;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,21 +40,35 @@ public class LectionService {
 
     public Map<String, List<Resource>> getResourcesGroupedByLecture() {
         return lectionRepository.getLections()
-            .stream()
-            .collect(Collectors.toMap(Lection::getName, Lection::getResources));
+                .stream()
+                .collect(Collectors.toMap(Lection::getName, Lection::getResources));
     }
 
     public Map<String, List<HomeWork>> getHomeWorksGroupedByLecture() {
         return lectionRepository.getLections()
-            .stream()
-            .collect(Collectors.toMap(Lection::getName, Lection::getHomeWorks));
+                .stream()
+                .collect(Collectors.toMap(Lection::getName, Lection::getHomeWorks));
     }
 
-    public void sortLectionsByDateASC() {
-        lectionRepository.sortLectionsByDateASC();
+    public List<Lection> getLectionsSortedByDateASC() {
+        List<Lection> lections = lectionRepository.getLections();
+        List<Lection> sortedLections;
+
+        sortedLections = lections.stream()
+                .sorted(Comparator.comparing(Lection::getCreationDate))
+                .toList();
+
+        return sortedLections;
     }
 
-    public void sortLectionsByDateDESC() {
-        lectionRepository.sortLectionsByDateDESC();
+    public List<Lection> getLectionsSortedByDateDESC() {
+        List<Lection> lections = lectionRepository.getLections();
+        List<Lection> sortedLections;
+
+        sortedLections = lections.stream()
+                .sorted(Comparator.comparing(Lection::getCreationDate).reversed())
+                .toList();
+
+        return sortedLections;
     }
 }

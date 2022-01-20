@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 public class LectionsMenu extends Menu {
     private final LectionService lectionService = new LectionService();
+    private final PersonService personService = new PersonService();
 
     @Override
     public void runMenu() {
@@ -37,13 +38,13 @@ public class LectionsMenu extends Menu {
 
         switch (getCommand()) {
             case "1" -> {
-                System.out.println("\nShow Menu\n1 - Sorted ASC\n2 - Sorted DESC");
+                System.out.println("\nShow Menu\n1 - Without sorting\n2 - Sorted ASC\n3 - Sorted DESC");
                 switch (getCommand()) {
-                    case "1" -> lectionService.sortLectionsByDateASC();
-                    case "2" -> lectionService.sortLectionsByDateDESC();
+                    case "1" -> showLections(lectionService.getLections());
+                    case "2" -> showLections(lectionService.getLectionsSortedByDateASC());
+                    case "3" -> showLections(lectionService.getLectionsSortedByDateDESC());
                     default -> throw new NotFoundException("Command not found");
                 }
-                showLections();
             }
             case "2" -> addLection();
             case "3" -> deleteLection();
@@ -61,8 +62,7 @@ public class LectionsMenu extends Menu {
         return scanner.nextLine();
     }
 
-    private void showLections() {
-        List<Lection> lections = lectionService.getLections();
+    private void showLections(List<Lection> lections) {
         for (Lection lection : lections) {
             System.out.printf(
                 "%s: %s; %s; %s %s; %s%n",
@@ -136,7 +136,7 @@ public class LectionsMenu extends Menu {
             System.out.printf(
                 "%n%s: %s%n",
                 lection.getName(),
-                lectionService.getResourcesGroupedByLecture().get(lection)
+                lectionService.getResourcesGroupedByLecture().get(lection.getName())
             );
         }
     }
@@ -147,7 +147,7 @@ public class LectionsMenu extends Menu {
             System.out.printf(
                 "%n%s: %s%n",
                 lection.getName(),
-                lectionService.getHomeWorksGroupedByLecture().get(lection)
+                lectionService.getHomeWorksGroupedByLecture().get(lection.getName())
             );
         }
     }
@@ -155,6 +155,6 @@ public class LectionsMenu extends Menu {
     private Optional<Person> getLecturer() {
         PeopleMenu peopleMenu = new PeopleMenu();
         peopleMenu.addPerson();
-        return new PersonService().getPerson(0);
+        return personService.getPerson(0);
     }
 }
