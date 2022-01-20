@@ -1,0 +1,88 @@
+course [Name, Lections(1), Students(1)]
+
+Lection [Name, Description, Date, Resources(0), Lecturer, HomeWork(0)]
+
+Persone [FirstName, LastName, Contacts(0), Email, Role]
+
+Resource [Name, Type, Data]
+
+HomeWork [Task, DeadLine]
+
+
+
+**************************************************
+
+addCourse()
+getName()
+getLections() -> addLection()
+getStudents() -> addPersone()
+
+addLection()
+getName()
+getDescription()
+getDate() -> now
+getResources() -> addResource()
+getLecturer() -> addPersone()
+getHomeWorks() -> addHomeWork()
+
+addPersone()
+getFirstName()
+getLastName()
+getContacts()
+getEmail()
+getRole()
+
+addResource()
+getName()
+getType()
+getData()
+
+addHomeWork()
+getTask()
+getDeadLine()
+
+
+
+**************************************************
+
+MainMenu:
+1 - Courses
+2 - Lections
+3 - People
+4 - Resources
+5 - HomeWork
+
+CourcsesMenu:
+1 - showCourcses
+2 - addCourse
+3 - deleteCourse
+4 - showCourse
+
+LectionsMenu:
+1 - showLections
+2 - addLection
+3 - deleteLection
+4 - showLection
+
+PeopleMenu
+1 - showPeople
+2 - addPersone
+3 - deletePersone
+4 - showPersone
+
+ResourcesMenu:
+1 - showResources
+2 - addResource
+3 - deleteResource
+4 - showResource
+
+HomeWorkMenu:
+1 - showHomeWorks
+2 - addHomeWork
+3 - deleteHomeWork
+4 - showHomeWork
+
+
+
+**************************************************
+
