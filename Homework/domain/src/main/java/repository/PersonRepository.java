@@ -8,10 +8,9 @@ import java.util.Optional;
 
 public class PersonRepository {
     private static PersonRepository instance;
-    private final List<Person> people;
+    private final List<Person> people = new ArrayList<>();
 
-    public PersonRepository() {
-        this.people = new ArrayList<>();
+    private PersonRepository() {
     }
 
     public List<Person> getPeople() {

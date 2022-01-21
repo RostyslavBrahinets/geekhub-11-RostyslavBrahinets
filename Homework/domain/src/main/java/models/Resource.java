@@ -2,29 +2,11 @@ package models;
 
 import java.util.Objects;
 
-public class Resource {
-    private final String name;
-    private final ResourceType type;
-    private final String data;
-
-    public Resource(String name, ResourceType type, String data) {
-        this.name = name;
-        this.type = type;
-        this.data = data;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ResourceType getType() {
-        return type;
-    }
-
-    public String getData() {
-        return data;
-    }
-
+public record Resource(
+    String name,
+    ResourceType type,
+    String data
+) {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

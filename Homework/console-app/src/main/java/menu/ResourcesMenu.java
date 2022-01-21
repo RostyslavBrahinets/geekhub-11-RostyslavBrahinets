@@ -41,9 +41,9 @@ public class ResourcesMenu extends Menu {
         for (Resource resource : resources) {
             System.out.printf(
                 "%s: %s, %s%n",
-                resource.getName(),
-                resource.getType(),
-                resource.getData()
+                resource.name(),
+                resource.type(),
+                resource.data()
             );
         }
 
@@ -80,9 +80,9 @@ public class ResourcesMenu extends Menu {
             Optional<Resource> resource = resourceService.getResource(getId());
             resource.ifPresent(value -> System.out.printf(
                 "%s: %s, %s%n",
-                value.getName(),
-                value.getType(),
-                value.getData()
+                value.name(),
+                value.type(),
+                value.data()
             ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);

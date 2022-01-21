@@ -41,11 +41,11 @@ public class PeopleMenu extends Menu {
         for (Person person : people) {
             System.out.printf(
                 "%s %s, %s, %s, %s%n",
-                person.getFirstName(),
-                person.getLastName(),
-                person.getContacts(),
-                person.getGitHubNickname(),
-                person.getRole()
+                person.firstName(),
+                person.lastName(),
+                person.contacts(),
+                person.gitHubNickname(),
+                person.role()
             );
         }
     }
@@ -84,11 +84,11 @@ public class PeopleMenu extends Menu {
             Optional<Person> person = personService.getPerson(getId());
             person.ifPresent(value -> System.out.printf(
                 "%s %s, %s, %s, %s%n",
-                value.getFirstName(),
-                value.getLastName(),
-                value.getContacts(),
-                value.getGitHubNickname(),
-                value.getRole()
+                value.firstName(),
+                value.lastName(),
+                value.contacts(),
+                value.gitHubNickname(),
+                value.role()
             ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);

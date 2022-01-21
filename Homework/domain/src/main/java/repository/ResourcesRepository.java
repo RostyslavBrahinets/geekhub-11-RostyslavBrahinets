@@ -8,10 +8,9 @@ import java.util.Optional;
 
 public class ResourcesRepository {
     private static ResourcesRepository instance;
-    private final List<Resource> resources;
+    private final List<Resource> resources = new ArrayList<>();
 
-    public ResourcesRepository() {
-        resources = new ArrayList<>();
+    private ResourcesRepository() {
     }
 
     public List<Resource> getResources() {

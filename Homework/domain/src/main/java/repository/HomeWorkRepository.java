@@ -8,10 +8,9 @@ import java.util.Optional;
 
 public class HomeWorkRepository {
     private static HomeWorkRepository instance;
-    private final List<HomeWork> homeWorks;
+    private final List<HomeWork> homeWorks = new ArrayList<>();
 
-    public HomeWorkRepository() {
-        this.homeWorks = new ArrayList<>();
+    private HomeWorkRepository() {
     }
 
     public List<HomeWork> getHomeWorks() {

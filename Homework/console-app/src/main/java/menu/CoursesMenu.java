@@ -44,9 +44,9 @@ public class CoursesMenu extends Menu {
         for (Course course : courses) {
             System.out.printf(
                 "%s: %s, %s%n",
-                course.getName(),
-                course.getLections(),
-                course.getStudents()
+                course.name(),
+                course.lections(),
+                course.students()
             );
         }
     }
@@ -85,9 +85,9 @@ public class CoursesMenu extends Menu {
             Optional<Course> course = courseService.getCourse(getId());
             course.ifPresent(value -> System.out.printf(
                 "%s: %s, %s%n",
-                value.getName(),
-                value.getLections(),
-                value.getStudents()
+                value.name(),
+                value.lections(),
+                value.students()
             ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);

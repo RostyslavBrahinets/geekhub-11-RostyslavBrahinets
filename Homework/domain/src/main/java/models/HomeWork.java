@@ -4,23 +4,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class HomeWork {
-    private final String task;
-    private final LocalDateTime deadLine;
-
-    public HomeWork(String task, LocalDateTime deadLine) {
-        this.task = task;
-        this.deadLine = deadLine;
-    }
-
-    public String getTask() {
-        return task;
-    }
-
-    public LocalDateTime getDeadLine() {
-        return deadLine;
-    }
-
+public record HomeWork(
+    String task,
+    LocalDateTime deadLine
+) {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

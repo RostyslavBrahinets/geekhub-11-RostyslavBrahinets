@@ -40,8 +40,8 @@ public class HomeWorkMenu extends Menu {
         for (HomeWork homeWork : homeWorks) {
             System.out.printf(
                 "%s: %s%n",
-                homeWork.getTask(),
-                homeWork.getDeadLine()
+                homeWork.task(),
+                homeWork.deadLine()
             );
         }
     }
@@ -73,8 +73,8 @@ public class HomeWorkMenu extends Menu {
             Optional<HomeWork> homeWork = homeWorkService.getHomeWork(getId());
             homeWork.ifPresent(work -> System.out.printf(
                 "%s: %s%n",
-                work.getTask(),
-                work.getDeadLine()
+                work.task(),
+                work.deadLine()
             ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);

@@ -66,12 +66,12 @@ public class LectionsMenu extends Menu {
         for (Lection lection : lections) {
             System.out.printf(
                 "%s: %s; %s; %s %s; %s%n",
-                lection.getName(),
-                lection.getDescribe(),
-                lection.getResources(),
-                lection.getLecturer().getFirstName(),
-                lection.getLecturer().getLastName(),
-                lection.getHomeWorks()
+                lection.name(),
+                lection.describe(),
+                lection.resources(),
+                lection.lecturer().firstName(),
+                lection.lecturer().lastName(),
+                lection.homeWorks()
             );
         }
     }
@@ -118,12 +118,12 @@ public class LectionsMenu extends Menu {
             Optional<Lection> lection = lectionService.getLection(getId());
             lection.ifPresent(value -> System.out.printf(
                 "%s: %s; %s; %s %s; %s%n",
-                value.getName(),
-                value.getDescribe(),
-                value.getResources(),
-                value.getLecturer().getFirstName(),
-                value.getLecturer().getLastName(),
-                value.getHomeWorks()
+                value.name(),
+                value.describe(),
+                value.resources(),
+                value.lecturer().firstName(),
+                value.lecturer().lastName(),
+                value.homeWorks()
             ));
         } catch (NotFoundException e) {
             Logger.error(getClass().getName(), e.getMessage(), e);
@@ -135,8 +135,8 @@ public class LectionsMenu extends Menu {
         for (Lection lection : lections) {
             System.out.printf(
                 "%n%s: %s%n",
-                lection.getName(),
-                lectionService.getResourcesGroupedByLecture().get(lection.getName())
+                lection.name(),
+                lectionService.getResourcesGroupedByLecture().get(lection.name())
             );
         }
     }
@@ -146,8 +146,8 @@ public class LectionsMenu extends Menu {
         for (Lection lection : lections) {
             System.out.printf(
                 "%n%s: %s%n",
-                lection.getName(),
-                lectionService.getHomeWorksGroupedByLecture().get(lection.getName())
+                lection.name(),
+                lectionService.getHomeWorksGroupedByLecture().get(lection.name())
             );
         }
     }
