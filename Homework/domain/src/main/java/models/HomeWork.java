@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -7,7 +8,9 @@ import java.util.Objects;
 public record HomeWork(
     String task,
     LocalDateTime deadLine
-) {
+) implements Serializable {
+    private static final int serialVersionUID = 2;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

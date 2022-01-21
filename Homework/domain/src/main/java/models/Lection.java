@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,9 @@ public record Lection(
     Person lecturer,
     List<HomeWork> homeWorks,
     LocalDate creationDate
-) {
+) implements Serializable {
+    private static final int serialVersionUID = 3;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

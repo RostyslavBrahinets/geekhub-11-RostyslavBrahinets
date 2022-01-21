@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +10,9 @@ public record Person(
     List<String> contacts,
     String gitHubNickname,
     Role role
-) {
+) implements Serializable {
+    private static final int serialVersionUID = 4;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

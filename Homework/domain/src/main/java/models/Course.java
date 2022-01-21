@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,7 +8,9 @@ public record Course(
     String name,
     List<Lection> lections,
     List<Person> students
-) {
+) implements Serializable {
+    private static final int serialVersionUID = 1;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
