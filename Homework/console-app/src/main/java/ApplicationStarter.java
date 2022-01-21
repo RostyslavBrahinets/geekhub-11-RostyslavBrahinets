@@ -4,6 +4,8 @@ import menu.MainMenu;
 
 public class ApplicationStarter {
     public static void main(String[] args) {
+        Logger.showLogsFromFile();
+
         while (true) {
             try {
                 MainMenu mainMenu = new MainMenu();
