@@ -5,62 +5,60 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Logger {
-    private static final List<String> logs = new ArrayList<>();
+    private static final List<Log> logs = new ArrayList<>();
     private static LocalDateTime localDateTime;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:ms");
 
     private Logger() {
     }
 
     public static void info(String className, String message) {
         localDateTime = LocalDateTime.now();
-        String log = "\n[" + LogType.INFO + "] " + className + ": " + message + "\n"
-            + localDateTime.format(formatter) + "\n";
+        Log log = new Log(LogType.INFO, className, message, localDateTime);
+        String logString = log.toString();
         logs.add(log);
-        writeLogToFile(log);
-        System.out.println(log);
+        writeLogToFile(logString);
+        System.out.println(logString);
     }
 
     public static void warning(String className, String message) {
         localDateTime = LocalDateTime.now();
-        String log = "\n[" + LogType.WARNING + "] " + className + ": " + message + "\n"
-            + localDateTime.format(formatter) + "\n";
+        Log log = new Log(LogType.WARNING, className, message, localDateTime);
+        String logString = log.toString();
         logs.add(log);
-        writeLogToFile(log);
-        System.out.println(log);
+        writeLogToFile(logString);
+        System.out.println(logString);
     }
 
     public static void error(String className, String message) {
         localDateTime = LocalDateTime.now();
-        String log = "\n[" + LogType.ERROR + "] " + className + ": " + message + "\n"
-            + localDateTime.format(formatter) + "\n";
+        Log log = new Log(LogType.ERROR, className, message, localDateTime);
+        String logString = log.toString();
         logs.add(log);
-        writeLogToFile(log);
-        System.out.println(log);
+        writeLogToFile(logString);
+        System.out.println(logString);
     }
 
     public static void error(String className, String message, Exception e) {
         localDateTime = LocalDateTime.now();
-        String log = "\n[" + LogType.ERROR + "] " + className + ": " + message + "\n" + localDateTime.format(formatter)
-            + "\n" + e.getStackTrace()[0] + "\n";
+        Log log = new Log(LogType.ERROR, className, message, localDateTime, e);
+        String logString = log.toString();
         logs.add(log);
-        writeLogToFile(log);
-        System.out.println(log);
+        writeLogToFile(logString);
+        System.out.println(logString);
     }
 
     public static void showAllLogs() {
-        for (String log : logs) {
+        for (Log log : logs) {
             System.out.println(log);
         }
     }
 
     public static void showLogsFromFile() {
-        File file = new File("Homework/domain/src/main/resources/log.txt");
+        File file = new File("Homework/domain/src/main/resources/logs.log");
         try (FileInputStream in = new FileInputStream(file)) {
             int readBytes;
             while ((readBytes = in.read()) != -1) {
@@ -72,7 +70,7 @@ public class Logger {
     }
 
     private static void writeLogToFile(String log) {
-        File file = new File("Homework/domain/src/main/resources/log.txt");
+        File file = new File("Homework/domain/src/main/resources/logs.log");
         try (FileOutputStream out = new FileOutputStream(file, true)) {
             out.write(log.getBytes());
         } catch (IOException e) {
