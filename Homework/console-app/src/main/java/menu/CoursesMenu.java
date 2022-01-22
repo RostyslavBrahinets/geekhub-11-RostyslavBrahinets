@@ -2,7 +2,6 @@ package menu;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import logger.Logger;
 import models.Course;
 import models.Lection;
 import models.Person;
@@ -15,6 +14,10 @@ import java.util.Optional;
 
 public class CoursesMenu extends Menu {
     private final CourseService courseService = new CourseService();
+
+    public CoursesMenu() {
+        super();
+    }
 
     @Override
     public void runMenu() {
@@ -68,7 +71,7 @@ public class CoursesMenu extends Menu {
             }
         } catch (
             ValidationException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -76,7 +79,7 @@ public class CoursesMenu extends Menu {
         try {
             courseService.deleteCourse(getId());
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -90,7 +93,7 @@ public class CoursesMenu extends Menu {
                 value.students()
             ));
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 

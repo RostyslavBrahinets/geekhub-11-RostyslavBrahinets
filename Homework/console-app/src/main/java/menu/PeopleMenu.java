@@ -3,7 +3,6 @@ package menu;
 import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import logger.Logger;
 import models.Person;
 import services.PersonService;
 
@@ -12,6 +11,10 @@ import java.util.Optional;
 
 public class PeopleMenu extends Menu {
     private final PersonService personService = new PersonService();
+
+    public PeopleMenu() {
+        super();
+    }
 
     @Override
     public void runMenu() {
@@ -67,7 +70,7 @@ public class PeopleMenu extends Menu {
                 personService.addPerson(firstName, lastName, contacts, nickname, role);
             }
         } catch (InvalidArgumentException | ValidationException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -75,7 +78,7 @@ public class PeopleMenu extends Menu {
         try {
             personService.deletePerson(getId());
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -91,7 +94,7 @@ public class PeopleMenu extends Menu {
                 value.role()
             ));
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 }

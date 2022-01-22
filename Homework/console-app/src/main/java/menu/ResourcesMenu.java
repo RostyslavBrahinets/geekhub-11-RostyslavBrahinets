@@ -3,7 +3,6 @@ package menu;
 import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import logger.Logger;
 import models.Resource;
 import services.ResourceService;
 
@@ -12,6 +11,10 @@ import java.util.Optional;
 
 public class ResourcesMenu extends Menu {
     private final ResourceService resourceService = new ResourceService();
+
+    public ResourcesMenu() {
+        super();
+    }
 
     @Override
     public void runMenu() {
@@ -63,7 +66,7 @@ public class ResourcesMenu extends Menu {
                 resourceService.addResource(name, type, data);
             }
         } catch (InvalidArgumentException | ValidationException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -71,7 +74,7 @@ public class ResourcesMenu extends Menu {
         try {
             resourceService.deleteResource(getId());
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -85,7 +88,7 @@ public class ResourcesMenu extends Menu {
                 value.data()
             ));
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 }

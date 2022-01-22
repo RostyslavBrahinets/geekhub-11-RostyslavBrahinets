@@ -1,15 +1,34 @@
 package menu;
 
 import logger.Logger;
+import logger.LoggerWithStorageInFile;
+import logger.LoggerWithStorageInMemory;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public abstract class Menu {
     private static final Scanner scanner = new Scanner(System.in);
+    protected Logger logger;
+
+    protected Menu() {
+        String applicationProperties = "Homework/domain/src/main/resources/application.properties";
+        Properties properties = new Properties();
+        try (FileInputStream in = new FileInputStream(applicationProperties)) {
+            properties.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String loggerStorageType = properties.getProperty("logger.storage.type");
+        if (loggerStorageType.equals("file")) {
+            logger = new LoggerWithStorageInFile();
+        } else {
+            logger = new LoggerWithStorageInMemory();
+        }
+    }
 
     protected abstract void runMenu();
 
@@ -26,7 +45,7 @@ public abstract class Menu {
             count = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            Logger.error(getClass().getName(), "Count is invalid");
+            logger.error(getClass().getName(), "Count is invalid");
             count = 0;
             scanner.nextLine();
         }
@@ -70,7 +89,7 @@ public abstract class Menu {
             return LocalDateTime.of(year, month, day, hour, minute);
         } catch (InputMismatchException e) {
             scanner.nextLine();
-            Logger.error(getClass().getName(), "Date is invalid");
+            logger.error(getClass().getName(), "Date is invalid");
         }
 
         return LocalDateTime.now();

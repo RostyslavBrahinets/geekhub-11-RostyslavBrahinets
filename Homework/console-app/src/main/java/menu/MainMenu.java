@@ -1,11 +1,14 @@
 package menu;
 
 import exceptions.NotFoundException;
-import logger.Logger;
 
 import java.util.Scanner;
 
 public class MainMenu extends Menu {
+    public MainMenu() {
+        super();
+    }
+
     @Override
     public void runMenu() {
         System.out.println(
@@ -44,7 +47,23 @@ public class MainMenu extends Menu {
                 HomeWorkMenu homeWorkMenu = new HomeWorkMenu();
                 homeWorkMenu.runMenu();
             }
-            case "6" -> Logger.showAllLogs();
+            case "6" -> {
+                System.out.println(
+                    """
+                                                
+                        Logger Menu
+                        1 - Show All Logs
+                        2 - Show Sorted Logs By Date ASC
+                        3 - Show Sorted Logs By Date DESC"""
+                );
+
+                switch (getCommand()) {
+                    case "1" -> logger.showLogs();
+//                    case "2" -> Logger.showSortedLogsByDateASC();
+//                    case "3" -> Logger.showSortedLogsByDateDESC();
+                    default -> throw new NotFoundException("Command not found");
+                }
+            }
             case "7" -> {
                 Menu.closeScanner();
                 System.exit(0);

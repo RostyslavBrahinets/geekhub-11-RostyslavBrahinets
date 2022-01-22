@@ -2,7 +2,6 @@ package menu;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import logger.Logger;
 import models.HomeWork;
 import models.Lection;
 import models.Person;
@@ -19,6 +18,10 @@ import java.util.Scanner;
 public class LectionsMenu extends Menu {
     private final LectionService lectionService = new LectionService();
     private final PersonService personService = new PersonService();
+
+    public LectionsMenu() {
+        super();
+    }
 
     @Override
     public void runMenu() {
@@ -101,7 +104,7 @@ public class LectionsMenu extends Menu {
                 lecturer.ifPresent(person -> lectionService.addLection(name, describe, resources, person, homeWorks));
             }
         } catch (ValidationException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -109,7 +112,7 @@ public class LectionsMenu extends Menu {
         try {
             lectionService.deleteLection(getId());
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -126,7 +129,7 @@ public class LectionsMenu extends Menu {
                 value.homeWorks()
             ));
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoggerWithStorageInMemory implements Logger {
-    private final List<Log> logs = new ArrayList<>();
+    private static final List<Log> logs = new ArrayList<>();
     private LocalDateTime localDateTime;
 
     @Override

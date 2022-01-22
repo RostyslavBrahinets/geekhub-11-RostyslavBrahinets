@@ -54,7 +54,7 @@ public class LoggerWithStorageInFile implements Logger {
         }
     }
 
-    private static void writeLogToFile(String log) {
+    private void writeLogToFile(String log) {
         File file = new File("Homework/domain/src/main/resources/logs.log");
         try (FileOutputStream out = new FileOutputStream(file, true)) {
             out.write(log.getBytes());

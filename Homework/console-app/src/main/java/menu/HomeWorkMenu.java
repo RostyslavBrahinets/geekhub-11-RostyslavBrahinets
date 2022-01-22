@@ -2,7 +2,6 @@ package menu;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import logger.Logger;
 import models.HomeWork;
 import services.HomeWorkService;
 
@@ -11,6 +10,10 @@ import java.util.Optional;
 
 public class HomeWorkMenu extends Menu {
     private final HomeWorkService homeWorkService = new HomeWorkService();
+
+    public HomeWorkMenu() {
+        super();
+    }
 
     @Override
     public void runMenu() {
@@ -56,7 +59,7 @@ public class HomeWorkMenu extends Menu {
                 homeWorkService.addHomeWork(task, getDeadLine());
             }
         } catch (ValidationException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -64,7 +67,7 @@ public class HomeWorkMenu extends Menu {
         try {
             homeWorkService.deleteHomeWork(getId());
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -77,7 +80,7 @@ public class HomeWorkMenu extends Menu {
                 work.deadLine()
             ));
         } catch (NotFoundException e) {
-            Logger.error(getClass().getName(), e.getMessage(), e);
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 }
