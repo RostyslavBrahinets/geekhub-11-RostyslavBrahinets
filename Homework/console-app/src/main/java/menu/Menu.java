@@ -12,22 +12,10 @@ import java.util.*;
 public abstract class Menu {
     private static final Scanner scanner = new Scanner(System.in);
     protected Logger logger;
+    protected static final String COMMAND_NOT_FOUND = "Command not found";
 
     protected Menu() {
-        String applicationProperties = "Homework/domain/src/main/resources/application.properties";
-        Properties properties = new Properties();
-        try (FileInputStream in = new FileInputStream(applicationProperties)) {
-            properties.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String loggerStorageType = properties.getProperty("logger.storage.type");
-        if (loggerStorageType.equals("file")) {
-            logger = new LoggerWithStorageInFile();
-        } else {
-            logger = new LoggerWithStorageInMemory();
-        }
+        includeLogger();
     }
 
     protected abstract void runMenu();
@@ -112,5 +100,22 @@ public abstract class Menu {
 
     protected static void closeScanner() {
         scanner.close();
+    }
+
+    private void includeLogger() {
+        String applicationProperties = "Homework/domain/src/main/resources/application.properties";
+        Properties properties = new Properties();
+        try (FileInputStream in = new FileInputStream(applicationProperties)) {
+            properties.load(in);
+        } catch (IOException e) {
+            System.out.println(e.getMessage() + "\n" + e.getCause());
+        }
+
+        String loggerStorageType = properties.getProperty("logger.storage.type");
+        if (loggerStorageType.equals("file")) {
+            logger = new LoggerWithStorageInFile();
+        } else {
+            logger = new LoggerWithStorageInMemory();
+        }
     }
 }

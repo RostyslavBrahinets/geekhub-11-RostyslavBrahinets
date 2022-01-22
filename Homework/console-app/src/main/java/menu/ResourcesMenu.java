@@ -35,7 +35,7 @@ public class ResourcesMenu extends Menu {
             case "2" -> addResource();
             case "3" -> deleteResource();
             case "4" -> showResource();
-            default -> throw new NotFoundException("Command not found");
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
 

@@ -35,7 +35,7 @@ public class PeopleMenu extends Menu {
             case "2" -> addPerson();
             case "3" -> deletePerson();
             case "4" -> showPerson();
-            default -> throw new NotFoundException("Command not found");
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
 

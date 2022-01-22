@@ -32,7 +32,7 @@ public class ApplicationStarter {
         try (FileInputStream in = new FileInputStream(applicationProperties)) {
             properties.load(in);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage() + "\n" + e.getCause());
         }
 
         String loggerStorageType = properties.getProperty("logger.storage.type");

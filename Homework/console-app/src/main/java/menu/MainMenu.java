@@ -12,6 +12,17 @@ public class MainMenu extends Menu {
 
     @Override
     public void runMenu() {
+        showMainMenu();
+    }
+
+    @Override
+    protected String getCommand() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.printf("%nInput command (1-7): ");
+        return scanner.nextLine();
+    }
+
+    private void showMainMenu() {
         System.out.println(
             """
 
@@ -48,66 +59,63 @@ public class MainMenu extends Menu {
                 HomeWorkMenu homeWorkMenu = new HomeWorkMenu();
                 homeWorkMenu.runMenu();
             }
-            case "6" -> {
-                System.out.println(
-                    """
-                                            
-                        Logger Menu
-                        1 - Show Logs With Sorting
-                        2 - Show Logs By Status""");
-
-                switch (getCommand()) {
-                    case "1" -> {
-                        System.out.println(
-                            """
-                                                        
-                                Logger Sort Menu
-                                1 - Show Logs Without Sorting
-                                2 - Show Sorted Logs By Date ASC
-                                3 - Show Sorted Logs By Date DESC"""
-                        );
-
-                        switch (getCommand()) {
-                            case "1" -> logger.showLogs();
-                            case "2" -> logger.showSortedLogsByDateASC();
-                            case "3" -> logger.showSortedLogsByDateDESC();
-                            default -> throw new NotFoundException("Command not found");
-                        }
-                    }
-                    case "2" -> {
-                        System.out.println(
-                            """
-                                                        
-                                Logger Status Menu
-                                1 - Info
-                                2 - Warning
-                                3 - Error"""
-                        );
-
-                        switch (getCommand()) {
-                            case "1" -> logger.showLogsByStatus(LogType.INFO);
-                            case "2" -> logger.showLogsByStatus(LogType.WARNING);
-                            case "3" -> logger.showLogsByStatus(LogType.ERROR);
-                            default -> throw new NotFoundException("Command not found");
-                        }
-                    }
-                    default -> throw new NotFoundException("Command not found");
-                }
-
-
-            }
+            case "6" -> showLoggerMenu();
             case "7" -> {
                 Menu.closeScanner();
                 System.exit(0);
             }
-            default -> throw new NotFoundException("Command not found");
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
 
-    @Override
-    protected String getCommand() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.printf("%nInput command (1-7): ");
-        return scanner.nextLine();
+    private void showLoggerMenu() {
+        System.out.println(
+            """
+                                    
+                Logger Menu
+                1 - Show Logs With Sorting
+                2 - Show Logs By Status""");
+
+        switch (getCommand()) {
+            case "1" -> showLoggerSortMenu();
+            case "2" -> showLoggerStatusMenu();
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
+        }
+    }
+
+    private void showLoggerSortMenu() {
+        System.out.println(
+            """
+                                        
+                Logger Sort Menu
+                1 - Show Logs Without Sorting
+                2 - Show Sorted Logs By Date ASC
+                3 - Show Sorted Logs By Date DESC"""
+        );
+
+        switch (getCommand()) {
+            case "1" -> logger.showLogs();
+            case "2" -> logger.showSortedLogsByDateASC();
+            case "3" -> logger.showSortedLogsByDateDESC();
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
+        }
+    }
+
+    private void showLoggerStatusMenu() {
+        System.out.println(
+            """
+                                        
+                Logger Status Menu
+                1 - Info
+                2 - Warning
+                3 - Error"""
+        );
+
+        switch (getCommand()) {
+            case "1" -> logger.showLogsByStatus(LogType.INFO);
+            case "2" -> logger.showLogsByStatus(LogType.WARNING);
+            case "3" -> logger.showLogsByStatus(LogType.ERROR);
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
+        }
     }
 }

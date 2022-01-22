@@ -34,7 +34,7 @@ public class HomeWorkMenu extends Menu {
             case "2" -> addHomeWork();
             case "3" -> deleteHomeWork();
             case "4" -> showHomeWork();
-            default -> throw new NotFoundException("Command not found");
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
 

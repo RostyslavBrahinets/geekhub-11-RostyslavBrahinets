@@ -38,7 +38,7 @@ public class CoursesMenu extends Menu {
             case "2" -> addCourse();
             case "3" -> deleteCourse();
             case "4" -> showCourse();
-            default -> throw new NotFoundException("Command not found");
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
 

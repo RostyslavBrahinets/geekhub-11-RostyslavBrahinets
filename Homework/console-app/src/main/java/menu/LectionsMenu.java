@@ -46,7 +46,7 @@ public class LectionsMenu extends Menu {
                     case "1" -> showLections(lectionService.getLections());
                     case "2" -> showLections(lectionService.getLectionsSortedByDateASC());
                     case "3" -> showLections(lectionService.getLectionsSortedByDateDESC());
-                    default -> throw new NotFoundException("Command not found");
+                    default -> throw new NotFoundException(COMMAND_NOT_FOUND);
                 }
             }
             case "2" -> addLection();
@@ -54,7 +54,7 @@ public class LectionsMenu extends Menu {
             case "4" -> showLection();
             case "5" -> showResourcesGroupedByLection();
             case "6" -> showHomeWorksGroupedByLection();
-            default -> throw new NotFoundException("Command not found");
+            default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
 
