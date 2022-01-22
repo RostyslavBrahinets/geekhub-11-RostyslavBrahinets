@@ -52,15 +52,15 @@ public class MainMenu extends Menu {
                     """
                                                 
                         Logger Menu
-                        1 - Show All Logs
+                        1 - Show Logs Without Sorting
                         2 - Show Sorted Logs By Date ASC
                         3 - Show Sorted Logs By Date DESC"""
                 );
 
                 switch (getCommand()) {
                     case "1" -> logger.showLogs();
-//                    case "2" -> Logger.showSortedLogsByDateASC();
-//                    case "3" -> Logger.showSortedLogsByDateDESC();
+                    case "2" -> logger.showSortedLogsByDateASC();
+                    case "3" -> logger.showSortedLogsByDateDESC();
                     default -> throw new NotFoundException("Command not found");
                 }
             }

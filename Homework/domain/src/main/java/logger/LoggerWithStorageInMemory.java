@@ -2,6 +2,7 @@ package logger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class LoggerWithStorageInMemory implements Logger {
@@ -43,5 +44,23 @@ public class LoggerWithStorageInMemory implements Logger {
     @Override
     public void showLogs() {
         logs.forEach(System.out::println);
+    }
+
+    @Override
+    public void showSortedLogsByDateASC() {
+        List<Log> sortedLogs;
+        sortedLogs = logs.stream()
+            .sorted(Comparator.comparing(Log::getLocalDateTime))
+            .toList();
+        sortedLogs.forEach(System.out::println);
+    }
+
+    @Override
+    public void showSortedLogsByDateDESC() {
+        List<Log> sortedLogs;
+        sortedLogs = logs.stream()
+            .sorted(Comparator.comparing(Log::getLocalDateTime).reversed())
+            .toList();
+        sortedLogs.forEach(System.out::println);
     }
 }

@@ -10,4 +10,8 @@ public interface Logger {
     void error(String className, String message, Exception e);
 
     void showLogs();
+
+    void showSortedLogsByDateASC();
+
+    void showSortedLogsByDateDESC();
 }
