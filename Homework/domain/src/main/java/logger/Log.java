@@ -2,6 +2,7 @@ package logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Log {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:ms");
@@ -27,24 +28,25 @@ public class Log {
         this.localDateTime = localDateTime;
     }
 
-    public String getClassName() {
-        return className;
-    }
-
-    public LogType getType() {
-        return type;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }
 
-    public Exception getException() {
-        return exception;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Log log = (Log) o;
+        return type == log.type
+            && Objects.equals(className, log.className)
+            && Objects.equals(message, log.message)
+            && Objects.equals(localDateTime, log.localDateTime)
+            && Objects.equals(exception, log.exception);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, className, message, localDateTime, exception);
     }
 
     @Override
