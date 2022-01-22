@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@4v2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: assemble
 
@@ -42,6 +42,6 @@ jobs:
             distribution: 'temurin'
 
         - name: Test with Gradle
-          uses: gradle/gradle-build-action@4v2
+          uses: gradle/gradle-build-action@v2
           with:
             arguments: testClasses
