@@ -1,6 +1,7 @@
 package menu;
 
 import exceptions.NotFoundException;
+import logger.LogType;
 
 import java.util.Scanner;
 
@@ -50,19 +51,50 @@ public class MainMenu extends Menu {
             case "6" -> {
                 System.out.println(
                     """
-                                                
+                                            
                         Logger Menu
-                        1 - Show Logs Without Sorting
-                        2 - Show Sorted Logs By Date ASC
-                        3 - Show Sorted Logs By Date DESC"""
-                );
+                        1 - Show Logs With Sorting
+                        2 - Show Logs By Status""");
 
                 switch (getCommand()) {
-                    case "1" -> logger.showLogs();
-                    case "2" -> logger.showSortedLogsByDateASC();
-                    case "3" -> logger.showSortedLogsByDateDESC();
+                    case "1" -> {
+                        System.out.println(
+                            """
+                                                        
+                                Logger Sort Menu
+                                1 - Show Logs Without Sorting
+                                2 - Show Sorted Logs By Date ASC
+                                3 - Show Sorted Logs By Date DESC"""
+                        );
+
+                        switch (getCommand()) {
+                            case "1" -> logger.showLogs();
+                            case "2" -> logger.showSortedLogsByDateASC();
+                            case "3" -> logger.showSortedLogsByDateDESC();
+                            default -> throw new NotFoundException("Command not found");
+                        }
+                    }
+                    case "2" -> {
+                        System.out.println(
+                            """
+                                                        
+                                Logger Status Menu
+                                1 - Info
+                                2 - Warning
+                                3 - Error"""
+                        );
+
+                        switch (getCommand()) {
+                            case "1" -> logger.showLogsByStatus(LogType.INFO);
+                            case "2" -> logger.showLogsByStatus(LogType.WARNING);
+                            case "3" -> logger.showLogsByStatus(LogType.ERROR);
+                            default -> throw new NotFoundException("Command not found");
+                        }
+                    }
                     default -> throw new NotFoundException("Command not found");
                 }
+
+
             }
             case "7" -> {
                 Menu.closeScanner();

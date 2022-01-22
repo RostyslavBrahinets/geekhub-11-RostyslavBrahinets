@@ -28,6 +28,10 @@ public class Log {
         this.localDateTime = localDateTime;
     }
 
+    public LogType getType() {
+        return type;
+    }
+
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }

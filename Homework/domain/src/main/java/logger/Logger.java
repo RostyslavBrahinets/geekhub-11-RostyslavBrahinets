@@ -14,4 +14,6 @@ public interface Logger {
     void showSortedLogsByDateASC();
 
     void showSortedLogsByDateDESC();
+
+    void showLogsByStatus(LogType status);
 }

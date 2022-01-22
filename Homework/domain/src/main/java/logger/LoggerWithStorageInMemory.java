@@ -48,19 +48,25 @@ public class LoggerWithStorageInMemory implements Logger {
 
     @Override
     public void showSortedLogsByDateASC() {
-        List<Log> sortedLogs;
-        sortedLogs = logs.stream()
+        logs.stream()
             .sorted(Comparator.comparing(Log::getLocalDateTime))
-            .toList();
-        sortedLogs.forEach(System.out::println);
+            .toList()
+            .forEach(System.out::println);
     }
 
     @Override
     public void showSortedLogsByDateDESC() {
-        List<Log> sortedLogs;
-        sortedLogs = logs.stream()
+        logs.stream()
             .sorted(Comparator.comparing(Log::getLocalDateTime).reversed())
-            .toList();
-        sortedLogs.forEach(System.out::println);
+            .toList()
+            .forEach(System.out::println);
+    }
+
+    @Override
+    public void showLogsByStatus(LogType status) {
+        logs.stream()
+            .filter(log -> log.getType() == status)
+            .toList()
+            .forEach(System.out::println);
     }
 }
