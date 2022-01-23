@@ -24,6 +24,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
+          gradle-version: 7.3
           arguments: assemble
 
 
@@ -44,4 +45,5 @@ jobs:
         - name: Test with Gradle
           uses: gradle/gradle-build-action@v2
           with:
+            gradle-version: 7.3
             arguments: testClasses
