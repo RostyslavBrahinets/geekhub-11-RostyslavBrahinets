@@ -26,6 +26,15 @@ jobs:
         with:
           gradle-version: 7.3
           arguments: assemble
+    
+    
+  checkstyle:
+  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
 
 
   test:
@@ -43,7 +52,7 @@ jobs:
             distribution: 'temurin'
 
         - name: Test with Gradle
-          uses: gradle/gradle-build-action@v2
+          uses: gradle/gradle-verification-action@v2
           with:
             gradle-version: 7.3
-            arguments: testClasses
+            arguments: test
