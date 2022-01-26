@@ -11,7 +11,7 @@ import java.util.Properties;
 public class ApplicationStarter {
     static Logger logger;
 
-    public static void main(String[] args)
+    public static void main(String[] args) {
         includeLogger();
 
         logger.showLogs();
