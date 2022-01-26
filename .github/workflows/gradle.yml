@@ -1,66 +1,73 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
 
 jobs:
-  build:
+    build:
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v2
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v2
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
 
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: 7.3
-          arguments: assemble
-    
-    
-  checkstyle:
-  
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-        
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Checkstyle with Gradle
+            -   name: Build with Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    gradle-version: 7.3
+                    arguments: assemble
 
 
-  test:
+    checkstyle:
 
-      runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout repo
-          uses: actions/checkout@v2
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v2
 
-        - name: Set up JDK 17
-          uses: actions/setup-java@v2
-          with:
-            java-version: '17'
-            distribution: 'temurin'
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v2
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
 
-        - name: Test with Gradle
-          uses: gradle/gradle-build-action@v2
-          with:
-            gradle-version: 7.3
-            arguments: testClasses
+            -   name: Checkstyle for main with Gradle
+                run: ./gradlew checkstyleMain
+                with:
+                    gradle-version: 7.3
+
+            -   name: Checkstyle for test with Gradle
+                run: ./gradlew checkstyleTest
+                with:
+                    gradle-version: 7.3
+
+
+    test:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v2
+
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v2
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
+
+            -   name: Test with Gradle
+                run: ./gradlew test
+                with:
+                    gradle-version: 7.3
