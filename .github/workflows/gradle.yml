@@ -42,6 +42,9 @@ jobs:
                     java-version: '17'
                     distribution: 'temurin'
 
+            -   name: grand execute
+                run: chmod +x gradlew
+
             -   name: Checkstyle for main with Gradle
                 run: ./gradlew checkstyleMain
 
@@ -62,6 +65,9 @@ jobs:
                 with:
                     java-version: '17'
                     distribution: 'temurin'
+
+            -   name: grand execute
+                run: chmod +x gradlew
 
             -   name: Test with Gradle
                 run: ./gradlew test
