@@ -1,12 +1,16 @@
 import exceptions.NotFoundException;
 import logger.Logger;
 import logger.LoggerIncluder;
+import menu.LoggerMenu;
 import menu.MainMenu;
 
 public class ApplicationStarter {
     static Logger logger;
 
     public static void main(String[] args) {
+        LoggerMenu loggerMenu = new LoggerMenu();
+        loggerMenu.runMenu();
+
         logger = LoggerIncluder.getLogger();
         logger.showLogs();
 
