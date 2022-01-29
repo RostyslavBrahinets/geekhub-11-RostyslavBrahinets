@@ -1,21 +1,21 @@
 package menu;
 
 import logger.Logger;
-import logger.LoggerWithStorageInFile;
-import logger.LoggerWithStorageInMemory;
+import logger.LoggerIncluder;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
 
 public abstract class Menu {
     private static final Scanner scanner = new Scanner(System.in);
-    protected Logger logger;
+    protected static Logger logger;
     protected static final String COMMAND_NOT_FOUND = "Command not found";
 
     protected Menu() {
-        includeLogger();
+        logger = LoggerIncluder.getLogger();
     }
 
     protected abstract void runMenu();
@@ -100,22 +100,5 @@ public abstract class Menu {
 
     protected static void closeScanner() {
         scanner.close();
-    }
-
-    private void includeLogger() {
-        String applicationProperties = "Homework/domain/src/main/resources/application.properties";
-        Properties properties = new Properties();
-        try (FileInputStream in = new FileInputStream(applicationProperties)) {
-            properties.load(in);
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + "\n" + e.getCause());
-        }
-
-        String loggerStorageType = properties.getProperty("logger.storage.type");
-        if (loggerStorageType.equals("file")) {
-            logger = new LoggerWithStorageInFile();
-        } else {
-            logger = new LoggerWithStorageInMemory();
-        }
     }
 }
