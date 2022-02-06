@@ -1,7 +1,7 @@
 package menu;
 
 import exceptions.NotFoundException;
-import logger.LoggerIncluder;
+import logger.LoggerStorageFactory;
 
 import java.util.Scanner;
 
@@ -25,9 +25,9 @@ public class LoggerMenu extends Menu {
         );
 
         switch (getCommand()) {
-            case "1" -> LoggerIncluder.setLogger("memory");
-            case "2" -> LoggerIncluder.setLogger("file");
-            case "3" -> LoggerIncluder.setLogger("memory_file");
+            case "1" -> LoggerStorageFactory.setStorage("memory");
+            case "2" -> LoggerStorageFactory.setStorage("file");
+            case "3" -> LoggerStorageFactory.setStorage("memory_file");
             default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }

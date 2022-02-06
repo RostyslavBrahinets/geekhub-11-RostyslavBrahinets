@@ -1,19 +1,45 @@
 package logger;
 
-public interface Logger {
-    void info(String className, String message);
+public class Logger implements LoggerStorageDao {
+    private static final LoggerStorageDao storage = LoggerStorageFactory.getStorage();
 
-    void warning(String className, String message);
+    @Override
+    public void info(String className, String message) {
+        storage.info(className, message);
+    }
 
-    void error(String className, String message);
+    @Override
+    public void warning(String className, String message) {
+        storage.warning(className, message);
+    }
 
-    void error(String className, String message, Exception e);
+    @Override
+    public void error(String className, String message) {
+        storage.error(className, message);
+    }
 
-    void showLogs();
+    @Override
+    public void error(String className, String message, Exception e) {
+        storage.error(className, message, e);
+    }
 
-    void showSortedLogsByDateASC();
+    @Override
+    public void showLogs() {
+        storage.showLogs();
+    }
 
-    void showSortedLogsByDateDESC();
+    @Override
+    public void showSortedLogsByDateASC() {
+        storage.showSortedLogsByDateASC();
+    }
 
-    void showLogsByStatus(LogType status);
+    @Override
+    public void showSortedLogsByDateDESC() {
+        storage.showSortedLogsByDateDESC();
+    }
+
+    @Override
+    public void showLogsByStatus(LogType status) {
+        storage.showLogsByStatus(status);
+    }
 }

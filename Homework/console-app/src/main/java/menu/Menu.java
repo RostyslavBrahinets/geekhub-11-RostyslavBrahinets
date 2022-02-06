@@ -1,7 +1,8 @@
 package menu;
 
 import logger.Logger;
-import logger.LoggerIncluder;
+import logger.LoggerStorageDao;
+import logger.LoggerStorageFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public abstract class Menu {
     protected static final String COMMAND_NOT_FOUND = "Command not found";
 
     protected Menu() {
-        logger = LoggerIncluder.getLogger();
+        logger = new Logger();
     }
 
     protected abstract void runMenu();

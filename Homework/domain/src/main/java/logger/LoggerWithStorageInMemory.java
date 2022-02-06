@@ -5,38 +5,33 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class LoggerWithStorageInMemory implements Logger {
+public class LoggerWithStorageInMemory implements LoggerStorageDao {
     private static final List<Log> logs = new ArrayList<>();
-    private LocalDateTime localDateTime;
 
     @Override
     public void info(String className, String message) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.INFO, className, message, localDateTime);
+        Log log = new Log(LogType.INFO, className, message, LocalDateTime.now());
         logs.add(log);
         System.out.println(log);
     }
 
     @Override
     public void warning(String className, String message) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.WARNING, className, message, localDateTime);
+        Log log = new Log(LogType.WARNING, className, message, LocalDateTime.now());
         logs.add(log);
         System.out.println(log);
     }
 
     @Override
     public void error(String className, String message) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.ERROR, className, message, localDateTime);
+        Log log = new Log(LogType.ERROR, className, message, LocalDateTime.now());
         logs.add(log);
         System.out.println(log);
     }
 
     @Override
     public void error(String className, String message, Exception e) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.ERROR, className, message, localDateTime, e);
+        Log log = new Log(LogType.ERROR, className, message, LocalDateTime.now(), e);
         logs.add(log);
         System.out.println(log);
     }

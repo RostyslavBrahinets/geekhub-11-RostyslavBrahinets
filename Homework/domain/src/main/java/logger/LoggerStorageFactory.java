@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
-public class LoggerIncluder {
+public class LoggerStorageFactory {
     private static final LoggerSettings settings = new LoggerSettings();
 
-    public static Logger getLogger() {
+    public static LoggerStorageDao getStorage() {
         Field loggingType;
 
         try (FileInputStream in = new FileInputStream(settings.getPropertiesPath())) {
@@ -31,7 +31,7 @@ public class LoggerIncluder {
         };
     }
 
-    public static void setLogger(String type) {
+    public static void setStorage(String type) {
         try (
             FileInputStream in = new FileInputStream(settings.getPropertiesPath());
             FileOutputStream out = new FileOutputStream(settings.getPropertiesPath())

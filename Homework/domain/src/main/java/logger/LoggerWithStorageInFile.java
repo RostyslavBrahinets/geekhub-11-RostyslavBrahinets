@@ -7,40 +7,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LoggerWithStorageInFile implements Logger {
-    private LocalDateTime localDateTime;
+public class LoggerWithStorageInFile implements LoggerStorageDao {
     private static final String LOGS_FILE = String.valueOf(
         Paths.get(System.getProperty("user.home")).resolve("/logs.log")
     );
 
     @Override
     public void info(String className, String message) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.INFO, className, message, localDateTime);
+        Log log = new Log(LogType.INFO, className, message, LocalDateTime.now());
         writeLogToFile(log.toString());
         System.out.println(log);
     }
 
     @Override
     public void warning(String className, String message) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.WARNING, className, message, localDateTime);
+        Log log = new Log(LogType.WARNING, className, message, LocalDateTime.now());
         writeLogToFile(log.toString());
         System.out.println(log);
     }
 
     @Override
     public void error(String className, String message) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.ERROR, className, message, localDateTime);
+        Log log = new Log(LogType.ERROR, className, message, LocalDateTime.now());
         writeLogToFile(log.toString());
         System.out.println(log);
     }
 
     @Override
     public void error(String className, String message, Exception e) {
-        localDateTime = LocalDateTime.now();
-        Log log = new Log(LogType.ERROR, className, message, localDateTime, e);
+        Log log = new Log(LogType.ERROR, className, message, LocalDateTime.now(), e);
         writeLogToFile(log.toString());
         System.out.println(log);
     }
@@ -80,7 +75,7 @@ public class LoggerWithStorageInFile implements Logger {
             .forEach(System.out::println);
     }
 
-    private void writeLogToFile(String log) {
+    protected void writeLogToFile(String log) {
         File file = new File(LOGS_FILE);
         try (FileOutputStream out = new FileOutputStream(file, true)) {
             out.write(log.getBytes());

@@ -1,6 +1,7 @@
 import exceptions.NotFoundException;
 import logger.Logger;
-import logger.LoggerIncluder;
+import logger.LoggerStorageDao;
+import logger.LoggerStorageFactory;
 import menu.LoggerMenu;
 import menu.MainMenu;
 
@@ -13,7 +14,7 @@ public class ApplicationStarter {
             try {
                 LoggerMenu loggerMenu = new LoggerMenu();
                 loggerMenu.runMenu();
-                logger = LoggerIncluder.getLogger();
+                logger = new Logger();
                 logger.showLogs();
                 loggerNotSet = false;
             } catch (IllegalArgumentException | NotFoundException e) {
