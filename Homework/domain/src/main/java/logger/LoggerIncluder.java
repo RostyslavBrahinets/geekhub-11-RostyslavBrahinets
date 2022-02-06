@@ -23,13 +23,12 @@ public class LoggerIncluder {
             System.out.println(e.getMessage() + "\n" + e.getCause());
         }
 
-        if (settings.getLoggingType().equals("file")) {
-            return new LoggerWithStorageInFile();
-        } else if (settings.getLoggingType().equals("console")) {
-            return new LoggerWithStorageInMemory();
-        } else {
-            return new LoggerWithStorageInMemoryAndFile();
-        }
+        return switch (settings.getLoggingType()) {
+            case "memory" -> new LoggerWithStorageInMemory();
+            case "file" -> new LoggerWithStorageInFile();
+            case "memory_file" -> new LoggerWithStorageInMemoryAndFile();
+            default -> throw new IllegalArgumentException("Failed to resolve property 'logger.storage.type'");
+        };
     }
 
     public static void setLogger(String type) {

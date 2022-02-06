@@ -8,11 +8,18 @@ public class ApplicationStarter {
     static Logger logger;
 
     public static void main(String[] args) {
-        LoggerMenu loggerMenu = new LoggerMenu();
-        loggerMenu.runMenu();
-
-        logger = LoggerIncluder.getLogger();
-        logger.showLogs();
+        boolean loggerNotSet = true;
+        while (loggerNotSet) {
+            try {
+                LoggerMenu loggerMenu = new LoggerMenu();
+                loggerMenu.runMenu();
+                logger = LoggerIncluder.getLogger();
+                logger.showLogs();
+                loggerNotSet = false;
+            } catch (IllegalArgumentException | NotFoundException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
         while (true) {
             try {

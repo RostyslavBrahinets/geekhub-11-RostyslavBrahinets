@@ -21,13 +21,13 @@ public class LoggerMenu extends Menu {
                 Choose where to store logs:
                 1 - In Memory
                 2 - In File
-                3 - Both"""
+                3 - In Memory And File"""
         );
 
         switch (getCommand()) {
-            case "1" -> LoggerIncluder.setLogger("CONSOLE");
-            case "2" -> LoggerIncluder.setLogger("FILE");
-            case "3" -> LoggerIncluder.setLogger("BOTH");
+            case "1" -> LoggerIncluder.setLogger("memory");
+            case "2" -> LoggerIncluder.setLogger("file");
+            case "3" -> LoggerIncluder.setLogger("memory_file");
             default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
