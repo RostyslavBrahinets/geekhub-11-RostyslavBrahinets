@@ -12,7 +12,7 @@ public class LoggerIncluder {
     public static Logger getLogger() {
         Field loggingType;
 
-        try (FileInputStream in = new FileInputStream(settings.getLogPath())) {
+        try (FileInputStream in = new FileInputStream(settings.getPropertiesPath())) {
             loggingType = settings.getClass().getDeclaredField("loggingType");
             loggingType.setAccessible(true);
 
@@ -33,8 +33,8 @@ public class LoggerIncluder {
 
     public static void setLogger(String type) {
         try (
-            FileInputStream in = new FileInputStream(settings.getLogPath());
-            FileOutputStream out = new FileOutputStream(settings.getLogPath())
+            FileInputStream in = new FileInputStream(settings.getPropertiesPath());
+            FileOutputStream out = new FileOutputStream(settings.getPropertiesPath())
         ) {
             Properties properties = new Properties();
             properties.load(in);

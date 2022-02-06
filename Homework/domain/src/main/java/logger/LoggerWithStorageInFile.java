@@ -1,6 +1,7 @@
 package logger;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +9,9 @@ import java.util.List;
 
 public class LoggerWithStorageInFile implements Logger {
     private LocalDateTime localDateTime;
-    private static final String LOGS_FILE = "Homework/domain/src/main/resources/logs.log";
+    private static final String LOGS_FILE = String.valueOf(
+        Paths.get(System.getProperty("user.home")).resolve("/logs.log")
+    );
 
     @Override
     public void info(String className, String message) {
