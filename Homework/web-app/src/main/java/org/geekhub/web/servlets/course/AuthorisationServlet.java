@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import static org.geekhub.web.servlets.course.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
@@ -50,9 +51,16 @@ public class AuthorisationServlet extends HttpServlet {
 
         response.setContentType("text/html");
 
+        List<String> users = List.of("admin", "user");
+
         try (var writer = response.getWriter()) {
             writer.write("<html><head><title>Authorisation</title></head><body>");
-            writer.write("<h1>Welcome '" + name + "'</h1>");
+            if (users.contains(name)) {
+                writer.write("<h1>Welcome '" + name + "'");
+            } else {
+                writer.write("<h1>Invalid name '" + name + "'! Input 'admin' or 'user'</h1></h1>");
+                doGet(request, response);
+            }
             writer.write("</body></html>");
         }
     }
