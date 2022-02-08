@@ -64,4 +64,10 @@ public class AuthorisationServlet extends HttpServlet {
             writer.write("</body></html>");
         }
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.setAttribute(USER_NAME_SESSION_PARAMETER, null);
+    }
 }
