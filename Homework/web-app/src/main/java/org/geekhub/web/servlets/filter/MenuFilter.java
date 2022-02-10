@@ -1,6 +1,6 @@
-package org.geekhub.web.servlets.course.filter;
+package org.geekhub.web.servlets.filter;
 
-import logger.Logger;
+import org.geekhub.web.servlets.SessionAttributes;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,8 +13,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-
-import static org.geekhub.web.servlets.course.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @WebFilter(urlPatterns = "/menu/*")
 public class MenuFilter implements Filter {
@@ -37,7 +35,7 @@ public class MenuFilter implements Filter {
 
         if (ADMIN_PROTECTED_METHOD.contains(requestMethod)) {
             HttpSession session = request.getSession();
-            String currentUserName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
+            String currentUserName = (String) session.getAttribute(SessionAttributes.USER_NAME_SESSION_PARAMETER);
 
             if (!Objects.equals(currentUserName, "admin")) {
                 ((HttpServletResponse) servletResponse).sendError(

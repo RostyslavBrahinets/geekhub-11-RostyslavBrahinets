@@ -1,4 +1,6 @@
-package org.geekhub.web.servlets.course.filter;
+package org.geekhub.web.servlets.filter;
+
+import org.geekhub.web.servlets.SessionAttributes;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -6,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
-import static org.geekhub.web.servlets.course.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @WebFilter(urlPatterns = "/*")
 public class AuthorisationFilter implements Filter {
@@ -30,7 +30,7 @@ public class AuthorisationFilter implements Filter {
             .replaceAll("[/]+$", "");
 
         boolean loggedIn = (session != null
-            && session.getAttribute(USER_NAME_SESSION_PARAMETER) != null);
+            && session.getAttribute(SessionAttributes.USER_NAME_SESSION_PARAMETER) != null);
         boolean allowedPath = path.equals("/auth");
 
         if (loggedIn || allowedPath) {

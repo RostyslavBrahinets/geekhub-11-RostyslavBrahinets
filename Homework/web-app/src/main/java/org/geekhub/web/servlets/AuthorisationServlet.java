@@ -1,4 +1,4 @@
-package org.geekhub.web.servlets.course;
+package org.geekhub.web.servlets;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
-
-import static org.geekhub.web.servlets.course.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @WebServlet(urlPatterns = "/auth")
 public class AuthorisationServlet extends HttpServlet {
@@ -50,7 +48,7 @@ public class AuthorisationServlet extends HttpServlet {
         String userName = optionalUserName.orElse("");
 
         HttpSession session = request.getSession();
-        session.setAttribute(USER_NAME_SESSION_PARAMETER, userName);
+        session.setAttribute(SessionAttributes.USER_NAME_SESSION_PARAMETER, userName);
 
         response.setContentType("text/html");
 
@@ -71,11 +69,11 @@ public class AuthorisationServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        session.setAttribute(USER_NAME_SESSION_PARAMETER, null);
+        session.setAttribute(SessionAttributes.USER_NAME_SESSION_PARAMETER, null);
     }
 
     private Optional<String> extractUserNameRequest(HttpServletRequest request) {
-        String userName = request.getParameter(USER_NAME_SESSION_PARAMETER);
+        String userName = request.getParameter(SessionAttributes.USER_NAME_SESSION_PARAMETER);
         return Optional.ofNullable(userName);
     }
 }

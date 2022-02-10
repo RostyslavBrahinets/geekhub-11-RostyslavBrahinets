@@ -1,4 +1,4 @@
-package org.geekhub.web.servlets.course.error;
+package org.geekhub.web.servlets.error;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
