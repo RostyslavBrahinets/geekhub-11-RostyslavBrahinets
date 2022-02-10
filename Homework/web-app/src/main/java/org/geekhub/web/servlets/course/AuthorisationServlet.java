@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Optional;
 
 import static org.geekhub.web.servlets.course.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
@@ -37,17 +38,19 @@ public class AuthorisationServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String name;
+        Optional<String> optionalUserName;
 
         try {
-            name = request.getParameter(USER_NAME_SESSION_PARAMETER);
+            optionalUserName = extractUserNameRequest(request);
         } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             return;
         }
 
+        String userName = optionalUserName.orElse("");
+
         HttpSession session = request.getSession();
-        session.setAttribute(USER_NAME_SESSION_PARAMETER, name);
+        session.setAttribute(USER_NAME_SESSION_PARAMETER, userName);
 
         response.setContentType("text/html");
 
@@ -55,10 +58,10 @@ public class AuthorisationServlet extends HttpServlet {
 
         try (var writer = response.getWriter()) {
             writer.write("<html><head><title>Authorisation</title></head><body>");
-            if (users.contains(name)) {
-                writer.write("<h1>Welcome '" + name + "'");
+            if (users.contains(userName)) {
+                writer.write("<h1>Welcome '" + userName + "'");
             } else {
-                writer.write("<h1>Invalid name '" + name + "'! Input 'admin' or 'user'</h1></h1>");
+                writer.write("<h1>Invalid name '" + userName + "'! Input 'admin' or 'user'</h1></h1>");
                 doGet(request, response);
             }
             writer.write("</body></html>");
@@ -69,5 +72,10 @@ public class AuthorisationServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.setAttribute(USER_NAME_SESSION_PARAMETER, null);
+    }
+
+    private Optional<String> extractUserNameRequest(HttpServletRequest request) {
+        String userName = request.getParameter(USER_NAME_SESSION_PARAMETER);
+        return Optional.ofNullable(userName);
     }
 }
