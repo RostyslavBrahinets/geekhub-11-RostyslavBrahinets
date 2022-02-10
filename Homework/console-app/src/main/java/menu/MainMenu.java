@@ -32,8 +32,8 @@ public class MainMenu extends Menu {
                 1 - Courses Menu
                 2 - Lections Menu
                 3 - People Menu
-                4 - Resources
-                5 - Home Work Menu
+                4 - Resources Menu
+                5 - Home Works Menu
                 6 - Show Logs
                 7 - Exit"""
         );
