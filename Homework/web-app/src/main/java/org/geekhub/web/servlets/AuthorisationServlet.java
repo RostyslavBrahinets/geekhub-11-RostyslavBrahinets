@@ -54,15 +54,15 @@ public class AuthorisationServlet extends HttpServlet {
 
         List<String> users = List.of("admin", "user");
 
-        try (var writer = response.getWriter()) {
-            writer.write("<html><head><title>Authorisation</title></head><body>");
-            if (users.contains(userName)) {
-                writer.write("<h1>Welcome '" + userName + "'");
-            } else {
+        if (users.contains(userName)) {
+            response.sendRedirect("/menu/logger");
+        } else {
+            try (var writer = response.getWriter()) {
+                writer.write("<html><head><title>Authorisation</title></head><body>");
                 writer.write("<h1>Invalid name '" + userName + "'! Input 'admin' or 'user'</h1></h1>");
                 doGet(request, response);
+                writer.write("</body></html>");
             }
-            writer.write("</body></html>");
         }
     }
 
