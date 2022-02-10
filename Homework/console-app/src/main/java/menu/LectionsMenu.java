@@ -82,7 +82,7 @@ public class LectionsMenu extends Menu {
     public void addLection() {
         try {
             ResourcesMenu resourcesMenu = new ResourcesMenu();
-            HomeWorkMenu homeWorkMenu = new HomeWorkMenu();
+            HomeWorksMenu homeWorkMenu = new HomeWorksMenu();
 
             System.out.println("\nNew Lections");
             int count = getCount();

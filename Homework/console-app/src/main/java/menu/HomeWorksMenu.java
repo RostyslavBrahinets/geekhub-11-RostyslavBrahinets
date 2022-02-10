@@ -8,10 +8,10 @@ import services.HomeWorkService;
 import java.util.List;
 import java.util.Optional;
 
-public class HomeWorkMenu extends Menu {
+public class HomeWorksMenu extends Menu {
     private final HomeWorkService homeWorkService = new HomeWorkService();
 
-    public HomeWorkMenu() {
+    public HomeWorksMenu() {
         super();
     }
 

@@ -56,7 +56,7 @@ public class MainMenu extends Menu {
                 resourcesMenu.runMenu();
             }
             case "5" -> {
-                HomeWorkMenu homeWorkMenu = new HomeWorkMenu();
+                HomeWorksMenu homeWorkMenu = new HomeWorksMenu();
                 homeWorkMenu.runMenu();
             }
             case "6" -> showLoggerMenu();
