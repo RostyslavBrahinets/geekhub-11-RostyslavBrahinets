@@ -6,14 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
-import static javax.servlet.RequestDispatcher.*;
+import static javax.servlet.RequestDispatcher.ERROR_MESSAGE;
+import static javax.servlet.RequestDispatcher.ERROR_STATUS_CODE;
 
 @WebServlet(urlPatterns = "/error-handler")
 public class ErrorHandlerServlet extends HttpServlet {
     @Override
-    protected void doGet(
+    protected void service(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
@@ -29,15 +29,10 @@ public class ErrorHandlerServlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Error</title></head><body>");
             writer.write("<h2>Error!</h2>");
-            Arrays.asList(
-                    ERROR_STATUS_CODE,
-                    ERROR_EXCEPTION_TYPE,
-                    ERROR_MESSAGE)
-                .forEach(e ->
-                    writer.write("<strong>" + e + "</strong>: "
-                        + request.getAttribute(e) + "</br>")
-                );
+            writer.write("<li>Reason : " + request.getAttribute(ERROR_MESSAGE) + "</li>");
+            writer.write("<li>Status code: " + request.getAttribute(ERROR_STATUS_CODE) + "</li>");
             writer.write("</body></html>");
+            writer.flush();
         }
     }
 }
