@@ -69,8 +69,7 @@ public class CoursesMenu extends Menu {
                     studentsOfCourse
                 );
             }
-        } catch (
-            ValidationException e) {
+        } catch (ValidationException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
