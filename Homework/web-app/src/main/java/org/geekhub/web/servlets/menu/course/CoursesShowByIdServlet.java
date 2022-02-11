@@ -2,6 +2,7 @@ package org.geekhub.web.servlets.menu.course;
 
 import exceptions.NotFoundException;
 import models.Course;
+import org.geekhub.web.servlets.RequestParameter;
 import services.CourseService;
 
 import javax.servlet.annotation.WebServlet;
@@ -22,11 +23,25 @@ public class CoursesShowByIdServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
+        showMenu(response);
+    }
+
+    @Override
+    protected void doPost(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws IOException {
+        String id = getId(request, response);
+        HttpSession session = request.getSession();
+        session.setAttribute(ID_SESSION_PARAMETER, id);
+        showCourse(id, response);
+    }
+
+    private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
-
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Show</title></head><body>");
+            writer.write("<html><head><title>Courses Show By Id</title></head><body>");
 
             writer.write("<form action=\"show-by-id\" method=\"post\">");
             writer.write("<label for=\"id\">Id: </label>");
@@ -38,29 +53,24 @@ public class CoursesShowByIdServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(
+    private String getId(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        Optional<String> optionalId;
-
+        Optional<String> optionalId = Optional.empty();
         try {
-            optionalId = extractIdParameter(request);
+            RequestParameter requestParameter = new RequestParameter();
+            optionalId = requestParameter.extractParameter(ID_SESSION_PARAMETER, request);
         } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            return;
         }
+        return optionalId.orElse("");
+    }
 
-        String id = optionalId.orElse("");
-
-        HttpSession session = request.getSession();
-        session.setAttribute(ID_SESSION_PARAMETER, id);
-
+    private void showCourse(String id, HttpServletResponse response) throws IOException {
         CourseService courseService = new CourseService();
 
         response.setContentType("text/html");
-
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Courses Show By Id</title></head><body>");
 
@@ -78,10 +88,5 @@ public class CoursesShowByIdServlet extends HttpServlet {
         } catch (NotFoundException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
-    }
-
-    private Optional<String> extractIdParameter(HttpServletRequest request) {
-        String id = request.getParameter(ID_SESSION_PARAMETER);
-        return Optional.ofNullable(id);
     }
 }
