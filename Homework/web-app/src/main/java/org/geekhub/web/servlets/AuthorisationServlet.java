@@ -24,7 +24,7 @@ public class AuthorisationServlet extends HttpServlet {
             writer.write("<h1>Login Page</h1>");
             writer.write("<form action=\"auth\" method=\"post\">");
             writer.write("<label for=\"name\">User login: </label>");
-            writer.write("<input id=\"name\" type=\"text\" name=\"name\" value=\"admin\">");
+            writer.write("<input id=\"name\" type=\"text\" name=\"userName\" value=\"admin\">");
             writer.write("<input type=\"submit\" value=\"Login\">");
             writer.write("</form>");
             writer.write("</body></html>");
@@ -39,7 +39,7 @@ public class AuthorisationServlet extends HttpServlet {
         Optional<String> optionalUserName;
 
         try {
-            optionalUserName = extractUserNameRequest(request);
+            optionalUserName = extractUserNameParameter(request);
         } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             return;
@@ -50,16 +50,17 @@ public class AuthorisationServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute(SessionAttributes.USER_NAME_SESSION_PARAMETER, userName);
 
-        response.setContentType("text/html");
-
         List<String> users = List.of("admin", "user");
 
+        response.setContentType("text/html");
+
         if (users.contains(userName)) {
-            response.sendRedirect("/menu/logger");
+            response.sendRedirect("/main");
         } else {
             try (var writer = response.getWriter()) {
                 writer.write("<html><head><title>Authorisation</title></head><body>");
-                writer.write("<h1>Invalid name '" + userName + "'! Input 'admin' or 'user'</h1></h1>");
+                writer.write("<h1>Invalid name '" + userName
+                    + "'! Input 'admin' or 'user'</h1></h1>");
                 doGet(request, response);
                 writer.write("</body></html>");
             }
@@ -72,7 +73,7 @@ public class AuthorisationServlet extends HttpServlet {
         session.setAttribute(SessionAttributes.USER_NAME_SESSION_PARAMETER, null);
     }
 
-    private Optional<String> extractUserNameRequest(HttpServletRequest request) {
+    private Optional<String> extractUserNameParameter(HttpServletRequest request) {
         String userName = request.getParameter(SessionAttributes.USER_NAME_SESSION_PARAMETER);
         return Optional.ofNullable(userName);
     }
