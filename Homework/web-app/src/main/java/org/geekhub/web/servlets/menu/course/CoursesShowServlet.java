@@ -43,7 +43,7 @@ public class CoursesShowServlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<h1>Courses not found!<h1>");
             writer.write("<h1>Do you want add new course?<h1>");
-            writer.write("<form action=\"add\" method=\"post\">");
+            writer.write("<form action=\"add\" method=\"get\">");
             writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
                 + "\" value=\"Add new\"></br></br>");
             writer.write("</form>");
