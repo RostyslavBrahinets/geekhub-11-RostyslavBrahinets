@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
-import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
-import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
+import static org.geekhub.web.servlets.SessionAttributes.*;
 
 public class MenuCommand {
     private MenuCommand() {
@@ -58,5 +58,19 @@ public class MenuCommand {
             case "Show by id" -> response.sendRedirect(request.getRequestURI() + "/show-by-id");
             default -> response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Command Not Found");
         }
+    }
+
+    public static String getId(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws IOException {
+        Optional<String> optionalId = Optional.empty();
+        try {
+            RequestParameter requestParameter = new RequestParameter();
+            optionalId = requestParameter.extractParameter(ID_SESSION_PARAMETER, request);
+        } catch (IllegalArgumentException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
+        return optionalId.orElse("");
     }
 }
