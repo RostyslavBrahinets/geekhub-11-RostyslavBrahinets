@@ -2,7 +2,7 @@ package org.geekhub.web.servlets.menu.course;
 
 import exceptions.NotFoundException;
 import models.Course;
-import org.geekhub.web.servlets.RequestParameter;
+import org.geekhub.web.servlets.menu.MenuCommand;
 import services.CourseService;
 
 import javax.servlet.annotation.WebServlet;
@@ -31,7 +31,7 @@ public class CoursesShowByIdServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String id = getId(request, response);
+        String id = MenuCommand.getId(request, response);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
         showCourse(id, response);
@@ -51,20 +51,6 @@ public class CoursesShowByIdServlet extends HttpServlet {
 
             writer.write("</body></html>");
         }
-    }
-
-    private String getId(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws IOException {
-        Optional<String> optionalId = Optional.empty();
-        try {
-            RequestParameter requestParameter = new RequestParameter();
-            optionalId = requestParameter.extractParameter(ID_SESSION_PARAMETER, request);
-        } catch (IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-        }
-        return optionalId.orElse("");
     }
 
     private void showCourse(String id, HttpServletResponse response) throws IOException {
