@@ -11,4 +11,6 @@ public class SessionAttributes {
     public static final String TIME_SESSION_PARAMETER = "time";
     public static final String DESCRIBE_SESSION_PARAMETER = "describe";
     public static final String LECTURER_NAME_SESSION_PARAMETER = "lecturerName";
+    public static final String TYPE_SESSION_PARAMETER = "type";
+    public static final String DATA_SESSION_PARAMETER = "data";
 }
