@@ -9,4 +9,6 @@ public class SessionAttributes {
     public static final String TASK_SESSION_PARAMETER = "task";
     public static final String DATE_SESSION_PARAMETER = "date";
     public static final String TIME_SESSION_PARAMETER = "time";
+    public static final String DESCRIBE_SESSION_PARAMETER = "describe";
+    public static final String LECTURER_NAME_SESSION_PARAMETER = "lecturerName";
 }

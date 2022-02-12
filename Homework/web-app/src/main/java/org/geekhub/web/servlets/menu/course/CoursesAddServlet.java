@@ -33,7 +33,6 @@ public class CoursesAddServlet extends HttpServlet {
         HttpServletResponse response
     ) throws IOException {
         String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
-
         List<Lection> lectionsOfCourse = List.of();
         List<Person> studentsOfCourse = List.of();
         HttpSession session = request.getSession();
@@ -49,7 +48,8 @@ public class CoursesAddServlet extends HttpServlet {
 
             writer.write("<form action=\"add\" method=\"post\">");
             writer.write("<label for=\"name\">Name: </label>");
-            writer.write("<input id=\"name\" type=\"text\" name=\"" + NAME_SESSION_PARAMETER + "\">");
+            writer.write("<input id=\"name\" type=\"text\" name=\""
+                + NAME_SESSION_PARAMETER + "\">");
             writer.write("<input type=\"submit\" value=\"Add\">");
             writer.write("</form>");
 
