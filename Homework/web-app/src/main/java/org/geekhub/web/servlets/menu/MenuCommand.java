@@ -60,14 +60,15 @@ public class MenuCommand {
         }
     }
 
-    public static String getId(
+    public static String getValueOfParameter(
+        String parameter,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
         Optional<String> optionalId = Optional.empty();
         try {
             RequestParameter requestParameter = new RequestParameter();
-            optionalId = requestParameter.extractParameter(ID_SESSION_PARAMETER, request);
+            optionalId = requestParameter.extractParameter(parameter, request);
         } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
