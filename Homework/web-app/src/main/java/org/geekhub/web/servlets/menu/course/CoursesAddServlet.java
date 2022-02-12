@@ -3,7 +3,7 @@ package org.geekhub.web.servlets.menu.course;
 import exceptions.ValidationException;
 import models.Lection;
 import models.Person;
-import org.geekhub.web.servlets.RequestParameter;
+import org.geekhub.web.servlets.menu.MenuCommand;
 import services.CourseService;
 
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Optional;
 
 import static org.geekhub.web.servlets.SessionAttributes.NAME_SESSION_PARAMETER;
 
@@ -33,7 +32,8 @@ public class CoursesAddServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String name = getName(request, response);
+        String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
+
         List<Lection> lectionsOfCourse = List.of();
         List<Person> studentsOfCourse = List.of();
         HttpSession session = request.getSession();
@@ -57,21 +57,12 @@ public class CoursesAddServlet extends HttpServlet {
         }
     }
 
-    private String getName(
-        HttpServletRequest request,
+    private void addCourse(
+        String name,
+        List<Lection> lectionsOfCourse,
+        List<Person> studentsOfCourse,
         HttpServletResponse response
     ) throws IOException {
-        Optional<String> optionalName = Optional.empty();
-        try {
-            RequestParameter requestParameter = new RequestParameter();
-            optionalName = requestParameter.extractParameter(NAME_SESSION_PARAMETER, request);
-        } catch (IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-        }
-        return optionalName.orElse("");
-    }
-
-    private void addCourse(String name, List<Lection> lectionsOfCourse, List<Person> studentsOfCourse, HttpServletResponse response) throws IOException {
         CourseService courseService = new CourseService();
 
         response.setContentType("text/html");
