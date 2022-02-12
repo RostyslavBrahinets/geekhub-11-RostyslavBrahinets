@@ -45,7 +45,7 @@ public class CoursesDeleteServlet extends HttpServlet {
             writer.write("<form action=\"delete\" method=\"post\">");
             writer.write("<label for=\"id\">Id: </label>");
             writer.write("<input id=\"id\" type=\"text\" name=\"" + ID_SESSION_PARAMETER + "\">");
-            writer.write("<input type=\"submit\" value=\"Show\">");
+            writer.write("<input type=\"submit\" value=\"Delete\">");
             writer.write("</form>");
 
             writer.write("</body></html>");
@@ -80,7 +80,7 @@ public class CoursesDeleteServlet extends HttpServlet {
             } catch (NotFoundException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
-            writer.write("<h1>Course with id" + id + " deleted</h1>");
+            writer.write("<h1>Course with id '" + id + "' deleted</h1>");
             writer.write("</body></html>");
         }
     }
