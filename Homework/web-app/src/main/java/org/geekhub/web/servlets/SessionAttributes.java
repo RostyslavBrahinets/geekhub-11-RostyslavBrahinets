@@ -6,4 +6,7 @@ public class SessionAttributes {
     public static final String COMMAND_SESSION_PARAMETER = "command";
     public static final String ID_SESSION_PARAMETER = "id";
     public static final String NAME_SESSION_PARAMETER = "name";
+    public static final String TASK_SESSION_PARAMETER = "task";
+    public static final String DATE_SESSION_PARAMETER = "date";
+    public static final String TIME_SESSION_PARAMETER = "time";
 }
