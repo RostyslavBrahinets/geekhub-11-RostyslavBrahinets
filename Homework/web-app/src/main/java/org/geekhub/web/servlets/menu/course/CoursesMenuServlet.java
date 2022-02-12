@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
+import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @WebServlet(urlPatterns = "/menu/courses")
 public class CoursesMenuServlet extends HttpServlet {
@@ -19,7 +20,7 @@ public class CoursesMenuServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        showMenu(response);
+        showMenu(request, response);
     }
 
     @Override
@@ -45,7 +46,10 @@ public class CoursesMenuServlet extends HttpServlet {
         }
     }
 
-    private void showMenu(HttpServletResponse response) throws IOException {
+    private void showMenu(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
+
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
@@ -55,10 +59,14 @@ public class CoursesMenuServlet extends HttpServlet {
             writer.write("<form action=\"courses\" method=\"post\">");
             writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
                 + "\" value=\"Show all\"></br></br>");
-            writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                + "\" value=\"Add new\"></br></br>");
-            writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                + "\" value=\"Delete by id\"></br></br>");
+
+            if (userName.equals("admin")) {
+                writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
+                    + "\" value=\"Add new\"></br></br>");
+                writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
+                    + "\" value=\"Delete by id\"></br></br>");
+            }
+
             writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
                 + "\" value=\"Show by id\"></br></br>");
             writer.write("</form>");
