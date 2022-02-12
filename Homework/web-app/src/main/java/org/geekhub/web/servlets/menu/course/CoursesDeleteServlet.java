@@ -29,7 +29,7 @@ public class CoursesDeleteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String id = MenuCommand.getId(request, response);
+        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
         deleteCourse(id, response);
