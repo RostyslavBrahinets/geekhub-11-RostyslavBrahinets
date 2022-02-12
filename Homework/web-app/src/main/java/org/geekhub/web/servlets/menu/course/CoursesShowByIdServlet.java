@@ -73,8 +73,17 @@ public class CoursesShowByIdServlet extends HttpServlet {
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Courses Show By Id</title></head><body>");
+            Optional<Course> course = Optional.empty();
 
-            Optional<Course> course = courseService.getCourse(Integer.parseInt(id));
+            try {
+                if (id.isBlank()) {
+                    throw new NotFoundException("Course not found");
+                }
+                course = courseService.getCourse(Integer.parseInt(id));
+            } catch (NotFoundException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            }
+
             course.ifPresent(
                 value -> writer.write(
                     "<h3>"
@@ -85,8 +94,6 @@ public class CoursesShowByIdServlet extends HttpServlet {
                 ));
 
             writer.write("</body></html>");
-        } catch (NotFoundException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 }
