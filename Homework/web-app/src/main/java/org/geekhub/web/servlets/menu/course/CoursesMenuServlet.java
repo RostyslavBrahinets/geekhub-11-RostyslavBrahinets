@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.course;
 
 import org.geekhub.web.servlets.RequestParameter;
+import org.geekhub.web.servlets.menu.MenuCommand;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,49 +29,20 @@ public class CoursesMenuServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        RequestParameter parameter = new RequestParameter();
-        parameter.setRequestParameterToSessionAttribute(
-            COMMAND_SESSION_PARAMETER,
-            request, response
-        );
-
-        HttpSession session = request.getSession();
-        String command = (String) session.getAttribute(COMMAND_SESSION_PARAMETER);
-
-        switch (command) {
-            case "Show all" -> response.sendRedirect(request.getRequestURI() + "/show");
-            case "Add new" -> response.sendRedirect(request.getRequestURI() + "/add");
-            case "Delete by id" -> response.sendRedirect(request.getRequestURI() + "/delete");
-            case "Show by id" -> response.sendRedirect(request.getRequestURI() + "/show-by-id");
-            default -> response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Command Not Found");
-        }
+        MenuCommand.handleCommands(request, response);
     }
 
-    private void showMenu(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
-
+    private void showMenu(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws IOException {
         response.setContentType("text/html");
-
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Courses</title></head><body>");
             writer.write("<h1>Courses</h1>");
-
             writer.write("<form action=\"courses\" method=\"post\">");
-            writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                + "\" value=\"Show all\"></br></br>");
-
-            if (userName.equals("admin")) {
-                writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                    + "\" value=\"Add new\"></br></br>");
-                writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                    + "\" value=\"Delete by id\"></br></br>");
-            }
-
-            writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                + "\" value=\"Show by id\"></br></br>");
+            MenuCommand.showCommands(request, response);
             writer.write("</form>");
-
             writer.write("</body></html>");
         }
     }
