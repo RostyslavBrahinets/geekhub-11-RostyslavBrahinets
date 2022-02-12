@@ -31,15 +31,15 @@ public class LectionsShowServlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Lections Show</title></head><body>");
             if (lections.size() == 0) {
-                showMenuIfCoursesNotFound(response);
+                showMenuIfLectionsNotFound(response);
                 return;
             }
-            showMenuIfCoursesFound(lections, response);
+            showMenuIfLectionsFound(lections, response);
             writer.write("</body></html>");
         }
     }
 
-    private void showMenuIfCoursesNotFound(HttpServletResponse response) throws IOException {
+    private void showMenuIfLectionsNotFound(HttpServletResponse response) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<h1>Lections not found!<h1>");
             writer.write("<h1>Do you want add new lections?<h1>");
@@ -50,7 +50,7 @@ public class LectionsShowServlet extends HttpServlet {
         }
     }
 
-    private void showMenuIfCoursesFound(
+    private void showMenuIfLectionsFound(
         List<Lection> lections,
         HttpServletResponse response
     ) throws IOException {

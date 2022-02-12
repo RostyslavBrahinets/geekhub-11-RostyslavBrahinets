@@ -1,7 +1,7 @@
-package org.geekhub.web.servlets.menu.resource;
+package org.geekhub.web.servlets.menu.person;
 
-import models.Resource;
-import services.ResourceService;
+import models.Person;
+import services.PersonService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +13,8 @@ import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/resources/show")
-public class ResourcesShowServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/menu/people/show")
+public class PeopleShowServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,
@@ -24,25 +24,25 @@ public class ResourcesShowServlet extends HttpServlet {
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
-        ResourceService resourceService = new ResourceService();
-        List<Resource> resources = resourceService.getResources();
+        PersonService personService = new PersonService();
+        List<Person> people = personService.getPeople();
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Resources Show</title></head><body>");
-            if (resources.size() == 0) {
-                showMenuIfResourcesNotFound(response);
+            writer.write("<html><head><title>People Show</title></head><body>");
+            if (people.size() == 0) {
+                showMenuIfPeopleNotFound(response);
                 return;
             }
-            showMenuIfResourcesFound(resources, response);
+            showMenuIfPeopleFound(people, response);
             writer.write("</body></html>");
         }
     }
 
-    private void showMenuIfResourcesNotFound(HttpServletResponse response) throws IOException {
+    private void showMenuIfPeopleNotFound(HttpServletResponse response) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<h1>Resources not found!<h1>");
-            writer.write("<h1>Do you want add new resource?<h1>");
+            writer.write("<h1>People not found!<h1>");
+            writer.write("<h1>Do you want add new person?<h1>");
             writer.write("<form action=\"add\" method=\"get\">");
             writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
                 + "\" value=\"Add new\"></br></br>");
@@ -50,17 +50,19 @@ public class ResourcesShowServlet extends HttpServlet {
         }
     }
 
-    private void showMenuIfResourcesFound(
-        List<Resource> resources,
+    private void showMenuIfPeopleFound(
+        List<Person> people,
         HttpServletResponse response
     ) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<h1>Resources:</h1><ul>");
-            for (Resource resource : resources) {
+            writer.write("<h1>People:</h1><ul>");
+            for (Person person : people) {
                 writer.write("<li>"
-                    + resource.name() + ": "
-                    + resource.type() + ", "
-                    + resource.data()
+                    + person.firstName() + ": "
+                    + person.lastName() + ", "
+                    + person.contacts() + ", "
+                    + person.gitHubNickname() + ", "
+                    + person.role()
                     + "</li>");
             }
             writer.write("<ul>");
