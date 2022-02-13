@@ -7,23 +7,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
+import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @WebServlet(urlPatterns = "/menu/people/show")
 public class PeopleShowServlet extends HttpServlet {
     @Override
     protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws IOException {
-        showMenu(response);
+        showMenu(request, response);
     }
 
-    private void showMenu(HttpServletResponse response) throws IOException {
+    private void showMenu(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws IOException {
         PersonService personService = new PersonService();
         List<Person> people = personService.getPeople();
 
@@ -31,7 +36,7 @@ public class PeopleShowServlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>People Show</title></head><body>");
             if (people.size() == 0) {
-                showMenuIfPeopleNotFound(response);
+                showMenuIfPeopleNotFound(request, response);
                 return;
             }
             showMenuIfPeopleFound(people, response);
@@ -39,31 +44,40 @@ public class PeopleShowServlet extends HttpServlet {
         }
     }
 
-    private void showMenuIfPeopleNotFound(HttpServletResponse response) throws IOException {
+    private void showMenuIfPeopleNotFound(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<h1>People not found!<h1>");
-            writer.write("<h1>Do you want add new person?<h1>");
-            writer.write("<form action=\"add\" method=\"get\">");
-            writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
+
+            HttpSession session = request.getSession();
+            String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
+
+            if (userName.equals("admin")) {
+                writer.write("<h1>Do you want add new person?<h1>");
+                writer.write("<form action=\"add\" method=\"get\">");
+                writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
                     + "\" value=\"Add new\"></br></br>");
-            writer.write("</form>");
+                writer.write("</form>");
+            }
         }
     }
 
     private void showMenuIfPeopleFound(
-            List<Person> people,
-            HttpServletResponse response
+        List<Person> people,
+        HttpServletResponse response
     ) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<h1>People:</h1><ul>");
             for (Person person : people) {
                 writer.write("<li>"
-                        + person.firstName() + ": "
-                        + person.lastName() + ", "
-                        + person.contacts() + ", "
-                        + person.gitHubNickname() + ", "
-                        + person.role()
-                        + "</li>");
+                    + person.firstName() + ": "
+                    + person.lastName() + ", "
+                    + person.contacts() + ", "
+                    + person.gitHubNickname() + ", "
+                    + person.role()
+                    + "</li>");
             }
             writer.write("<ul>");
         }
