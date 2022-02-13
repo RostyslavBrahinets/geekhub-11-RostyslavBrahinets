@@ -94,9 +94,9 @@ public class MainMenu extends Menu {
         );
 
         switch (getCommand()) {
-            case "1" -> logger.showLogs();
-            case "2" -> logger.showSortedLogsByDateASC();
-            case "3" -> logger.showSortedLogsByDateDESC();
+            case "1" -> logger.getLogs().forEach(System.out::println);
+            case "2" -> logger.getSortedLogsByDateAsc().forEach(System.out::println);
+            case "3" -> logger.getSortedLogsByDateDesc().forEach(System.out::println);
             default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }
@@ -112,9 +112,9 @@ public class MainMenu extends Menu {
         );
 
         switch (getCommand()) {
-            case "1" -> logger.showLogsByStatus(LogType.INFO);
-            case "2" -> logger.showLogsByStatus(LogType.WARNING);
-            case "3" -> logger.showLogsByStatus(LogType.ERROR);
+            case "1" -> logger.getLogsByStatus(LogType.INFO);
+            case "2" -> logger.getLogsByStatus(LogType.WARNING);
+            case "3" -> logger.getLogsByStatus(LogType.ERROR);
             default -> throw new NotFoundException(COMMAND_NOT_FOUND);
         }
     }

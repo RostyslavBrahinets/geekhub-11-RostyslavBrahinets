@@ -41,26 +41,23 @@ public class LoggerWithStorageInMemoryAndFile extends LoggerWithStorageInFile im
     }
 
     @Override
-    public void showSortedLogsByDateASC() {
-        logs.stream()
+    public List<Log> getSortedLogsByDateAsc() {
+        return logs.stream()
             .sorted(Comparator.comparing(Log::getLocalDateTime))
-            .toList()
-            .forEach(System.out::println);
+            .toList();
     }
 
     @Override
-    public void showSortedLogsByDateDESC() {
-        logs.stream()
+    public List<Log> getSortedLogsByDateDesc() {
+        return logs.stream()
             .sorted(Comparator.comparing(Log::getLocalDateTime).reversed())
-            .toList()
-            .forEach(System.out::println);
+            .toList();
     }
 
     @Override
-    public void showLogsByStatus(LogType status) {
-        logs.stream()
+    public List<Log> getLogsByStatus(LogType status) {
+        return logs.stream()
             .filter(log -> log.getType() == status)
-            .toList()
-            .forEach(System.out::println);
+            .toList();
     }
 }

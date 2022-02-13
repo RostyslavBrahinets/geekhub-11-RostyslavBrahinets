@@ -1,5 +1,7 @@
 package logger;
 
+import java.util.List;
+
 public interface LoggerStorageDao {
     void info(String className, String message);
 
@@ -9,11 +11,11 @@ public interface LoggerStorageDao {
 
     void error(String className, String message, Exception e);
 
-    void showLogs();
+    List<Log> getLogs();
 
-    void showSortedLogsByDateASC();
+    List<Log> getSortedLogsByDateAsc();
 
-    void showSortedLogsByDateDESC();
+    List<Log> getSortedLogsByDateDesc();
 
-    void showLogsByStatus(LogType status);
+    List<Log> getLogsByStatus(LogType status);
 }

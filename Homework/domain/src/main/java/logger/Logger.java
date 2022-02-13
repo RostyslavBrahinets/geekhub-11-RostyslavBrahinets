@@ -1,6 +1,10 @@
 package logger;
 
-public class Logger implements LoggerStorageDao {
+import java.io.Serializable;
+import java.util.List;
+
+public class Logger implements LoggerStorageDao, Serializable {
+    private static final int serialVersionUID = 8;
     private static final LoggerStorageDao storage = LoggerStorageFactory.getStorage();
 
     @Override
@@ -24,22 +28,22 @@ public class Logger implements LoggerStorageDao {
     }
 
     @Override
-    public void showLogs() {
-        storage.showLogs();
+    public List<Log> getLogs() {
+        return storage.getLogs();
     }
 
     @Override
-    public void showSortedLogsByDateASC() {
-        storage.showSortedLogsByDateASC();
+    public List<Log> getSortedLogsByDateAsc() {
+        return storage.getSortedLogsByDateAsc();
     }
 
     @Override
-    public void showSortedLogsByDateDESC() {
-        storage.showSortedLogsByDateDESC();
+    public List<Log> getSortedLogsByDateDesc() {
+        return storage.getSortedLogsByDateDesc();
     }
 
     @Override
-    public void showLogsByStatus(LogType status) {
-        storage.showLogsByStatus(status);
+    public List<Log> getLogsByStatus(LogType status) {
+        return storage.getLogsByStatus(status);
     }
 }

@@ -41,7 +41,7 @@ public class LoggerWithStorageInFile implements LoggerStorageDao {
     }
 
     @Override
-    public void showLogs() {
+    public List<Log> getLogs() {
         File file = new File(LOGS_FILE);
         try (FileInputStream in = new FileInputStream(file)) {
             int readBytes;
@@ -51,28 +51,31 @@ public class LoggerWithStorageInFile implements LoggerStorageDao {
         } catch (IOException e) {
             System.out.println(e.getMessage() + "\n" + e.getCause());
         }
+
+        return List.of();
     }
 
     @Override
-    public void showSortedLogsByDateASC() {
-        List<String> logs = getLogs();
-        logs.forEach(System.out::println);
+    public List<Log> getSortedLogsByDateAsc() {
+        List<String> logs = getLogsFromFile();
+        return List.of();
     }
 
     @Override
-    public void showSortedLogsByDateDESC() {
-        List<String> logs = getLogs();
+    public List<Log> getSortedLogsByDateDesc() {
+        List<String> logs = getLogsFromFile();
         Collections.reverse(logs);
-        logs.forEach(System.out::println);
+        return List.of();
     }
 
     @Override
-    public void showLogsByStatus(LogType status) {
-        List<String> logs = getLogs();
-        logs.stream()
+    public List<Log> getLogsByStatus(LogType status) {
+        List<String> logs = getLogsFromFile();
+        logs = logs.stream()
             .filter(log -> log.contains(status.toString()))
-            .toList()
-            .forEach(System.out::println);
+            .toList();
+
+        return List.of();
     }
 
     protected void writeLogToFile(String log) {
@@ -84,7 +87,7 @@ public class LoggerWithStorageInFile implements LoggerStorageDao {
         }
     }
 
-    private List<String> getLogs() {
+    private List<String> getLogsFromFile() {
         List<String> logs = new ArrayList<>();
         File file = new File(LOGS_FILE);
 

@@ -1,8 +1,6 @@
 package menu;
 
 import logger.Logger;
-import logger.LoggerStorageDao;
-import logger.LoggerStorageFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,12 +9,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public abstract class Menu {
+    protected static final String COMMAND_NOT_FOUND = "Command not found";
     private static final Scanner scanner = new Scanner(System.in);
     protected static Logger logger;
-    protected static final String COMMAND_NOT_FOUND = "Command not found";
 
     protected Menu() {
         logger = new Logger();
+    }
+
+    protected static void closeScanner() {
+        scanner.close();
     }
 
     protected abstract void runMenu();
@@ -97,9 +99,5 @@ public abstract class Menu {
         }
 
         return id;
-    }
-
-    protected static void closeScanner() {
-        scanner.close();
     }
 }
