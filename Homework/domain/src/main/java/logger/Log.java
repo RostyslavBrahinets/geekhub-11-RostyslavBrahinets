@@ -1,11 +1,14 @@
 package logger;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Log {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:ms");
+public class Log implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6L;
 
     private final LogType type;
     private final String className;
@@ -55,6 +58,7 @@ public class Log {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:ms");
         StringBuilder logString = new StringBuilder();
         logString.append("\n[").append(type).append("] ")
             .append(className).append(": ")

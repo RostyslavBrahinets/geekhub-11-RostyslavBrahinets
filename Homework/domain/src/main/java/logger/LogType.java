@@ -1,6 +1,8 @@
 package logger;
 
-public enum LogType {
+import java.io.Serializable;
+
+public enum LogType implements Serializable {
     INFO,
     WARNING,
     ERROR

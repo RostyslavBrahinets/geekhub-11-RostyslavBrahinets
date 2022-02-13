@@ -3,8 +3,7 @@ package logger;
 import java.io.Serializable;
 import java.util.List;
 
-public class Logger implements LoggerStorageDao, Serializable {
-    private static final int serialVersionUID = 8;
+public class Logger implements LoggerStorageDao {
     private static final LoggerStorageDao storage = LoggerStorageFactory.getStorage();
 
     @Override
