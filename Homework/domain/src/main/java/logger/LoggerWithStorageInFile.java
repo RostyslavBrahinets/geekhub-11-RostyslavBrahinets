@@ -4,7 +4,7 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LoggerWithStorageInFile implements LoggerStorageDao {
@@ -15,98 +15,91 @@ public class LoggerWithStorageInFile implements LoggerStorageDao {
     @Override
     public void info(String className, String message) {
         Log log = new Log(LogType.INFO, className, message, LocalDateTime.now());
-        writeLogToFile(log.toString());
+        writeLogToFile(log);
         System.out.println(log);
     }
 
     @Override
     public void warning(String className, String message) {
         Log log = new Log(LogType.WARNING, className, message, LocalDateTime.now());
-        writeLogToFile(log.toString());
+        writeLogToFile(log);
         System.out.println(log);
     }
 
     @Override
     public void error(String className, String message) {
         Log log = new Log(LogType.ERROR, className, message, LocalDateTime.now());
-        writeLogToFile(log.toString());
+        writeLogToFile(log);
         System.out.println(log);
     }
 
     @Override
     public void error(String className, String message, Exception e) {
         Log log = new Log(LogType.ERROR, className, message, LocalDateTime.now(), e);
-        writeLogToFile(log.toString());
+        writeLogToFile(log);
         System.out.println(log);
     }
 
     @Override
     public List<Log> getLogs() {
-        File file = new File(LOGS_FILE);
-        try (FileInputStream in = new FileInputStream(file)) {
-            int readBytes;
-            while ((readBytes = in.read()) != -1) {
-                System.out.print((char) readBytes);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + "\n" + e.getCause());
-        }
-
-        return List.of();
+        return readLogsFromFile();
     }
 
     @Override
     public List<Log> getSortedLogsByDateAsc() {
-        List<String> logs = getLogsFromFile();
-        return List.of();
+        List<Log> logs = readLogsFromFile();
+        return logs.stream()
+            .sorted(Comparator.comparing(Log::getLocalDateTime))
+            .toList();
     }
 
     @Override
     public List<Log> getSortedLogsByDateDesc() {
-        List<String> logs = getLogsFromFile();
-        Collections.reverse(logs);
-        return List.of();
+        List<Log> logs = readLogsFromFile();
+        return logs.stream()
+            .sorted(Comparator.comparing(Log::getLocalDateTime).reversed())
+            .toList();
     }
 
     @Override
     public List<Log> getLogsByStatus(LogType status) {
-        List<String> logs = getLogsFromFile();
-        logs = logs.stream()
-            .filter(log -> log.contains(status.toString()))
+        List<Log> logs = readLogsFromFile();
+        return logs.stream()
+            .filter(log -> log.getType() == status)
             .toList();
-
-        return List.of();
     }
 
-    protected void writeLogToFile(String log) {
-        File file = new File(LOGS_FILE);
-        try (FileOutputStream out = new FileOutputStream(file, true)) {
-            out.write(log.getBytes());
+    protected void writeLogToFile(Log log) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(LOGS_FILE, true);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(log);
         } catch (IOException e) {
-            System.out.println(e.getMessage() + "\n" + e.getCause());
+//            System.out.println(e.getMessage() + "\n" + e.getCause());
+            e.printStackTrace();
         }
     }
 
-    private List<String> getLogsFromFile() {
-        List<String> logs = new ArrayList<>();
-        File file = new File(LOGS_FILE);
+    private List<Log> readLogsFromFile() {
+        List<Log> logs = new ArrayList<>();
 
-        try (FileReader reader = new FileReader(file)) {
-            StringBuilder stringBuilder = new StringBuilder();
-            while (reader.ready()) {
-                char c = (char) reader.read();
-                if (c == '\n' && reader.read() == '\n') {
-                    logs.add(stringBuilder.toString());
-                    stringBuilder = new StringBuilder();
-                } else {
-                    stringBuilder.append(c);
+        try {
+            FileInputStream fileInputStream = new FileInputStream(LOGS_FILE);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            while (true) {
+                Object object = objectInputStream.readObject();
+                if (object == null) {
+                    break;
                 }
+
+                Log log = (Log) object;
+                logs.add(log);
             }
-            if (stringBuilder.length() > 0) {
-                logs.add(stringBuilder.toString());
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + "\n" + e.getCause());
+        } catch (EOFException ignored) {
+        } catch (IOException | ClassNotFoundException e) {
+//            System.out.println(e.getMessage() + "\n" + e.getCause());
+            e.printStackTrace();
         }
 
         return logs;
