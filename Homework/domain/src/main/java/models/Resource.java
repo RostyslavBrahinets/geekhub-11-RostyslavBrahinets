@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,7 +9,8 @@ public record Resource(
     ResourceType type,
     String data
 ) implements Serializable {
-    private static final int serialVersionUID = 5;
+    @Serial
+    private static final long serialVersionUID = 5L;
 
     @Override
     public boolean equals(Object o) {

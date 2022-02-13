@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,8 @@ public record Person(
     String gitHubNickname,
     Role role
 ) implements Serializable {
-    private static final int serialVersionUID = 4;
+    @Serial
+    private static final long serialVersionUID = 4L;
 
     @Override
     public boolean equals(Object o) {

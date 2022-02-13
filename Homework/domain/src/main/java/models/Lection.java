@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +14,8 @@ public record Lection(
     List<HomeWork> homeWorks,
     LocalDate creationDate
 ) implements Serializable {
-    private static final int serialVersionUID = 3;
+    @Serial
+    private static final long serialVersionUID = 3L;
 
     @Override
     public boolean equals(Object o) {
