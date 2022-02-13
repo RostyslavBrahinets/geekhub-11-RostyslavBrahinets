@@ -11,11 +11,6 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = "/*")
 public class AuthorisationFilter implements Filter {
-
-    @Override
-    public void init(FilterConfig filterConfig) {
-    }
-
     @Override
     public void doFilter(
         ServletRequest servletRequest,
@@ -38,9 +33,5 @@ public class AuthorisationFilter implements Filter {
         } else {
             response.sendRedirect(request.getContextPath() + "/auth");
         }
-    }
-
-    @Override
-    public void destroy() {
     }
 }

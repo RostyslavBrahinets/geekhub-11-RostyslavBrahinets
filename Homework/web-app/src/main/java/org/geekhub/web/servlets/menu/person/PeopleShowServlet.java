@@ -17,8 +17,8 @@ import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMET
 public class PeopleShowServlet extends HttpServlet {
     @Override
     protected void doGet(
-        HttpServletRequest request,
-        HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws IOException {
         showMenu(response);
     }
@@ -45,25 +45,25 @@ public class PeopleShowServlet extends HttpServlet {
             writer.write("<h1>Do you want add new person?<h1>");
             writer.write("<form action=\"add\" method=\"get\">");
             writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                + "\" value=\"Add new\"></br></br>");
+                    + "\" value=\"Add new\"></br></br>");
             writer.write("</form>");
         }
     }
 
     private void showMenuIfPeopleFound(
-        List<Person> people,
-        HttpServletResponse response
+            List<Person> people,
+            HttpServletResponse response
     ) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<h1>People:</h1><ul>");
             for (Person person : people) {
                 writer.write("<li>"
-                    + person.firstName() + ": "
-                    + person.lastName() + ", "
-                    + person.contacts() + ", "
-                    + person.gitHubNickname() + ", "
-                    + person.role()
-                    + "</li>");
+                        + person.firstName() + ": "
+                        + person.lastName() + ", "
+                        + person.contacts() + ", "
+                        + person.gitHubNickname() + ", "
+                        + person.role()
+                        + "</li>");
             }
             writer.write("<ul>");
         }

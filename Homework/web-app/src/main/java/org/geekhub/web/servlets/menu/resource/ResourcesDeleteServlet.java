@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.resource;
 
 import exceptions.NotFoundException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.ResourceService;
 
@@ -62,7 +63,9 @@ public class ResourcesDeleteServlet extends HttpServlet {
                     throw new NotFoundException("Resource not found");
                 }
                 resourceService.deleteResource(Integer.parseInt(id));
-            } catch (NotFoundException e) {
+            } catch (NotFoundException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
             writer.write("<h1>Resource with id '" + id + "' deleted</h1>");

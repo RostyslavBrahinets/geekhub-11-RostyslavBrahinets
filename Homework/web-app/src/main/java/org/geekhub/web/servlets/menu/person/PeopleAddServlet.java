@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.person;
 
 import exceptions.ValidationException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.PersonService;
 
@@ -88,7 +89,9 @@ public class PeopleAddServlet extends HttpServlet {
             writer.write("<html><head><title>People Add</title></head><body>");
             try {
                 personService.addPerson(firstName, lastName, contacts, nickName, role.toUpperCase());
-            } catch (ValidationException e) {
+            } catch (ValidationException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
             writer.write("<h1>Person with name '" + firstName + "' added</h1>");

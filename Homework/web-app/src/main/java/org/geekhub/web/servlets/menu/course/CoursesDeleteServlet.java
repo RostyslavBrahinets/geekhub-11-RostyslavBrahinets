@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.course;
 
 import exceptions.NotFoundException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.CourseService;
 
@@ -62,7 +63,9 @@ public class CoursesDeleteServlet extends HttpServlet {
                     throw new NotFoundException("Course not found");
                 }
                 courseService.deleteCourse(Integer.parseInt(id));
-            } catch (NotFoundException e) {
+            } catch (NotFoundException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
             writer.write("<h1>Course with id '" + id + "' deleted</h1>");

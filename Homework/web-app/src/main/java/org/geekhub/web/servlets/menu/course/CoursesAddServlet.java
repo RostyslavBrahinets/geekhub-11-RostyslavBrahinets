@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.course;
 
 import exceptions.ValidationException;
+import logger.Logger;
 import models.Lection;
 import models.Person;
 import org.geekhub.web.servlets.menu.MenuCommand;
@@ -70,7 +71,9 @@ public class CoursesAddServlet extends HttpServlet {
             writer.write("<html><head><title>Courses Add</title></head><body>");
             try {
                 courseService.addCourse(name, lectionsOfCourse, studentsOfCourse);
-            } catch (ValidationException e) {
+            } catch (ValidationException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
             writer.write("<h1>Course with name '" + name + "' added</h1>");

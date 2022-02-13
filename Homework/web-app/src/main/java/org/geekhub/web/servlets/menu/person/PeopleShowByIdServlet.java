@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.person;
 
 import exceptions.NotFoundException;
+import logger.Logger;
 import models.Person;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.PersonService;
@@ -66,7 +67,9 @@ public class PeopleShowByIdServlet extends HttpServlet {
                     throw new NotFoundException("Person not found");
                 }
                 person = personService.getPerson(Integer.parseInt(id));
-            } catch (NotFoundException e) {
+            } catch (NotFoundException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
 

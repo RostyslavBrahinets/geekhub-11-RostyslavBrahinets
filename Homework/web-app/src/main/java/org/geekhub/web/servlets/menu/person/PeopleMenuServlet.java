@@ -1,5 +1,7 @@
 package org.geekhub.web.servlets.menu.person;
 
+import exceptions.NotFoundException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +26,13 @@ public class PeopleMenuServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        MenuCommand.handleCommands(request, response);
+        try {
+            MenuCommand.handleCommands(request, response);
+        } catch (NotFoundException e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(

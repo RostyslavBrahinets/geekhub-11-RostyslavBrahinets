@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.resource;
 
 import exceptions.ValidationException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.ResourceService;
 
@@ -75,7 +76,9 @@ public class ResourcesAddServlet extends HttpServlet {
             writer.write("<html><head><title>Resources Add</title></head><body>");
             try {
                 resourceService.addResource(name, type.toUpperCase(), data);
-            } catch (ValidationException e) {
+            } catch (ValidationException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
             writer.write("<h1>Resource with name '" + name + "' added</h1>");

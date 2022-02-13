@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.lection;
 
 import exceptions.NotFoundException;
+import logger.Logger;
 import models.Lection;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.LectionService;
@@ -66,7 +67,9 @@ public class LectionsShowByIdServlet extends HttpServlet {
                     throw new NotFoundException("Lection not found");
                 }
                 lection = lectionService.getLection(Integer.parseInt(id));
-            } catch (NotFoundException e) {
+            } catch (NotFoundException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
 

@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.homework;
 
 import exceptions.ValidationException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.HomeWorkService;
 
@@ -79,7 +80,9 @@ public class HomeWorksAddServlet extends HttpServlet {
             writer.write("<html><head><title>Home Works Add</title></head><body>");
             try {
                 homeWorkService.addHomeWork(task, LocalDateTime.parse(date + "T" + time));
-            } catch (ValidationException | DateTimeParseException e) {
+            } catch (ValidationException | DateTimeParseException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
             writer.write("<h1>Home work with task '" + task + "' added</h1>");

@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.lection;
 
 import exceptions.ValidationException;
+import logger.Logger;
 import models.HomeWork;
 import models.Person;
 import models.Resource;
@@ -87,7 +88,9 @@ public class LectionsAddServlet extends HttpServlet {
                     name, describe, resources,
                     new Person(lecturer, "LastName", List.of(), "Nickname", Role.TEACHER),
                     homeWorks);
-            } catch (ValidationException e) {
+            } catch (ValidationException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
             writer.write("<h1>Lection with name '" + name + "' added</h1>");

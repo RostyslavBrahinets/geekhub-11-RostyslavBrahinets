@@ -1,18 +1,15 @@
 package org.geekhub.web.servlets.menu.course;
 
-import org.geekhub.web.servlets.RequestParameter;
+import exceptions.NotFoundException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
-import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @WebServlet(urlPatterns = "/menu/courses")
 public class CoursesMenuServlet extends HttpServlet {
@@ -29,7 +26,13 @@ public class CoursesMenuServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        MenuCommand.handleCommands(request, response);
+        try {
+            MenuCommand.handleCommands(request, response);
+        } catch (NotFoundException e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(

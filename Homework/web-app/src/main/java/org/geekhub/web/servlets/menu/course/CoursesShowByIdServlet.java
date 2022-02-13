@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.course;
 
 import exceptions.NotFoundException;
+import logger.Logger;
 import models.Course;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.CourseService;
@@ -66,7 +67,9 @@ public class CoursesShowByIdServlet extends HttpServlet {
                     throw new NotFoundException("Course not found");
                 }
                 course = courseService.getCourse(Integer.parseInt(id));
-            } catch (NotFoundException e) {
+            } catch (NotFoundException | IllegalArgumentException e) {
+                Logger logger = new Logger();
+                logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
 

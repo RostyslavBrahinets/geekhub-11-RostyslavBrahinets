@@ -1,5 +1,6 @@
 package org.geekhub.web.servlets.menu.resource;
 
+import exceptions.NotFoundException;
 import org.geekhub.web.servlets.menu.MenuCommand;
 
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,11 @@ public class ResourcesMenuServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        MenuCommand.handleCommands(request, response);
+        try {
+            MenuCommand.handleCommands(request, response);
+        } catch (NotFoundException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(

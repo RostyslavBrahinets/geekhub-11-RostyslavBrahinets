@@ -1,5 +1,7 @@
 package org.geekhub.web.servlets.menu;
 
+import exceptions.NotFoundException;
+import logger.Logger;
 import org.geekhub.web.servlets.RequestParameter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-import static org.geekhub.web.servlets.SessionAttributes.*;
+import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
+import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 public class MenuCommand {
     private MenuCommand() {
@@ -56,7 +59,7 @@ public class MenuCommand {
             case "Add new" -> response.sendRedirect(request.getRequestURI() + "/add");
             case "Delete by id" -> response.sendRedirect(request.getRequestURI() + "/delete");
             case "Show by id" -> response.sendRedirect(request.getRequestURI() + "/show-by-id");
-            default -> response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Command Not Found");
+            default -> throw new NotFoundException("Command not found");
         }
     }
 
@@ -70,6 +73,8 @@ public class MenuCommand {
             RequestParameter requestParameter = new RequestParameter();
             optionalId = requestParameter.extractParameter(parameter, request);
         } catch (IllegalArgumentException e) {
+            Logger logger = new Logger();
+            logger.error(MenuCommand.class.getSimpleName(), e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
         return optionalId.orElse("");
