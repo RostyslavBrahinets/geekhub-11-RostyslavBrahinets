@@ -1,5 +1,7 @@
 package org.geekhub.web.servlets.error;
 
+import logger.Logger;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,9 @@ public class ErrorHandlerServlet extends HttpServlet {
             writer.write("<li>Status code: " + request.getAttribute(ERROR_STATUS_CODE) + "</li>");
             writer.write("</body></html>");
             writer.flush();
+
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), (String) request.getAttribute(ERROR_MESSAGE));
         }
     }
 }
