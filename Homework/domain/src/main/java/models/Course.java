@@ -5,13 +5,26 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public record Course(
-    String name,
-    List<Lection> lections,
-    List<Person> students
-) implements Serializable {
+public final class Course implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+    private int id;
+    private String name;
+    private List<Lection> lections;
+    private List<Person> students;
+
+    public Course() {
+    }
+
+    public Course(
+        String name,
+        List<Lection> lections,
+        List<Person> students
+    ) {
+        this.name = name;
+        this.lections = lections;
+        this.students = students;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -36,4 +49,21 @@ public record Course(
             + ", students: " + students
             + '}';
     }
+
+    public int id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public List<Lection> lections() {
+        return lections;
+    }
+
+    public List<Person> students() {
+        return students;
+    }
+
 }

@@ -4,13 +4,26 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-public record Resource(
-    String name,
-    ResourceType type,
-    String data
-) implements Serializable {
+public final class Resource implements Serializable {
     @Serial
     private static final long serialVersionUID = 5L;
+    private int id;
+    private String name;
+    private ResourceType type;
+    private String data;
+
+    public Resource() {
+    }
+
+    public Resource(
+        String name,
+        ResourceType type,
+        String data
+    ) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -33,4 +46,21 @@ public record Resource(
             + ", data: '" + data + '\''
             + '}';
     }
+
+    public int id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public ResourceType type() {
+        return type;
+    }
+
+    public String data() {
+        return data;
+    }
+
 }

@@ -10,6 +10,7 @@ public class Log implements Serializable {
     @Serial
     private static final long serialVersionUID = 6L;
 
+    private int id;
     private final LogType type;
     private final String className;
     private final String message;

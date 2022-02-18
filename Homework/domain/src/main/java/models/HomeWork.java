@@ -6,12 +6,23 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public record HomeWork(
-    String task,
-    LocalDateTime deadLine
-) implements Serializable {
+public final class HomeWork implements Serializable {
     @Serial
     private static final long serialVersionUID = 2L;
+    private int id;
+    private String task;
+    private LocalDateTime deadLine;
+
+    public HomeWork() {
+    }
+
+    public HomeWork(
+        String task,
+        LocalDateTime deadLine
+    ) {
+        this.task = task;
+        this.deadLine = deadLine;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -34,4 +45,17 @@ public record HomeWork(
             + "deadLine: '" + deadLine.format(formatter)
             + '}';
     }
+
+    public int id() {
+        return id;
+    }
+
+    public String task() {
+        return task;
+    }
+
+    public LocalDateTime deadLine() {
+        return deadLine;
+    }
+
 }
