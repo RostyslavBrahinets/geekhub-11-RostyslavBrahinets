@@ -3,6 +3,8 @@ package menu;
 import exceptions.NotFoundException;
 import logger.LogType;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MainMenu extends Menu {
@@ -11,7 +13,7 @@ public class MainMenu extends Menu {
     }
 
     @Override
-    public void runMenu() {
+    public void runMenu() throws SQLException, IOException {
         showMainMenu();
     }
 
@@ -22,7 +24,7 @@ public class MainMenu extends Menu {
         return scanner.nextLine();
     }
 
-    private void showMainMenu() {
+    private void showMainMenu() throws SQLException, IOException {
         System.out.println(
             """
 

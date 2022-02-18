@@ -2,6 +2,8 @@ package menu;
 
 import logger.Logger;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -21,7 +23,7 @@ public abstract class Menu {
         scanner.close();
     }
 
-    protected abstract void runMenu();
+    protected abstract void runMenu() throws SQLException, IOException;
 
     protected String getCommand() {
         System.out.print("\nInput command (1-4): ");

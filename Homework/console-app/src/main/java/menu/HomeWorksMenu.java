@@ -5,13 +5,15 @@ import exceptions.ValidationException;
 import models.HomeWork;
 import services.HomeWorkService;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class HomeWorksMenu extends Menu {
     private final HomeWorkService homeWorkService = new HomeWorkService();
 
-    public HomeWorksMenu() {
+    public HomeWorksMenu() throws SQLException, IOException {
         super();
     }
 
@@ -39,13 +41,18 @@ public class HomeWorksMenu extends Menu {
     }
 
     private void showHomeWorks() {
-        List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
-        for (HomeWork homeWork : homeWorks) {
-            System.out.printf(
-                "%s: %s%n",
-                homeWork.task(),
-                homeWork.deadLine()
-            );
+        List<HomeWork> homeWorks;
+        try {
+            homeWorks = homeWorkService.getHomeWorks();
+            for (HomeWork homeWork : homeWorks) {
+                System.out.printf(
+                    "%s: %s%n",
+                    homeWork.task(),
+                    homeWork.deadline()
+                );
+            }
+        } catch (SQLException e) {
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
@@ -58,7 +65,7 @@ public class HomeWorksMenu extends Menu {
                 String task = getFromScanner();
                 homeWorkService.addHomeWork(task, getDeadLine());
             }
-        } catch (ValidationException e) {
+        } catch (ValidationException | SQLException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -66,7 +73,7 @@ public class HomeWorksMenu extends Menu {
     private void deleteHomeWork() {
         try {
             homeWorkService.deleteHomeWork(getId());
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -77,9 +84,9 @@ public class HomeWorksMenu extends Menu {
             homeWork.ifPresent(work -> System.out.printf(
                 "%s: %s%n",
                 work.task(),
-                work.deadLine()
+                work.deadline()
             ));
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

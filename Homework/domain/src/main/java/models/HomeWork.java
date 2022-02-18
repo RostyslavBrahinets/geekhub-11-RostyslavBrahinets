@@ -11,17 +11,27 @@ public final class HomeWork implements Serializable {
     private static final long serialVersionUID = 2L;
     private int id;
     private String task;
-    private LocalDateTime deadLine;
+    private LocalDateTime deadline;
 
     public HomeWork() {
     }
 
     public HomeWork(
         String task,
-        LocalDateTime deadLine
+        LocalDateTime deadline
     ) {
         this.task = task;
-        this.deadLine = deadLine;
+        this.deadline = deadline;
+    }
+
+    public HomeWork(
+        int id,
+        String task,
+        LocalDateTime deadline
+    ) {
+        this.id = id;
+        this.task = task;
+        this.deadline = deadline;
     }
 
     @Override
@@ -29,20 +39,21 @@ public final class HomeWork implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HomeWork homeWork = (HomeWork) o;
-        return Objects.equals(task, homeWork.task) && Objects.equals(deadLine, homeWork.deadLine);
+        return Objects.equals(task, homeWork.task) && Objects.equals(deadline, homeWork.deadline);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(task, deadLine);
+        return Objects.hash(task, deadline);
     }
 
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         return "HomeWork {"
-            + "task: '" + task + '\''
-            + "deadLine: '" + deadLine.format(formatter)
+            + "id: '" + id + "'\t"
+            + "task: '" + task + "'\t"
+            + "deadLine: '" + deadline.format(formatter) + "'"
             + '}';
     }
 
@@ -54,8 +65,7 @@ public final class HomeWork implements Serializable {
         return task;
     }
 
-    public LocalDateTime deadLine() {
-        return deadLine;
+    public LocalDateTime deadline() {
+        return deadline;
     }
-
 }

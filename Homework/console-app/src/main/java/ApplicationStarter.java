@@ -3,6 +3,9 @@ import logger.Logger;
 import menu.LoggerMenu;
 import menu.MainMenu;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class ApplicationStarter {
     static Logger logger;
 
@@ -24,7 +27,7 @@ public class ApplicationStarter {
             try {
                 MainMenu mainMenu = new MainMenu();
                 mainMenu.runMenu();
-            } catch (NotFoundException e) {
+            } catch (NotFoundException | SQLException | IOException e) {
                 logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
             }
         }

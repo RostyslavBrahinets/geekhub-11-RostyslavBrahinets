@@ -1,5 +1,6 @@
 package org.geekhub.web.servlets.menu.homework;
 
+import logger.Logger;
 import models.HomeWork;
 import services.HomeWorkService;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
@@ -29,18 +31,21 @@ public class HomeWorksShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        HomeWorkService homeWorkService = new HomeWorkService();
-        List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
-
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Home Works Show</title></head><body>");
+            HomeWorkService homeWorkService = new HomeWorkService();
+            List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
             if (homeWorks.size() == 0) {
                 showMenuIfHomeWorksNotFound(request, response);
                 return;
             }
             showMenuIfHomeWorksFound(homeWorks, response);
             writer.write("</body></html>");
+        } catch (SQLException e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
@@ -73,7 +78,7 @@ public class HomeWorksShowServlet extends HttpServlet {
             for (HomeWork homeWork : homeWorks) {
                 writer.write("<li>"
                     + homeWork.task() + " ["
-                    + homeWork.deadLine()
+                    + homeWork.deadline()
                     + "]</li>");
             }
             writer.write("<ul>");

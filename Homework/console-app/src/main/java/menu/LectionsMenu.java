@@ -11,6 +11,8 @@ import services.LectionService;
 import services.PersonService;
 import services.ResourceService;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -103,7 +105,7 @@ public class LectionsMenu extends Menu {
 
                 lecturer.ifPresent(person -> lectionService.addLection(name, describe, resources, person, homeWorks));
             }
-        } catch (ValidationException e) {
+        } catch (ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

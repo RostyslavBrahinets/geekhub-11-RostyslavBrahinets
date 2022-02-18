@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
@@ -73,14 +74,17 @@ public class HomeWorksAddServlet extends HttpServlet {
         String time,
         HttpServletResponse response
     ) throws IOException {
-        HomeWorkService homeWorkService = new HomeWorkService();
-
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Home Works Add</title></head><body>");
             try {
+                HomeWorkService homeWorkService = new HomeWorkService();
                 homeWorkService.addHomeWork(task, LocalDateTime.parse(date + "T" + time));
-            } catch (ValidationException | DateTimeParseException | IllegalArgumentException e) {
+            } catch (ValidationException
+                | DateTimeParseException
+                | IllegalArgumentException
+                | SQLException e
+            ) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
