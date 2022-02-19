@@ -1,39 +1,84 @@
 package repository;
 
+import models.HomeWork;
 import models.Lection;
+import models.Person;
 
+import java.io.IOException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class LectionRepository {
     private static LectionRepository instance;
-    private final List<Lection> lections = new ArrayList<>();
+    private final Connection connection;
 
-    private LectionRepository() {
+    private LectionRepository() throws SQLException, IOException {
+        connection = Connector.getConnection();
     }
 
-    public List<Lection> getLections() {
-        return lections;
-    }
-
-    public void addLection(Lection lection) {
-        lections.add(lection);
-    }
-
-    public void deleteLection(int id) {
-        lections.remove(id);
-    }
-
-    public Optional<Lection> getLection(int id) {
-        return Optional.ofNullable(lections.get(id));
-    }
-
-    public static LectionRepository getInstance() {
+    public static LectionRepository getInstance() throws SQLException, IOException {
         if (instance == null) {
             instance = new LectionRepository();
         }
 
         return instance;
+    }
+
+    public List<Lection> getLections() throws SQLException {
+        List<Lection> lections = new ArrayList<>();
+
+        Statement statement = connection.createStatement();
+        String sql = "select * from lection";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            Lection lection = new Lection(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("describe"),
+                List.of(),
+                new Person(),
+                List.of(),
+                /*resultSet.getInt("resource_id"),
+                resultSet.getInt("person_id"),
+                resultSet.getInt("homework_id"),*/
+                LocalDate.now()
+            );
+            lections.add(lection);
+        }
+
+        return lections;
+    }
+
+    public void addLection(Lection lection) throws SQLException {
+        String sql = "insert into lection("
+            + "name, describe, resource_id, person_id, homework_id)"
+            + "values (?,?,?,?,?)";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, lection.name());
+        preparedStatement.setString(2, lection.describe());
+        preparedStatement.setInt(3, 1);
+        preparedStatement.setInt(4, 1);
+        preparedStatement.setInt(5, 1);
+//        preparedStatement.setInt(3, lection.resources());
+//        preparedStatement.setInt(4, lection.lecturer());
+//        preparedStatement.setInt(5, lection.homeWorks());
+        preparedStatement.execute();
+    }
+
+    public void deleteLection(int id) throws SQLException {
+        String sql = "delete from lection where id=?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        preparedStatement.execute();
+    }
+
+    public Optional<Lection> getLection(int id) throws SQLException {
+        return Optional.ofNullable(getLections().get(id));
     }
 }
