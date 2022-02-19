@@ -6,6 +6,8 @@ import exceptions.ValidationException;
 import models.Role;
 import repository.PersonRepository;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class PersonValidator {
@@ -24,7 +26,7 @@ public class PersonValidator {
         }
     }
 
-    public void validate(int id) {
+    public void validate(int id) throws SQLException, IOException {
         PersonRepository personSource = PersonRepository.getInstance();
         if (id < 0 || id >= personSource.getPeople().size()) {
             throw new NotFoundException("Person not found");

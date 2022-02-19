@@ -6,18 +6,21 @@ import exceptions.ValidationException;
 import models.Person;
 import services.PersonService;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class PeopleMenu extends Menu {
-    private final PersonService personService = new PersonService();
+    private final PersonService personService;
 
-    public PeopleMenu() {
+    public PeopleMenu() throws SQLException, IOException {
         super();
+        personService = new PersonService();
     }
 
     @Override
-    public void runMenu() {
+    public void runMenu() throws SQLException {
         System.out.println(
             """
 
@@ -39,7 +42,7 @@ public class PeopleMenu extends Menu {
         }
     }
 
-    private void showPeople() {
+    private void showPeople() throws SQLException {
         List<Person> people = personService.getPeople();
         for (Person person : people) {
             System.out.printf(
@@ -69,7 +72,7 @@ public class PeopleMenu extends Menu {
                 String role = getFromScanner().toUpperCase();
                 personService.addPerson(firstName, lastName, contacts, nickname, role);
             }
-        } catch (InvalidArgumentException | ValidationException e) {
+        } catch (InvalidArgumentException | ValidationException | SQLException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -77,7 +80,7 @@ public class PeopleMenu extends Menu {
     private void deletePerson() {
         try {
             personService.deletePerson(getId());
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -93,7 +96,7 @@ public class PeopleMenu extends Menu {
                 value.gitHubNickname(),
                 value.role()
             ));
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

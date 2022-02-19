@@ -1,5 +1,6 @@
 package org.geekhub.web.servlets.menu.person;
 
+import logger.Logger;
 import models.Person;
 import services.PersonService;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
@@ -22,13 +24,19 @@ public class PeopleShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        showMenu(request, response);
+        try {
+            showMenu(request, response);
+        } catch (SQLException e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(
         HttpServletRequest request,
         HttpServletResponse response
-    ) throws IOException {
+    ) throws IOException, SQLException {
         PersonService personService = new PersonService();
         List<Person> people = personService.getPeople();
 
