@@ -6,28 +6,31 @@ import exceptions.ValidationException;
 import models.Resource;
 import services.ResourceService;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class ResourcesMenu extends Menu {
-    private final ResourceService resourceService = new ResourceService();
+    private final ResourceService resourceService;
 
-    public ResourcesMenu() {
+    public ResourcesMenu() throws SQLException, IOException {
         super();
+        resourceService = new ResourceService();
     }
 
     @Override
-    public void runMenu() {
+    public void runMenu() throws SQLException {
         System.out.println(
-            """
+                """
 
-                ###################################
+                        ###################################
 
-                Resources Menu
-                1 - Show Resources
-                2 - Add Resource
-                3 - Delete Resource
-                4 - Show Resource"""
+                        Resources Menu
+                        1 - Show Resources
+                        2 - Add Resource
+                        3 - Delete Resource
+                        4 - Show Resource"""
         );
 
         switch (getCommand()) {
@@ -39,14 +42,14 @@ public class ResourcesMenu extends Menu {
         }
     }
 
-    private void showResources() {
+    private void showResources() throws SQLException {
         List<Resource> resources = resourceService.getResources();
         for (Resource resource : resources) {
             System.out.printf(
-                "%s: %s, %s%n",
-                resource.name(),
-                resource.type(),
-                resource.data()
+                    "%s: %s, %s%n",
+                    resource.name(),
+                    resource.type(),
+                    resource.data()
             );
         }
 
@@ -65,7 +68,7 @@ public class ResourcesMenu extends Menu {
                 String data = getFromScanner();
                 resourceService.addResource(name, type, data);
             }
-        } catch (InvalidArgumentException | ValidationException e) {
+        } catch (InvalidArgumentException | ValidationException | SQLException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -73,7 +76,7 @@ public class ResourcesMenu extends Menu {
     private void deleteResource() {
         try {
             resourceService.deleteResource(getId());
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -82,12 +85,12 @@ public class ResourcesMenu extends Menu {
         try {
             Optional<Resource> resource = resourceService.getResource(getId());
             resource.ifPresent(value -> System.out.printf(
-                "%s: %s, %s%n",
-                value.name(),
-                value.type(),
-                value.data()
+                    "%s: %s, %s%n",
+                    value.name(),
+                    value.type(),
+                    value.data()
             ));
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

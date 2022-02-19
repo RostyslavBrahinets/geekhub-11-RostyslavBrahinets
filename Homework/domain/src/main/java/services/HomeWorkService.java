@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class HomeWorkService {
-    private final HomeWorkRepository homeWorkRepository = HomeWorkRepository.getInstance();
-    private final HomeWorkValidator validator = new HomeWorkValidator();
+    private final HomeWorkRepository homeWorkRepository;
+    private final HomeWorkValidator validator;
 
     public HomeWorkService() throws SQLException, IOException {
+        homeWorkRepository = HomeWorkRepository.getInstance();
+        validator = new HomeWorkValidator();
     }
 
     public List<HomeWork> getHomeWorks() throws SQLException {

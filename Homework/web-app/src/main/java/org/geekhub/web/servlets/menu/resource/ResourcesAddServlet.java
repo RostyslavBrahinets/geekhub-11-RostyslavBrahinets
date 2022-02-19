@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import static org.geekhub.web.servlets.SessionAttributes.*;
 
@@ -69,14 +70,13 @@ public class ResourcesAddServlet extends HttpServlet {
         String data,
         HttpServletResponse response
     ) throws IOException {
-        ResourceService resourceService = new ResourceService();
-
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Resources Add</title></head><body>");
             try {
+                ResourceService resourceService = new ResourceService();
                 resourceService.addResource(name, type.toUpperCase(), data);
-            } catch (ValidationException | IllegalArgumentException e) {
+            } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());

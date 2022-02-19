@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class HomeWorksMenu extends Menu {
-    private final HomeWorkService homeWorkService = new HomeWorkService();
+    private final HomeWorkService homeWorkService;
 
     public HomeWorksMenu() throws SQLException, IOException {
         super();
+        homeWorkService = new HomeWorkService();
     }
 
     @Override
