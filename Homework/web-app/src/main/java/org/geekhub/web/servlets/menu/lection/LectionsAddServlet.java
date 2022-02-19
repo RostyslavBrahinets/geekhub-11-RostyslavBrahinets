@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.*;
@@ -78,17 +79,16 @@ public class LectionsAddServlet extends HttpServlet {
         List<HomeWork> homeWorks,
         HttpServletResponse response
     ) throws IOException {
-        LectionService lectionService = new LectionService();
-
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Lections Add</title></head><body>");
             try {
+                LectionService lectionService = new LectionService();
                 lectionService.addLection(
                     name, describe, resources,
                     new Person(lecturer, "LastName", List.of(), "Nickname", Role.TEACHER),
                     homeWorks);
-            } catch (ValidationException | IllegalArgumentException e) {
+            } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());

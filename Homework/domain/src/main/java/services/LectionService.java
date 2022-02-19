@@ -7,6 +7,8 @@ import models.Resource;
 import repository.LectionRepository;
 import validators.LectionValidator;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -15,42 +17,60 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class LectionService {
-    private final LectionRepository lectionRepository = LectionRepository.getInstance();
-    private final LectionValidator validator = new LectionValidator();
+    private final LectionRepository lectionRepository;
+    private final LectionValidator validator;
 
-    public List<Lection> getLections() {
+    public LectionService() throws SQLException, IOException {
+        lectionRepository = LectionRepository.getInstance();
+        validator = new LectionValidator();
+    }
+
+    public List<Lection> getLections() throws SQLException {
         return lectionRepository.getLections();
     }
 
-    public void addLection(String name, String describe, List<Resource> resources, Person lecturer,
-                           List<HomeWork> homeWorks) {
+    public void addLection(
+        String name,
+        String describe,
+        List<Resource> resources,
+        Person lecturer,
+        List<HomeWork> homeWorks
+    ) throws SQLException {
         validator.validate(name, describe, resources, lecturer, homeWorks);
-        lectionRepository.addLection(new Lection(name, describe, resources, lecturer, homeWorks, LocalDate.now()));
+        lectionRepository.addLection(
+            new Lection(
+                name,
+                describe,
+                resources,
+                lecturer,
+                homeWorks,
+                LocalDate.now())
+        );
     }
 
-    public void deleteLection(int id) {
+    public void deleteLection(int id) throws SQLException, IOException {
         validator.validate(id);
         lectionRepository.deleteLection(id);
     }
 
-    public Optional<Lection> getLection(int id) {
+    public Optional<Lection> getLection(int id) throws SQLException, IOException {
         validator.validate(id);
         return lectionRepository.getLection(id);
     }
 
-    public Map<String, List<Resource>> getResourcesGroupedByLecture() {
+    public Map<String, List<Resource>> getResourcesGroupedByLecture() throws SQLException {
         return lectionRepository.getLections()
             .stream()
             .collect(Collectors.toMap(Lection::name, Lection::resources));
     }
 
-    public Map<String, List<HomeWork>> getHomeWorksGroupedByLecture() {
+    public Map<String, List<HomeWork>> getHomeWorksGroupedByLecture() throws SQLException {
         return lectionRepository.getLections()
             .stream()
             .collect(Collectors.toMap(Lection::name, Lection::homeWorks));
     }
 
-    public List<Lection> getLectionsSortedByDateASC() {
+    public List<Lection> getLectionsSortedByDateASC() throws SQLException {
         List<Lection> lections = lectionRepository.getLections();
         List<Lection> sortedLections;
 
@@ -61,7 +81,7 @@ public class LectionService {
         return sortedLections;
     }
 
-    public List<Lection> getLectionsSortedByDateDESC() {
+    public List<Lection> getLectionsSortedByDateDESC() throws SQLException {
         List<Lection> lections = lectionRepository.getLections();
         List<Lection> sortedLections;
 

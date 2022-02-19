@@ -18,15 +18,17 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class LectionsMenu extends Menu {
-    private final LectionService lectionService = new LectionService();
-    private final PersonService personService = new PersonService();
+    private final LectionService lectionService;
+    private final PersonService personService;
 
-    public LectionsMenu() {
+    public LectionsMenu() throws SQLException, IOException {
         super();
+        lectionService = new LectionService();
+        personService = new PersonService();
     }
 
     @Override
-    public void runMenu() {
+    public void runMenu() throws SQLException {
         System.out.println(
             """
 
@@ -103,7 +105,13 @@ public class LectionsMenu extends Menu {
                 List<Resource> resources = resourceService.getResources();
                 List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
 
-                lecturer.ifPresent(person -> lectionService.addLection(name, describe, resources, person, homeWorks));
+                lecturer.ifPresent(person -> {
+                    try {
+                        lectionService.addLection(name, describe, resources, person, homeWorks);
+                    } catch (SQLException e) {
+                        logger.error(getClass().getName(), e.getMessage(), e);
+                    }
+                });
             }
         } catch (ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
@@ -113,7 +121,7 @@ public class LectionsMenu extends Menu {
     private void deleteLection() {
         try {
             lectionService.deleteLection(getId());
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -130,12 +138,12 @@ public class LectionsMenu extends Menu {
                 value.lecturer().lastName(),
                 value.homeWorks()
             ));
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
-    private void showResourcesGroupedByLection() {
+    private void showResourcesGroupedByLection() throws SQLException {
         List<Lection> lections = lectionService.getLections();
         for (Lection lection : lections) {
             System.out.printf(
@@ -146,7 +154,7 @@ public class LectionsMenu extends Menu {
         }
     }
 
-    private void showHomeWorksGroupedByLection() {
+    private void showHomeWorksGroupedByLection() throws SQLException {
         List<Lection> lections = lectionService.getLections();
         for (Lection lection : lections) {
             System.out.printf(
@@ -157,7 +165,7 @@ public class LectionsMenu extends Menu {
         }
     }
 
-    private Optional<Person> getLecturer() {
+    private Optional<Person> getLecturer() throws SQLException, IOException {
         PeopleMenu peopleMenu = new PeopleMenu();
         peopleMenu.addPerson();
         return personService.getPerson(0);
