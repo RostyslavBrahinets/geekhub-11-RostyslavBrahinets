@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import static org.geekhub.web.servlets.SessionAttributes.ID_SESSION_PARAMETER;
 
@@ -53,8 +54,6 @@ public class CoursesDeleteServlet extends HttpServlet {
     }
 
     private void deleteCourse(String id, HttpServletResponse response) throws IOException {
-        CourseService courseService = new CourseService();
-
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Courses Delete</title></head><body>");
@@ -62,8 +61,9 @@ public class CoursesDeleteServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Course not found");
                 }
+                CourseService courseService = new CourseService();
                 courseService.deleteCourse(Integer.parseInt(id));
-            } catch (NotFoundException | IllegalArgumentException e) {
+            } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());

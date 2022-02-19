@@ -9,18 +9,21 @@ import services.CourseService;
 import services.LectionService;
 import services.PersonService;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class CoursesMenu extends Menu {
-    private final CourseService courseService = new CourseService();
+    private final CourseService courseService;
 
-    public CoursesMenu() {
+    public CoursesMenu() throws SQLException, IOException {
         super();
+        courseService = new CourseService();
     }
 
     @Override
-    public void runMenu() {
+    public void runMenu() throws SQLException {
         System.out.println(
             """
 
@@ -42,7 +45,7 @@ public class CoursesMenu extends Menu {
         }
     }
 
-    private void showCourses() {
+    private void showCourses() throws SQLException {
         List<Course> courses = courseService.getCourses();
         for (Course course : courses) {
             System.out.printf(
@@ -69,7 +72,7 @@ public class CoursesMenu extends Menu {
                     studentsOfCourse
                 );
             }
-        } catch (ValidationException e) {
+        } catch (ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -77,7 +80,7 @@ public class CoursesMenu extends Menu {
     private void deleteCourse() {
         try {
             courseService.deleteCourse(getId());
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -91,18 +94,18 @@ public class CoursesMenu extends Menu {
                 value.lections(),
                 value.students()
             ));
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
-    private List<Lection> getLectionsOfCourse() {
+    private List<Lection> getLectionsOfCourse() throws SQLException, IOException {
         LectionsMenu lectionsMenu = new LectionsMenu();
         lectionsMenu.addLection();
         return new LectionService().getLections();
     }
 
-    private List<Person> getStudentsOfCourse() {
+    private List<Person> getStudentsOfCourse() throws SQLException, IOException {
         PeopleMenu peopleMenu = new PeopleMenu();
         peopleMenu.addPerson();
         return new PersonService().getPeople();

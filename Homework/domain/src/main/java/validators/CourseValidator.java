@@ -6,6 +6,8 @@ import models.Lection;
 import models.Person;
 import repository.CourseRepository;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CourseValidator {
@@ -19,7 +21,7 @@ public class CourseValidator {
         }
     }
 
-    public void validate(int id) {
+    public void validate(int id) throws SQLException, IOException {
         CourseRepository courseSource = CourseRepository.getInstance();
         if (id < 0 || id >= courseSource.getCourses().size()) {
             throw new NotFoundException("Course not found");
