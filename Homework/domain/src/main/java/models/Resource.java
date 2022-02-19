@@ -25,6 +25,13 @@ public final class Resource implements Serializable {
         this.data = data;
     }
 
+    public Resource(int id, String name, ResourceType type, String data) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.data = data;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

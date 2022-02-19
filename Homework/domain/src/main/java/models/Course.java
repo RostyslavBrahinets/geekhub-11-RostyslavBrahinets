@@ -26,6 +26,18 @@ public final class Course implements Serializable {
         this.students = students;
     }
 
+    public Course(
+        int id,
+        String name,
+        List<Lection> lections,
+        List<Person> students
+    ) {
+        this.id = id;
+        this.name = name;
+        this.lections = lections;
+        this.students = students;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

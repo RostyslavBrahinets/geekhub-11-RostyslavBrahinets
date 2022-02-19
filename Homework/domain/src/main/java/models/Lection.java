@@ -36,6 +36,24 @@ public final class Lection implements Serializable {
         this.creationDate = creationDate;
     }
 
+    public Lection(
+        int id,
+        String name,
+        String describe,
+        List<Resource> resources,
+        Person lecturer,
+        List<HomeWork> homeWorks,
+        LocalDate creationDate
+    ) {
+        this.id = id;
+        this.name = name;
+        this.describe = describe;
+        this.resources = resources;
+        this.lecturer = lecturer;
+        this.homeWorks = homeWorks;
+        this.creationDate = creationDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

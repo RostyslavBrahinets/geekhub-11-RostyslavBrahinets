@@ -32,6 +32,22 @@ public final class Person implements Serializable {
         this.role = role;
     }
 
+    public Person(
+        int id,
+        String firstName,
+        String lastName,
+        List<String> contacts,
+        String gitHubNickname,
+        Role role
+    ) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.contacts = contacts;
+        this.gitHubNickname = gitHubNickname;
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
