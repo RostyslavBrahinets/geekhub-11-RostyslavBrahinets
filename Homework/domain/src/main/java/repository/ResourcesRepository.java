@@ -49,9 +49,9 @@ public class ResourcesRepository {
         String sql = "insert into resource(name, type, date) values (?,?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, resource.name());
-        preparedStatement.setString(2, String.valueOf(resource.type()));
-        preparedStatement.setString(3, resource.data());
+        preparedStatement.setString(1, resource.getName());
+        preparedStatement.setString(2, String.valueOf(resource.getType()));
+        preparedStatement.setString(3, resource.getData());
         preparedStatement.execute();
     }
 

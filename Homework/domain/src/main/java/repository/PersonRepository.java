@@ -54,12 +54,12 @@ public class PersonRepository {
             + "values (?,?,?,?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, person.firstName());
-        preparedStatement.setString(2, person.lastName());
+        preparedStatement.setString(1, person.getFirstName());
+        preparedStatement.setString(2, person.getLastName());
 //        preparedStatement.setInt(3, person.contacts());
         preparedStatement.setInt(3, 1);
-        preparedStatement.setString(4, person.gitHubNickname());
-        preparedStatement.setString(5, String.valueOf(person.role()));
+        preparedStatement.setString(4, person.getGitHubNickname());
+        preparedStatement.setString(5, String.valueOf(person.getRole()));
         preparedStatement.execute();
     }
 

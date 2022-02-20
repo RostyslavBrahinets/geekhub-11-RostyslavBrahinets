@@ -77,8 +77,8 @@ public class HomeWorksShowServlet extends HttpServlet {
             writer.write("<h1>Home Works:</h1><ul>");
             for (HomeWork homeWork : homeWorks) {
                 writer.write("<li>"
-                    + homeWork.task() + " ["
-                    + homeWork.deadline()
+                    + homeWork.getTask() + " ["
+                    + homeWork.getDeadline()
                     + "]</li>");
             }
             writer.write("<ul>");

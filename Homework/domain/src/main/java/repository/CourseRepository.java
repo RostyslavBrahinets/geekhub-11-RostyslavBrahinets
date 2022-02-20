@@ -50,7 +50,7 @@ public class CourseRepository {
         String sql = "insert into course(name, lection_id, student_id) values (?,?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, course.name());
+        preparedStatement.setString(1, course.getName());
         preparedStatement.setInt(2, 1);
         preparedStatement.setInt(3, 1);
 //        preparedStatement.setInt(2, course.lections()));

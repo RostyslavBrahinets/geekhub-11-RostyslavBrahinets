@@ -80,9 +80,9 @@ public class CoursesShowServlet extends HttpServlet {
             writer.write("<h1>Courses:</h1><ul>");
             for (Course course : courses) {
                 writer.write("<li>"
-                    + course.name() + ": "
-                    + course.lections() + ", "
-                    + course.students()
+                    + course.getName() + ": "
+                    + course.getLections() + ", "
+                    + course.getStudents()
                     + "</li>");
             }
             writer.write("<ul>");

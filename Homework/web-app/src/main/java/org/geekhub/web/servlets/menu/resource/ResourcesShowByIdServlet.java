@@ -76,9 +76,9 @@ public class ResourcesShowByIdServlet extends HttpServlet {
             resource.ifPresent(
                 value -> writer.write(
                     "<h3>"
-                        + value.name() + ": "
-                        + value.type() + ", "
-                        + value.data()
+                        + value.getName() + ": "
+                        + value.getType() + ", "
+                        + value.getData()
                         + "</h3>"
                 ));
 

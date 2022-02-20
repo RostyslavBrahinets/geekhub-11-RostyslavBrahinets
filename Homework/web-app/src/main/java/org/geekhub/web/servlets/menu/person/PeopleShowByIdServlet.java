@@ -76,11 +76,11 @@ public class PeopleShowByIdServlet extends HttpServlet {
             person.ifPresent(
                 value -> writer.write(
                     "<h3>"
-                        + value.firstName() + ": "
-                        + value.lastName() + ", "
-                        + value.contacts() + ", "
-                        + value.gitHubNickname() + ", "
-                        + value.role()
+                        + value.getFirstName() + ": "
+                        + value.getLastName() + ", "
+                        + value.getContacts() + ", "
+                        + value.getGitHubNickname() + ", "
+                        + value.getRole()
                         + "</h3>"
                 ));
 

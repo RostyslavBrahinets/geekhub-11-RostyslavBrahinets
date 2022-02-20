@@ -50,9 +50,9 @@ public class CoursesMenu extends Menu {
         for (Course course : courses) {
             System.out.printf(
                 "%s: %s, %s%n",
-                course.name(),
-                course.lections(),
-                course.students()
+                course.getName(),
+                course.getLections(),
+                course.getStudents()
             );
         }
     }
@@ -90,9 +90,9 @@ public class CoursesMenu extends Menu {
             Optional<Course> course = courseService.getCourse(getId());
             course.ifPresent(value -> System.out.printf(
                 "%s: %s, %s%n",
-                value.name(),
-                value.lections(),
-                value.students()
+                value.getName(),
+                value.getLections(),
+                value.getStudents()
             ));
         } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);

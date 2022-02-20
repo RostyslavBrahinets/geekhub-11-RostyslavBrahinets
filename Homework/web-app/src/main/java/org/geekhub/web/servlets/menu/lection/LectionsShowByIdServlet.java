@@ -76,12 +76,12 @@ public class LectionsShowByIdServlet extends HttpServlet {
             lection.ifPresent(
                 value -> writer.write(
                     "<h3>"
-                        + value.name() + ": "
-                        + value.describe() + ", "
-                        + value.resources() + ", "
-                        + value.lecturer().firstName() + ", "
-                        + value.homeWorks() + ", "
-                        + value.creationDate() + ", "
+                        + value.getName() + ": "
+                        + value.getDescribe() + ", "
+                        + value.getResources() + ", "
+                        + value.getLecturer().getFirstName() + ", "
+                        + value.getHomeWorks() + ", "
+                        + value.getCreationDate() + ", "
                         + "</h3>"
                 ));
 

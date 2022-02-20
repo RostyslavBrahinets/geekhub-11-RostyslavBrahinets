@@ -84,31 +84,31 @@ public final class Lection implements Serializable {
             + '}';
     }
 
-    public int id() {
+    public int getId() {
         return id;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
-    public String describe() {
+    public String getDescribe() {
         return describe;
     }
 
-    public List<Resource> resources() {
+    public List<Resource> getResources() {
         return resources;
     }
 
-    public Person lecturer() {
+    public Person getLecturer() {
         return lecturer;
     }
 
-    public List<HomeWork> homeWorks() {
+    public List<HomeWork> getHomeWorks() {
         return homeWorks;
     }
 
-    public LocalDate creationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 

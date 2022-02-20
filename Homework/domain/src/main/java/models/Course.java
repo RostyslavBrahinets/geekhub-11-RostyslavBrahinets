@@ -62,19 +62,19 @@ public final class Course implements Serializable {
             + '}';
     }
 
-    public int id() {
+    public int getId() {
         return id;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
-    public List<Lection> lections() {
+    public List<Lection> getLections() {
         return lections;
     }
 
-    public List<Person> students() {
+    public List<Person> getStudents() {
         return students;
     }
 

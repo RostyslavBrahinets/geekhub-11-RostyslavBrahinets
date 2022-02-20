@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Log implements Serializable {
     @Serial
-    private static final long serialVersionUID = 6L;
+    private static final long serialVersionUID = 7L;
 
     private int id;
     private final LogType type;

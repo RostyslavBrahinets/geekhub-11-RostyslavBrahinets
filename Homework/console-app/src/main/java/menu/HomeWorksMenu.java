@@ -48,8 +48,8 @@ public class HomeWorksMenu extends Menu {
             for (HomeWork homeWork : homeWorks) {
                 System.out.printf(
                     "%s: %s%n",
-                    homeWork.task(),
-                    homeWork.deadline()
+                    homeWork.getTask(),
+                    homeWork.getDeadline()
                 );
             }
         } catch (SQLException e) {
@@ -84,8 +84,8 @@ public class HomeWorksMenu extends Menu {
             Optional<HomeWork> homeWork = homeWorkService.getHomeWork(getId());
             homeWork.ifPresent(work -> System.out.printf(
                 "%s: %s%n",
-                work.task(),
-                work.deadline()
+                work.getTask(),
+                work.getDeadline()
             ));
         } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);

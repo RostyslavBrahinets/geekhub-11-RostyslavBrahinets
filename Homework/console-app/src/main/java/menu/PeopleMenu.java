@@ -47,11 +47,11 @@ public class PeopleMenu extends Menu {
         for (Person person : people) {
             System.out.printf(
                 "%s %s, %s, %s, %s%n",
-                person.firstName(),
-                person.lastName(),
-                person.contacts(),
-                person.gitHubNickname(),
-                person.role()
+                person.getFirstName(),
+                person.getLastName(),
+                person.getContacts(),
+                person.getGitHubNickname(),
+                person.getRole()
             );
         }
     }
@@ -90,11 +90,11 @@ public class PeopleMenu extends Menu {
             Optional<Person> person = personService.getPerson(getId());
             person.ifPresent(value -> System.out.printf(
                 "%s %s, %s, %s, %s%n",
-                value.firstName(),
-                value.lastName(),
-                value.contacts(),
-                value.gitHubNickname(),
-                value.role()
+                value.getFirstName(),
+                value.getLastName(),
+                value.getContacts(),
+                value.getGitHubNickname(),
+                value.getRole()
             ));
         } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);

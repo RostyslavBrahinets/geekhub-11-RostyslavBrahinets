@@ -76,8 +76,8 @@ public class HomeWorksShowByIdServlet extends HttpServlet {
             homeWork.ifPresent(
                 value -> writer.write(
                     "<h3>"
-                        + value.task() + " ["
-                        + value.deadline()
+                        + value.getTask() + " ["
+                        + value.getDeadline()
                         + "]</h3>"
                 ));
 

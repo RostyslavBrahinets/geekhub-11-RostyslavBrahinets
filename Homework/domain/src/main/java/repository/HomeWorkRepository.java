@@ -47,8 +47,8 @@ public class HomeWorkRepository {
         String sql = "insert into homework(task, deadline) values (?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, homeWork.task());
-        preparedStatement.setTimestamp(2, Timestamp.valueOf(homeWork.deadline()));
+        preparedStatement.setString(1, homeWork.getTask());
+        preparedStatement.setTimestamp(2, Timestamp.valueOf(homeWork.getDeadline()));
         preparedStatement.execute();
     }
 

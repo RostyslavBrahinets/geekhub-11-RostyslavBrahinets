@@ -80,12 +80,12 @@ public class LectionsShowServlet extends HttpServlet {
             writer.write("<h1>Lections:</h1><ul>");
             for (Lection lection : lections) {
                 writer.write("<li>"
-                    + lection.name() + ": "
-                    + lection.describe() + ", "
-                    + lection.resources() + ", "
-                    + lection.lecturer().firstName() + ", "
-                    + lection.homeWorks() + ", ["
-                    + lection.creationDate() + "]"
+                    + lection.getName() + ": "
+                    + lection.getDescribe() + ", "
+                    + lection.getResources() + ", "
+                    + lection.getLecturer().getFirstName() + ", "
+                    + lection.getHomeWorks() + ", ["
+                    + lection.getCreationDate() + "]"
                     + "</li>");
             }
             writer.write("<ul>");

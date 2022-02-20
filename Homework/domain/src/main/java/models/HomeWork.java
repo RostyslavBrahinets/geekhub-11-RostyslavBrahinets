@@ -53,19 +53,19 @@ public final class HomeWork implements Serializable {
         return "HomeWork {"
             + "id: '" + id + "'\t"
             + "task: '" + task + "'\t"
-            + "deadLine: '" + deadline.format(formatter) + "'"
+            + "deadline: '" + deadline.format(formatter) + "'"
             + '}';
     }
 
-    public int id() {
+    public int getId() {
         return id;
     }
 
-    public String task() {
+    public String getTask() {
         return task;
     }
 
-    public LocalDateTime deadline() {
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 }

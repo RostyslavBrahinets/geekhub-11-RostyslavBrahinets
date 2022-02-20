@@ -80,9 +80,9 @@ public class ResourcesShowServlet extends HttpServlet {
             writer.write("<h1>Resources:</h1><ul>");
             for (Resource resource : resources) {
                 writer.write("<li>"
-                    + resource.name() + ": "
-                    + resource.type() + ", "
-                    + resource.data()
+                    + resource.getName() + ": "
+                    + resource.getType() + ", "
+                    + resource.getData()
                     + "</li>");
             }
             writer.write("<ul>");

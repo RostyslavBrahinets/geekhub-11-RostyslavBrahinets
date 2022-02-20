@@ -73,12 +73,12 @@ public class LectionsMenu extends Menu {
         for (Lection lection : lections) {
             System.out.printf(
                 "%s: %s; %s; %s %s; %s%n",
-                lection.name(),
-                lection.describe(),
-                lection.resources(),
-                lection.lecturer().firstName(),
-                lection.lecturer().lastName(),
-                lection.homeWorks()
+                lection.getName(),
+                lection.getDescribe(),
+                lection.getResources(),
+                lection.getLecturer().getFirstName(),
+                lection.getLecturer().getLastName(),
+                lection.getHomeWorks()
             );
         }
     }
@@ -131,12 +131,12 @@ public class LectionsMenu extends Menu {
             Optional<Lection> lection = lectionService.getLection(getId());
             lection.ifPresent(value -> System.out.printf(
                 "%s: %s; %s; %s %s; %s%n",
-                value.name(),
-                value.describe(),
-                value.resources(),
-                value.lecturer().firstName(),
-                value.lecturer().lastName(),
-                value.homeWorks()
+                value.getName(),
+                value.getDescribe(),
+                value.getResources(),
+                value.getLecturer().getFirstName(),
+                value.getLecturer().getLastName(),
+                value.getHomeWorks()
             ));
         } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
@@ -148,8 +148,8 @@ public class LectionsMenu extends Menu {
         for (Lection lection : lections) {
             System.out.printf(
                 "%n%s: %s%n",
-                lection.name(),
-                lectionService.getResourcesGroupedByLecture().get(lection.name())
+                lection.getName(),
+                lectionService.getResourcesGroupedByLecture().get(lection.getName())
             );
         }
     }
@@ -159,8 +159,8 @@ public class LectionsMenu extends Menu {
         for (Lection lection : lections) {
             System.out.printf(
                 "%n%s: %s%n",
-                lection.name(),
-                lectionService.getHomeWorksGroupedByLecture().get(lection.name())
+                lection.getName(),
+                lectionService.getHomeWorksGroupedByLecture().get(lection.getName())
             );
         }
     }

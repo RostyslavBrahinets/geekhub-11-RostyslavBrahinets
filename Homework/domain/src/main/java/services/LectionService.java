@@ -61,13 +61,13 @@ public class LectionService {
     public Map<String, List<Resource>> getResourcesGroupedByLecture() throws SQLException {
         return lectionRepository.getLections()
             .stream()
-            .collect(Collectors.toMap(Lection::name, Lection::resources));
+            .collect(Collectors.toMap(Lection::getName, Lection::getResources));
     }
 
     public Map<String, List<HomeWork>> getHomeWorksGroupedByLecture() throws SQLException {
         return lectionRepository.getLections()
             .stream()
-            .collect(Collectors.toMap(Lection::name, Lection::homeWorks));
+            .collect(Collectors.toMap(Lection::getName, Lection::getHomeWorks));
     }
 
     public List<Lection> getLectionsSortedByDateASC() throws SQLException {
@@ -75,7 +75,7 @@ public class LectionService {
         List<Lection> sortedLections;
 
         sortedLections = lections.stream()
-            .sorted(Comparator.comparing(Lection::creationDate))
+            .sorted(Comparator.comparing(Lection::getCreationDate))
             .toList();
 
         return sortedLections;
@@ -86,7 +86,7 @@ public class LectionService {
         List<Lection> sortedLections;
 
         sortedLections = lections.stream()
-            .sorted(Comparator.comparing(Lection::creationDate).reversed())
+            .sorted(Comparator.comparing(Lection::getCreationDate).reversed())
             .toList();
 
         return sortedLections;

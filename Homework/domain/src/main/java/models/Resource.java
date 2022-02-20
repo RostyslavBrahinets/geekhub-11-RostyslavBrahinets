@@ -54,19 +54,19 @@ public final class Resource implements Serializable {
             + '}';
     }
 
-    public int id() {
+    public int getId() {
         return id;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
-    public ResourceType type() {
+    public ResourceType getType() {
         return type;
     }
 
-    public String data() {
+    public String getData() {
         return data;
     }
 

@@ -72,27 +72,27 @@ public final class Person implements Serializable {
             + '}';
     }
 
-    public int id() {
+    public int getId() {
         return id;
     }
 
-    public String firstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public String lastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    public List<String> contacts() {
+    public List<String> getContacts() {
         return contacts;
     }
 
-    public String gitHubNickname() {
+    public String getGitHubNickname() {
         return gitHubNickname;
     }
 
-    public Role role() {
+    public Role getRole() {
         return role;
     }
 

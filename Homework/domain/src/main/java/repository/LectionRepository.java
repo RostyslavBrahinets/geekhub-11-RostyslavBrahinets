@@ -1,6 +1,5 @@
 package repository;
 
-import models.HomeWork;
 import models.Lection;
 import models.Person;
 
@@ -59,13 +58,12 @@ public class LectionRepository {
             + "values (?,?,?,?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, lection.name());
-        preparedStatement.setString(2, lection.describe());
+        preparedStatement.setString(1, lection.getName());
+        preparedStatement.setString(2, lection.getDescribe());
         preparedStatement.setInt(3, 1);
-        preparedStatement.setInt(4, 1);
         preparedStatement.setInt(5, 1);
 //        preparedStatement.setInt(3, lection.resources());
-//        preparedStatement.setInt(4, lection.lecturer());
+        preparedStatement.setInt(4, lection.getLecturer().getId());
 //        preparedStatement.setInt(5, lection.homeWorks());
         preparedStatement.execute();
     }

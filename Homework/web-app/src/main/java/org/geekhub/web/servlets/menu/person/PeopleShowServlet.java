@@ -80,11 +80,11 @@ public class PeopleShowServlet extends HttpServlet {
             writer.write("<h1>People:</h1><ul>");
             for (Person person : people) {
                 writer.write("<li>"
-                    + person.firstName() + ": "
-                    + person.lastName() + ", "
-                    + person.contacts() + ", "
-                    + person.gitHubNickname() + ", "
-                    + person.role()
+                    + person.getFirstName() + ": "
+                    + person.getLastName() + ", "
+                    + person.getContacts() + ", "
+                    + person.getGitHubNickname() + ", "
+                    + person.getRole()
                     + "</li>");
             }
             writer.write("<ul>");
