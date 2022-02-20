@@ -39,6 +39,9 @@ public class LoggerStorageFactory {
             Properties properties = new Properties();
             properties.load(in);
             properties.setProperty("logger.storage.type", type.toLowerCase());
+            properties.setProperty("url", "jdbc:postgresql://localhost:5432/geekhub");
+            properties.setProperty("user", "rostyslav_brahinets");
+            properties.setProperty("password", "rostik");
             properties.store(out, null);
         } catch (IOException e) {
             System.out.println(e.getMessage() + "\n" + e.getCause());
