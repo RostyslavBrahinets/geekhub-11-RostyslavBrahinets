@@ -3,7 +3,7 @@ import logger.Logger;
 import menu.LoggerMenu;
 import menu.MainMenu;
 import repository.Connector;
-import repository.MainRepository;
+import repository.DataBaseRepository;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,6 +15,20 @@ public class ApplicationStarter {
     static Logger logger;
 
     public static void main(String[] args) {
+        setLogger();
+        setDatabase();
+
+        while (true) {
+            try {
+                MainMenu mainMenu = new MainMenu();
+                mainMenu.runMenu();
+            } catch (NotFoundException | SQLException | IOException e) {
+                logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
+            }
+        }
+    }
+
+    private static void setLogger() {
         boolean loggerNotSet = true;
         while (loggerNotSet) {
             try {
@@ -27,12 +41,14 @@ public class ApplicationStarter {
                 System.out.println(e.getMessage());
             }
         }
+    }
 
+    private static void setDatabase() {
         try (
             Connection connection = Connector.getConnection();
             Statement statement = connection.createStatement()
         ) {
-            MainRepository repository = new MainRepository();
+            DataBaseRepository repository = new DataBaseRepository();
             repository.createTablesInDataBase();
 
             String sql = "select * from course";
@@ -48,15 +64,6 @@ public class ApplicationStarter {
             }
         } catch (SQLException | IOException e) {
             logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
-        }
-
-        while (true) {
-            try {
-                MainMenu mainMenu = new MainMenu();
-                mainMenu.runMenu();
-            } catch (NotFoundException | SQLException | IOException e) {
-                logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
-            }
         }
     }
 }
