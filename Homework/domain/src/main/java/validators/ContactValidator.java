@@ -18,7 +18,7 @@ public class ContactValidator {
 
     public void validate(int id) throws SQLException, IOException {
         ContactRepository contactRepository = ContactRepository.getInstance();
-        if (id < 0 || id >= contactRepository.getContacts().size()) {
+        if (id < 1 || id > contactRepository.getContacts().size()) {
             throw new NotFoundException("Contact not found");
         }
     }

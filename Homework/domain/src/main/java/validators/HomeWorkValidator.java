@@ -19,7 +19,7 @@ public class HomeWorkValidator {
 
     public void validate(int id) throws SQLException, IOException {
         HomeWorkRepository homeworkSource = HomeWorkRepository.getInstance();
-        if (id < 0 || id >= homeworkSource.getHomeWorks().size()) {
+        if (id < 1 || id > homeworkSource.getHomeWorks().size()) {
             throw new NotFoundException("HomeWork not found");
         }
     }

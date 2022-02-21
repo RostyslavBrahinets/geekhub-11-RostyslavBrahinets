@@ -27,7 +27,7 @@ public class PersonValidator {
 
     public void validate(int id) throws SQLException, IOException {
         PersonRepository personSource = PersonRepository.getInstance();
-        if (id < 0 || id >= personSource.getPeople().size()) {
+        if (id < 1 || id > personSource.getPeople().size()) {
             throw new NotFoundException("Person not found");
         }
     }

@@ -16,7 +16,7 @@ public class CourseValidator {
 
     public void validate(int id) throws SQLException, IOException {
         CourseRepository courseSource = CourseRepository.getInstance();
-        if (id < 0 || id >= courseSource.getCourses().size()) {
+        if (id < 1 || id > courseSource.getCourses().size()) {
             throw new NotFoundException("Course not found");
         }
     }

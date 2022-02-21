@@ -18,7 +18,7 @@ public class LectionValidator {
 
     public void validate(int id) throws SQLException, IOException {
         LectionRepository lectionSource = LectionRepository.getInstance();
-        if (id < 0 || id >= lectionSource.getLections().size()) {
+        if (id < 1 || id > lectionSource.getLections().size()) {
             throw new NotFoundException("Lection not found");
         }
     }

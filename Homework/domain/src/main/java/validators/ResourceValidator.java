@@ -22,7 +22,7 @@ public class ResourceValidator {
 
     public void validate(int id) throws SQLException, IOException {
         ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
-        if (id < 0 || id >= resourcesSource.getResources().size()) {
+        if (id < 1 || id > resourcesSource.getResources().size()) {
             throw new NotFoundException("Resource not found");
         }
     }
