@@ -1,19 +1,11 @@
 package org.geekhub.web.servlets.menu;
 
-import logger.Logger;
-import db.DataBaseConnector;
-import repository.MainRepository;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 @WebServlet(urlPatterns = "/main")
 public class MainMenuServlet extends HttpServlet {
@@ -22,8 +14,6 @@ public class MainMenuServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        setDatabase();
-
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
@@ -59,32 +49,6 @@ public class MainMenuServlet extends HttpServlet {
             writer.write("</form>");
 
             writer.write("</body></html>");
-        }
-    }
-
-    private void setDatabase() {
-        Logger logger = new Logger();
-
-        try (
-                Connection connection = DataBaseConnector.getConnection();
-                Statement statement = connection.createStatement()
-        ) {
-            MainRepository repository = new MainRepository();
-            repository.createTablesInDataBase();
-
-            String sql = "select * from course";
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            if (!resultSet.next()) {
-                repository.insertDataToTablesInDataBase();
-                logger.info(getClass().getName(),
-                    "Tables created in database! Data inserted to tables!");
-            } else {
-                logger.info(getClass().getName(),
-                    "Tables already created in database!");
-            }
-        } catch (SQLException | IOException e) {
-            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 }

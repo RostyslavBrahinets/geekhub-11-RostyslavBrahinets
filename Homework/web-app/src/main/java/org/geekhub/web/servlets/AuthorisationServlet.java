@@ -1,8 +1,8 @@
 package org.geekhub.web.servlets;
 
-import logger.Logger;
 import db.DataBaseConnector;
 import db.DataBaseStarter;
+import logger.Logger;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -85,8 +85,8 @@ public class AuthorisationServlet extends HttpServlet {
         Logger logger = new Logger();
 
         try (
-                Connection connection = DataBaseConnector.getConnection();
-                Statement statement = connection.createStatement()
+            Connection connection = DataBaseConnector.getConnection();
+            Statement statement = connection.createStatement()
         ) {
             DataBaseStarter repository = new DataBaseStarter();
             repository.createTablesInDataBase();
