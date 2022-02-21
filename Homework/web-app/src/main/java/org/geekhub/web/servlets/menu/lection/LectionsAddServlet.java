@@ -2,10 +2,6 @@ package org.geekhub.web.servlets.menu.lection;
 
 import exceptions.ValidationException;
 import logger.Logger;
-import models.HomeWork;
-import models.Person;
-import models.Resource;
-import models.Role;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.LectionService;
 
@@ -17,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.*;
 
@@ -36,16 +31,26 @@ public class LectionsAddServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
-        String describe = MenuCommand.getValueOfParameter(DESCRIBE_SESSION_PARAMETER, request, response);
-        String lecturer = MenuCommand.getValueOfParameter(LECTURER_NAME_SESSION_PARAMETER, request, response);
+        String name = MenuCommand
+            .getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
+        String describe = MenuCommand
+            .getValueOfParameter(DESCRIBE_SESSION_PARAMETER, request, response);
+        String lecturerId = MenuCommand
+            .getValueOfParameter(LECTURER_ID_SESSION_PARAMETER, request, response);
+        String courseId = MenuCommand
+            .getValueOfParameter(ID_SESSION_PARAMETER, request, response);
         HttpSession session = request.getSession();
         session.setAttribute(NAME_SESSION_PARAMETER, name);
         session.setAttribute(DESCRIBE_SESSION_PARAMETER, describe);
-        session.setAttribute(LECTURER_NAME_SESSION_PARAMETER, lecturer);
-        List<Resource> resources = List.of();
-        List<HomeWork> homeWorks = List.of();
-        addLection(name, describe, resources, lecturer, homeWorks, response);
+        session.setAttribute(LECTURER_ID_SESSION_PARAMETER, lecturerId);
+        session.setAttribute(ID_SESSION_PARAMETER, courseId);
+        addLection(
+            name,
+            describe,
+            Integer.parseInt(lecturerId),
+            Integer.parseInt(courseId),
+            response
+        );
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -61,9 +66,12 @@ public class LectionsAddServlet extends HttpServlet {
             writer.write("<label for=\"describe\">Describe: </label>");
             writer.write("<input id=\"describe\" type=\"text\" name=\""
                 + DESCRIBE_SESSION_PARAMETER + "\"></br>");
-            writer.write("<label for=\"lecturerName\">Name of lecturer: </label>");
-            writer.write("<input id=\"lecturerName\" type=\"text\" name=\""
-                + LECTURER_NAME_SESSION_PARAMETER + "\"></br>");
+            writer.write("<label for=\"lecturerId\">Lecturer id: </label>");
+            writer.write("<input id=\"lecturerId\" type=\"text\" name=\""
+                + LECTURER_ID_SESSION_PARAMETER + "\"></br>");
+            writer.write("<label for=\"courseId\">Course id: </label>");
+            writer.write("<input id=\"courseId\" type=\"text\" name=\""
+                + ID_SESSION_PARAMETER + "\"></br>");
             writer.write("<input type=\"submit\" value=\"Add\">");
             writer.write("</form>");
 
@@ -74,9 +82,8 @@ public class LectionsAddServlet extends HttpServlet {
     private void addLection(
         String name,
         String describe,
-        List<Resource> resources,
-        String lecturer,
-        List<HomeWork> homeWorks,
+        int lecturerId,
+        int courseId,
         HttpServletResponse response
     ) throws IOException {
         response.setContentType("text/html");
@@ -85,9 +92,8 @@ public class LectionsAddServlet extends HttpServlet {
             try {
                 LectionService lectionService = new LectionService();
                 lectionService.addLection(
-                    name, describe, resources,
-                    new Person(lecturer, "LastName", List.of(), "Nickname", Role.TEACHER),
-                    homeWorks);
+                    name, describe, lecturerId, courseId
+                );
             } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);

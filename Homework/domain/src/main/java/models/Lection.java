@@ -23,6 +23,16 @@ public final class Lection implements Serializable {
     public Lection(
         String name,
         String describe,
+        LocalDate creationDate
+    ) {
+        this.name = name;
+        this.describe = describe;
+        this.creationDate = creationDate;
+    }
+
+    public Lection(
+        String name,
+        String describe,
         List<Resource> resources,
         Person lecturer,
         List<HomeWork> homeWorks,

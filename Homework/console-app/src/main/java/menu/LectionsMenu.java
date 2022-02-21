@@ -2,14 +2,8 @@ package menu;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import models.HomeWork;
 import models.Lection;
-import models.Person;
-import models.Resource;
-import services.HomeWorkService;
 import services.LectionService;
-import services.PersonService;
-import services.ResourceService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,16 +13,14 @@ import java.util.Scanner;
 
 public class LectionsMenu extends Menu {
     private final LectionService lectionService;
-    private final PersonService personService;
 
     public LectionsMenu() throws SQLException, IOException {
         super();
         lectionService = new LectionService();
-        personService = new PersonService();
     }
 
     @Override
-    public void runMenu() throws SQLException {
+    public void runMenu() throws SQLException, IOException {
         System.out.println(
             """
 
@@ -85,9 +77,6 @@ public class LectionsMenu extends Menu {
 
     public void addLection() {
         try {
-            ResourcesMenu resourcesMenu = new ResourcesMenu();
-            HomeWorksMenu homeWorkMenu = new HomeWorksMenu();
-
             System.out.println("\nNew Lections");
             int count = getCount();
             for (int i = 0; i < count; i++) {
@@ -95,23 +84,14 @@ public class LectionsMenu extends Menu {
                 String name = getFromScanner();
                 System.out.print("Describe: ");
                 String describe = getFromScanner();
-                resourcesMenu.addResource();
-                Optional<Person> lecturer = getLecturer();
-                homeWorkMenu.addHomeWork();
+                System.out.print("Lecturer id: ");
+                String lecturerId = getFromScanner();
+                System.out.print("Course id: ");
+                String courseId = getFromScanner();
 
-                ResourceService resourceService = new ResourceService();
-                HomeWorkService homeWorkService = new HomeWorkService();
-
-                List<Resource> resources = resourceService.getResources();
-                List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
-
-                lecturer.ifPresent(person -> {
-                    try {
-                        lectionService.addLection(name, describe, resources, person, homeWorks);
-                    } catch (SQLException e) {
-                        logger.error(getClass().getName(), e.getMessage(), e);
-                    }
-                });
+                lectionService.addLection(
+                    name, describe, Integer.parseInt(lecturerId), Integer.parseInt(courseId)
+                );
             }
         } catch (ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
@@ -143,7 +123,7 @@ public class LectionsMenu extends Menu {
         }
     }
 
-    private void showResourcesGroupedByLection() throws SQLException {
+    private void showResourcesGroupedByLection() throws SQLException, IOException {
         List<Lection> lections = lectionService.getLections();
         for (Lection lection : lections) {
             System.out.printf(
@@ -154,7 +134,7 @@ public class LectionsMenu extends Menu {
         }
     }
 
-    private void showHomeWorksGroupedByLection() throws SQLException {
+    private void showHomeWorksGroupedByLection() throws SQLException, IOException {
         List<Lection> lections = lectionService.getLections();
         for (Lection lection : lections) {
             System.out.printf(
@@ -163,11 +143,5 @@ public class LectionsMenu extends Menu {
                 lectionService.getHomeWorksGroupedByLecture().get(lection.getName())
             );
         }
-    }
-
-    private Optional<Person> getLecturer() throws SQLException, IOException {
-        PeopleMenu peopleMenu = new PeopleMenu();
-        peopleMenu.addPerson();
-        return personService.getPerson(0);
     }
 }
