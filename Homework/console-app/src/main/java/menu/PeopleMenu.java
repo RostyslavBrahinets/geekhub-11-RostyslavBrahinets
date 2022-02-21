@@ -20,7 +20,7 @@ public class PeopleMenu extends Menu {
     }
 
     @Override
-    public void runMenu() throws SQLException {
+    public void runMenu() throws SQLException, IOException {
         System.out.println(
             """
 
@@ -42,7 +42,7 @@ public class PeopleMenu extends Menu {
         }
     }
 
-    private void showPeople() throws SQLException {
+    private void showPeople() throws SQLException, IOException {
         List<Person> people = personService.getPeople();
         for (Person person : people) {
             System.out.printf(
@@ -65,14 +65,15 @@ public class PeopleMenu extends Menu {
                 String firstName = getFromScanner();
                 System.out.print("Last name: ");
                 String lastName = getFromScanner();
-                List<String> contacts = getContacts();
                 System.out.print("\nGitHub nickname: ");
                 String nickname = getFromScanner();
                 System.out.print("Role: ");
                 String role = getFromScanner().toUpperCase();
-                personService.addPerson(firstName, lastName, contacts, nickname, role);
+                System.out.print("Role: ");
+                String courseId = getFromScanner();
+                personService.addPerson(firstName, lastName, nickname, role, Integer.parseInt(courseId));
             }
-        } catch (InvalidArgumentException | ValidationException | SQLException e) {
+        } catch (InvalidArgumentException | ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

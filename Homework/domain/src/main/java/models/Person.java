@@ -11,7 +11,7 @@ public final class Person implements Serializable {
     private int id;
     private String firstName;
     private String lastName;
-    private List<String> contacts;
+    private List<Contact> contacts;
     private String gitHubNickname;
     private Role role;
 
@@ -21,7 +21,19 @@ public final class Person implements Serializable {
     public Person(
         String firstName,
         String lastName,
-        List<String> contacts,
+        String gitHubNickname,
+        Role role
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gitHubNickname = gitHubNickname;
+        this.role = role;
+    }
+
+    public Person(
+        String firstName,
+        String lastName,
+        List<Contact> contacts,
         String gitHubNickname,
         Role role
     ) {
@@ -36,7 +48,7 @@ public final class Person implements Serializable {
         int id,
         String firstName,
         String lastName,
-        List<String> contacts,
+        List<Contact> contacts,
         String gitHubNickname,
         Role role
     ) {
@@ -84,7 +96,7 @@ public final class Person implements Serializable {
         return lastName;
     }
 
-    public List<String> getContacts() {
+    public List<Contact> getContacts() {
         return contacts;
     }
 
@@ -95,5 +107,4 @@ public final class Person implements Serializable {
     public Role getRole() {
         return role;
     }
-
 }

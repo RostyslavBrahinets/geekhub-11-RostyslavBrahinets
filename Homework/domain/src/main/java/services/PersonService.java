@@ -14,26 +14,25 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final PersonValidator validator;
 
-    public PersonService() throws SQLException, IOException {
+    public PersonService() throws SQLException {
         personRepository = PersonRepository.getInstance();
         validator = new PersonValidator();
     }
 
-    public List<Person> getPeople() throws SQLException {
+    public List<Person> getPeople() throws SQLException, IOException {
         return personRepository.getPeople();
     }
 
     public void addPerson(
         String firstName,
         String lastName,
-        List<String> contacts,
         String gitHubNickname,
-        String role
-    ) throws SQLException {
+        String role,
+        int courseId
+    ) throws SQLException, IOException {
         validator.validate(
             firstName,
             lastName,
-            contacts,
             gitHubNickname,
             role
         );
@@ -41,10 +40,10 @@ public class PersonService {
             new Person(
                 firstName,
                 lastName,
-                contacts,
                 gitHubNickname,
                 Role.valueOf(role)
-            )
+            ),
+            courseId
         );
     }
 

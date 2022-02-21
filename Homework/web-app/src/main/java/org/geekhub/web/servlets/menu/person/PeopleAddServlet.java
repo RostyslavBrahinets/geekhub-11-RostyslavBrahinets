@@ -40,13 +40,15 @@ public class PeopleAddServlet extends HttpServlet {
             .getValueOfParameter(NICKNAME_SESSION_PARAMETER, request, response);
         String role = MenuCommand
             .getValueOfParameter(ROLE_SESSION_PARAMETER, request, response);
+        String courseId = MenuCommand
+            .getValueOfParameter(ID_SESSION_PARAMETER, request, response);
         HttpSession session = request.getSession();
         session.setAttribute(NAME_SESSION_PARAMETER, firstName);
         session.setAttribute(SURNAME_SESSION_PARAMETER, lastName);
         session.setAttribute(NICKNAME_SESSION_PARAMETER, nickName);
         session.setAttribute(ROLE_SESSION_PARAMETER, role);
         List<String> contacts = List.of();
-        addPerson(firstName, lastName, contacts, nickName, role, response);
+        addPerson(firstName, lastName, nickName, role, Integer.parseInt(courseId), response);
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -68,6 +70,9 @@ public class PeopleAddServlet extends HttpServlet {
             writer.write("<label for=\"role\">Role (STUDENT, TEACHER): </label>");
             writer.write("<input id=\"role\" type=\"text\" name=\""
                 + ROLE_SESSION_PARAMETER + "\"></br>");
+            writer.write("<label for=\"courseId\">Course id: </label>");
+            writer.write("<input id=\"courseId\" type=\"text\" name=\""
+                + ID_SESSION_PARAMETER + "\"></br>");
             writer.write("<input type=\"submit\" value=\"Add\">");
             writer.write("</form>");
 
@@ -78,9 +83,9 @@ public class PeopleAddServlet extends HttpServlet {
     private void addPerson(
         String firstName,
         String lastName,
-        List<String> contacts,
         String nickName,
         String role,
+        int courseId,
         HttpServletResponse response
     ) throws IOException {
         response.setContentType("text/html");
@@ -88,7 +93,9 @@ public class PeopleAddServlet extends HttpServlet {
             writer.write("<html><head><title>People Add</title></head><body>");
             try {
                 PersonService personService = new PersonService();
-                personService.addPerson(firstName, lastName, contacts, nickName, role.toUpperCase());
+                personService.addPerson(
+                    firstName, lastName, nickName, role.toUpperCase(), courseId
+                );
             } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);
