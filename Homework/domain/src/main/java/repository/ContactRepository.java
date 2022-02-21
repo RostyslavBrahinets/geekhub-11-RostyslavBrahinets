@@ -1,7 +1,7 @@
 package repository;
 
+import db.DataBaseConnector;
 import models.Contact;
-import models.Lection;
 
 import java.io.IOException;
 import java.sql.*;
@@ -11,13 +11,11 @@ import java.util.Optional;
 
 public class ContactRepository {
     private static ContactRepository instance;
-    private final Connection connection;
 
-    private ContactRepository() throws SQLException, IOException {
-        connection = Connector.getConnection();
+    private ContactRepository() {
     }
 
-    public static ContactRepository getInstance() throws SQLException, IOException {
+    public static ContactRepository getInstance() {
         if (instance == null) {
             instance = new ContactRepository();
         }
@@ -25,45 +23,58 @@ public class ContactRepository {
         return instance;
     }
 
-    public List<Contact> getContacts() throws SQLException {
+    public List<Contact> getContacts() throws SQLException, IOException {
         List<Contact> contacts = new ArrayList<>();
 
-        Statement statement = connection.createStatement();
-        String sql = "select * from contacts";
-        ResultSet resultSet = statement.executeQuery(sql);
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            Statement statement = connection.createStatement()
+        ) {
+            String sql = "select * from contacts";
+            ResultSet resultSet = statement.executeQuery(sql);
 
-        while (resultSet.next()) {
-            Contact contact = new Contact(
-                resultSet.getInt("id"),
-                resultSet.getString("email"),
-                resultSet.getString("phone")
-            );
-            contacts.add(contact);
+            while (resultSet.next()) {
+                Contact contact = new Contact(
+                    resultSet.getInt("id"),
+                    resultSet.getString("email"),
+                    resultSet.getString("phone")
+                );
+                contacts.add(contact);
+            }
         }
 
         return contacts;
     }
 
-    public void addContact(Contact contact) throws SQLException {
-        String sql = "insert into contacts("
-            + "email, phone)"
-            + "values (?,?)";
+    public void addContact(Contact contact, int personId) throws SQLException, IOException {
+        String sql = "insert into contacts"
+            + "(email, phone, person_id)"
+            + "values (?,?,?)";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, contact.getEmail());
-        preparedStatement.setString(2, contact.getPhone());
-        preparedStatement.execute();
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setString(1, contact.getEmail());
+            preparedStatement.setString(2, contact.getPhone());
+            preparedStatement.setInt(3, personId);
+            preparedStatement.execute();
+        }
     }
 
-    public void deleteContact(int id) throws SQLException {
+    public void deleteContact(int id) throws SQLException, IOException {
         String sql = "delete from contacts where id=?";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
-        preparedStatement.execute();
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        }
     }
 
-    public Optional<Contact> getContact(int id) throws SQLException {
+    public Optional<Contact> getContact(int id) throws SQLException, IOException {
         return Optional.ofNullable(getContacts().get(id));
     }
 }
