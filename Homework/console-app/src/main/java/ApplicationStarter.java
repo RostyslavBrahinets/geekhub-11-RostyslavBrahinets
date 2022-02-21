@@ -2,8 +2,8 @@ import exceptions.NotFoundException;
 import logger.Logger;
 import menu.LoggerMenu;
 import menu.MainMenu;
-import repository.Connector;
-import repository.DataBaseRepository;
+import db.DataBaseConnector;
+import db.DataBaseStarter;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -45,10 +45,10 @@ public class ApplicationStarter {
 
     private static void setDatabase() {
         try (
-            Connection connection = Connector.getConnection();
-            Statement statement = connection.createStatement()
+                Connection connection = DataBaseConnector.getConnection();
+                Statement statement = connection.createStatement()
         ) {
-            DataBaseRepository repository = new DataBaseRepository();
+            DataBaseStarter repository = new DataBaseStarter();
             repository.createTablesInDataBase();
 
             String sql = "select * from course";

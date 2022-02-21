@@ -1,7 +1,7 @@
 package org.geekhub.web.servlets.menu;
 
 import logger.Logger;
-import repository.Connector;
+import db.DataBaseConnector;
 import repository.MainRepository;
 
 import javax.servlet.annotation.WebServlet;
@@ -66,8 +66,8 @@ public class MainMenuServlet extends HttpServlet {
         Logger logger = new Logger();
 
         try (
-            Connection connection = Connector.getConnection();
-            Statement statement = connection.createStatement()
+                Connection connection = DataBaseConnector.getConnection();
+                Statement statement = connection.createStatement()
         ) {
             MainRepository repository = new MainRepository();
             repository.createTablesInDataBase();

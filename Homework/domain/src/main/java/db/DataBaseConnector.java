@@ -1,12 +1,10 @@
-package repository;
+package db;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
-public class Connector {
+public class DataBaseConnector {
     public static Connection getConnection() throws IOException, SQLException {
         try {
             Class.forName("org.postgresql.Driver");
@@ -14,9 +12,18 @@ public class Connector {
             e.printStackTrace();
         }
         Properties properties = new Properties();
-        properties.load(Connector.class.getClassLoader()
+        properties.load(DataBaseConnector.class.getClassLoader()
             .getResourceAsStream("application.properties"));
         return DriverManager
             .getConnection(properties.getProperty("url"), properties);
+    }
+
+    private void runSql(String sql) throws SQLException, IOException {
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            statement.execute();
+        }
     }
 }

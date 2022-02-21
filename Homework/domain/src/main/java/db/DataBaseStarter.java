@@ -1,20 +1,11 @@
-package repository;
+package db;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DataBaseRepository {
-    private void runSql(String sql) throws SQLException, IOException {
-        try (
-            Connection connection = Connector.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)
-        ) {
-            statement.execute();
-        }
-    }
-
+public class DataBaseStarter {
     public void createTablesInDataBase() throws SQLException, IOException {
         String sql = "create table if not exists course"
             + "("
@@ -149,5 +140,14 @@ public class DataBaseRepository {
             + "('task2', '2021-11-27 23:59', 4),"
             + "('task3', '2021-12-04 23:59', 5);";
         runSql(sql);
+    }
+
+    private void runSql(String sql) throws SQLException, IOException {
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            statement.execute();
+        }
     }
 }
