@@ -85,7 +85,7 @@ public class PersonRepository {
     }
 
     public Optional<Person> getPerson(int id) throws SQLException, IOException {
-        Person person;
+        Person person = null;
         String sql = "select * from person where id=?";
 
         try (
@@ -93,19 +93,21 @@ public class PersonRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            person = new Person(
-                resultSet.getInt("id"),
-                resultSet.getString("first_name"),
-                resultSet.getString("last_name"),
-                getContacts(connection, id),
-                resultSet.getString("git_hub_nickname"),
-                Role.valueOf(resultSet.getString("role"))
-            );
+            if (resultSet.next()) {
+                person = new Person(
+                    resultSet.getInt("id"),
+                    resultSet.getString("first_name"),
+                    resultSet.getString("last_name"),
+                    getContacts(connection, id),
+                    resultSet.getString("git_hub_nickname"),
+                    Role.valueOf(resultSet.getString("role"))
+                );
+            }
         }
 
-        return Optional.of(person);
+        return Optional.ofNullable(person);
     }
 
     private List<Contact> getContacts(Connection connection, int id) throws SQLException {

@@ -73,7 +73,7 @@ public class HomeWorkRepository {
     }
 
     public Optional<HomeWork> getHomeWork(int id) throws SQLException, IOException {
-        HomeWork homeWork;
+        HomeWork homeWork = null;
         String sql = "select * from homework where id=?";
 
         try (
@@ -81,15 +81,17 @@ public class HomeWorkRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            homeWork = new HomeWork(
-                resultSet.getInt("id"),
-                resultSet.getString("task"),
-                resultSet.getTimestamp("deadline").toLocalDateTime()
-            );
+            if (resultSet.next()) {
+                homeWork = new HomeWork(
+                    resultSet.getInt("id"),
+                    resultSet.getString("task"),
+                    resultSet.getTimestamp("deadline").toLocalDateTime()
+                );
+            }
         }
 
-        return Optional.of(homeWork);
+        return Optional.ofNullable(homeWork);
     }
 }

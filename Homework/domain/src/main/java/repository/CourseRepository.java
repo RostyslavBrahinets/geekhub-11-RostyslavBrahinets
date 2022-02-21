@@ -72,7 +72,7 @@ public class CourseRepository {
     }
 
     public Optional<Course> getCourse(int id) throws SQLException, IOException {
-        Course course;
+        Course course = null;
         String sql = "select * from course where id=?";
 
         try (
@@ -82,17 +82,19 @@ public class CourseRepository {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            String name = resultSet.getString("name");
-            List<Lection> lections = getLections(connection, id);
-            List<Person> students = getPeople(connection, id);
-
-            course = new Course(id, name, lections, students);
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                List<Lection> lections = getLections(connection, id);
+                List<Person> students = getPeople(connection, id);
+                course = new Course(id, name, lections, students);
+            }
         }
 
-        return Optional.of(course);
+        return Optional.ofNullable(course);
     }
 
-    private List<Lection> getLections(Connection connection, int id) throws SQLException, IOException {
+    private List<Lection> getLections(Connection connection, int id)
+        throws SQLException, IOException {
         List<Lection> lections = new ArrayList<>();
         String sql = "select * from lection where course_id=?";
 
@@ -174,7 +176,7 @@ public class CourseRepository {
 
     private List<Person> getPeople(Connection connection, int id) throws SQLException {
         List<Person> people = new ArrayList<>();
-        String sql = "select * from person where course_id=?";
+        String sql = "select * from person where course_id=? and role='STUDENT'";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);

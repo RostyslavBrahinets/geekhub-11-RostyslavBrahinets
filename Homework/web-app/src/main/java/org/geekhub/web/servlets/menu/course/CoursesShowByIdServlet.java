@@ -75,11 +75,7 @@ public class CoursesShowByIdServlet extends HttpServlet {
 
             course.ifPresent(
                 value -> writer.write(
-                    "<h3>"
-                        + value.getName() + ": "
-                        + value.getLections() + ", "
-                        + value.getStudents()
-                        + "</h3>"
+                    "<h3>" + value.getName() + "</h3>"
                 ));
 
             writer.write("</body></html>");

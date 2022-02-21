@@ -75,6 +75,24 @@ public class ContactRepository {
     }
 
     public Optional<Contact> getContact(int id) throws SQLException, IOException {
-        return Optional.ofNullable(getContacts().get(id));
+        Contact contact = null;
+        String sql = "select * from contacts";
+
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                contact = new Contact(
+                    resultSet.getInt("id"),
+                    resultSet.getString("email"),
+                    resultSet.getString("phone")
+                );
+            }
+        }
+
+        return Optional.ofNullable(contact);
     }
 }

@@ -76,7 +76,7 @@ public class ResourcesRepository {
     }
 
     public Optional<Resource> getResource(int id) throws SQLException, IOException {
-        Resource resource;
+        Resource resource = null;
         String sql = "select * from resource where id=?";
 
         try (
@@ -86,14 +86,16 @@ public class ResourcesRepository {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            resource = new Resource(
-                resultSet.getInt("id"),
-                resultSet.getString("name"),
-                ResourceType.valueOf(resultSet.getString("type")),
-                resultSet.getString("data")
-            );
+            if (resultSet.next()) {
+                resource = new Resource(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    ResourceType.valueOf(resultSet.getString("type")),
+                    resultSet.getString("data")
+                );
+            }
         }
 
-        return Optional.of(resource);
+        return Optional.ofNullable(resource);
     }
 }

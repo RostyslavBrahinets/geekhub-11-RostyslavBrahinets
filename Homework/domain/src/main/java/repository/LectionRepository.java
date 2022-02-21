@@ -91,7 +91,7 @@ public class LectionRepository {
     }
 
     public Optional<Lection> getLection(int id) throws SQLException, IOException {
-        Lection lection;
+        Lection lection = null;
         String sql = "select * from lection where id=?";
 
         try (
@@ -99,30 +99,32 @@ public class LectionRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            PersonRepository personRepository = PersonRepository.getInstance();
-            int lecturerId = resultSet.getInt("lecturer_id");
-            List<Resource> resources = getResources(connection, id);
-            Optional<Person> lecturerOptional = personRepository.getPerson(lecturerId);
-            Person lecturer = null;
-            if (lecturerOptional.isPresent()) {
-                lecturer = lecturerOptional.get();
+            if (resultSet.next()) {
+                PersonRepository personRepository = PersonRepository.getInstance();
+                int lecturerId = resultSet.getInt("lecturer_id");
+                List<Resource> resources = getResources(connection, id);
+                Optional<Person> lecturerOptional = personRepository.getPerson(lecturerId);
+                Person lecturer = null;
+                if (lecturerOptional.isPresent()) {
+                    lecturer = lecturerOptional.get();
+                }
+                List<HomeWork> homeWorks = getHomeWorks(connection, id);
+
+                lection = new Lection(
+                    id,
+                    resultSet.getString("name"),
+                    resultSet.getString("describe"),
+                    resources,
+                    lecturer,
+                    homeWorks,
+                    resultSet.getTimestamp("creation_date").toLocalDateTime().toLocalDate()
+                );
             }
-            List<HomeWork> homeWorks = getHomeWorks(connection, id);
-
-            lection = new Lection(
-                id,
-                resultSet.getString("name"),
-                resultSet.getString("describe"),
-                resources,
-                lecturer,
-                homeWorks,
-                resultSet.getTimestamp("creation_date").toLocalDateTime().toLocalDate()
-            );
         }
 
-        return Optional.of(lection);
+        return Optional.ofNullable(lection);
     }
 
     private List<Resource> getResources(Connection connection, int id) throws SQLException {
