@@ -1,5 +1,9 @@
 package org.geekhub.web.servlets;
 
+import logger.Logger;
+import repository.Connector;
+import repository.DataBaseRepository;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
@@ -18,6 +26,7 @@ public class AuthorisationServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
+        setDataBase();
         showMenu(response);
     }
 
@@ -69,6 +78,32 @@ public class AuthorisationServlet extends HttpServlet {
             writer.write("<input type=\"submit\" value=\"Login\">");
             writer.write("</form>");
             writer.write("</body></html>");
+        }
+    }
+
+    private void setDataBase() {
+        Logger logger = new Logger();
+
+        try (
+            Connection connection = Connector.getConnection();
+            Statement statement = connection.createStatement()
+        ) {
+            DataBaseRepository repository = new DataBaseRepository();
+            repository.createTablesInDataBase();
+
+            String sql = "select * from course";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            if (!resultSet.next()) {
+                repository.insertDataToTablesInDataBase();
+                logger.info(getClass().getName(),
+                    "Tables created in database! Data inserted to tables!");
+            } else {
+                logger.info(getClass().getName(),
+                    "Tables already created in database!");
+            }
+        } catch (SQLException | IOException e) {
+            logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
 }
