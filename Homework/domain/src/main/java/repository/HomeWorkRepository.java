@@ -1,5 +1,6 @@
 package repository;
 
+import db.DataBaseConnector;
 import models.HomeWork;
 
 import java.io.IOException;
@@ -10,13 +11,11 @@ import java.util.Optional;
 
 public class HomeWorkRepository {
     private static HomeWorkRepository instance;
-    private final Connection connection;
 
-    private HomeWorkRepository() throws SQLException, IOException {
-        connection = Connector.getConnection();
+    private HomeWorkRepository() {
     }
 
-    public static HomeWorkRepository getInstance() throws SQLException, IOException {
+    public static HomeWorkRepository getInstance() {
         if (instance == null) {
             instance = new HomeWorkRepository();
         }
@@ -24,43 +23,56 @@ public class HomeWorkRepository {
         return instance;
     }
 
-    public List<HomeWork> getHomeWorks() throws SQLException {
+    public List<HomeWork> getHomeWorks() throws SQLException, IOException {
         List<HomeWork> homeWorks = new ArrayList<>();
 
-        Statement statement = connection.createStatement();
-        String sql = "select * from homework";
-        ResultSet resultSet = statement.executeQuery(sql);
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            Statement statement = connection.createStatement()
+        ) {
+            String sql = "select * from homework";
+            ResultSet resultSet = statement.executeQuery(sql);
 
-        while (resultSet.next()) {
-            HomeWork homeWork = new HomeWork(
-                resultSet.getInt("id"),
-                resultSet.getString("task"),
-                resultSet.getTimestamp("deadline").toLocalDateTime()
-            );
-            homeWorks.add(homeWork);
+            while (resultSet.next()) {
+                HomeWork homeWork = new HomeWork(
+                    resultSet.getInt("id"),
+                    resultSet.getString("task"),
+                    resultSet.getTimestamp("deadline").toLocalDateTime()
+                );
+                homeWorks.add(homeWork);
+            }
         }
 
         return homeWorks;
     }
 
-    public void addHomeWork(HomeWork homeWork) throws SQLException {
-        String sql = "insert into homework(task, deadline) values (?,?)";
+    public void addHomeWork(HomeWork homeWork, int lectionId) throws SQLException, IOException {
+        String sql = "insert into homework(task, deadline, lection_id) values (?,?,?)";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, homeWork.getTask());
-        preparedStatement.setTimestamp(2, Timestamp.valueOf(homeWork.getDeadline()));
-        preparedStatement.execute();
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setString(1, homeWork.getTask());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(homeWork.getDeadline()));
+            preparedStatement.setInt(3, lectionId);
+            preparedStatement.execute();
+        }
     }
 
-    public void deleteHomeWork(int id) throws SQLException {
+    public void deleteHomeWork(int id) throws SQLException, IOException {
         String sql = "delete from homework where id=?";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
-        preparedStatement.execute();
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        }
     }
 
-    public Optional<HomeWork> getHomeWork(int id) throws SQLException {
+    public Optional<HomeWork> getHomeWork(int id) throws SQLException, IOException {
         return Optional.ofNullable(getHomeWorks().get(id));
     }
 }

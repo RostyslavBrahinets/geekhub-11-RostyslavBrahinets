@@ -38,11 +38,14 @@ public class HomeWorksAddServlet extends HttpServlet {
             .getValueOfParameter(DATE_SESSION_PARAMETER, request, response);
         String time = MenuCommand
             .getValueOfParameter(TIME_SESSION_PARAMETER, request, response);
+        String lectionId = MenuCommand
+            .getValueOfParameter(ID_SESSION_PARAMETER, request, response);
         HttpSession session = request.getSession();
         session.setAttribute(TASK_SESSION_PARAMETER, task);
         session.setAttribute(DATE_SESSION_PARAMETER, date);
         session.setAttribute(TIME_SESSION_PARAMETER, time);
-        addCourse(task, date, time, response);
+        session.setAttribute(ID_SESSION_PARAMETER, lectionId);
+        addCourse(task, date, time, Integer.parseInt(lectionId), response);
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -61,6 +64,9 @@ public class HomeWorksAddServlet extends HttpServlet {
             writer.write("<label for=\"time\">Time of deadline: </label>");
             writer.write("<input id=\"time\" type=\"text\" name=\""
                 + TIME_SESSION_PARAMETER + "\" value=\"hh:mm\"></br>");
+            writer.write("<label for=\"lectionId\">Lection id: </label>");
+            writer.write("<input id=\"lectionId\" type=\"text\" name=\""
+                + ID_SESSION_PARAMETER + "\"></br>");
             writer.write("<input type=\"submit\" value=\"Add\">");
             writer.write("</form>");
 
@@ -72,6 +78,7 @@ public class HomeWorksAddServlet extends HttpServlet {
         String task,
         String date,
         String time,
+        int lectionId,
         HttpServletResponse response
     ) throws IOException {
         response.setContentType("text/html");
@@ -79,7 +86,11 @@ public class HomeWorksAddServlet extends HttpServlet {
             writer.write("<html><head><title>Home Works Add</title></head><body>");
             try {
                 HomeWorkService homeWorkService = new HomeWorkService();
-                homeWorkService.addHomeWork(task, LocalDateTime.parse(date + "T" + time));
+                homeWorkService.addHomeWork(
+                    task,
+                    LocalDateTime.parse(date + "T" + time),
+                    lectionId)
+                ;
             } catch (ValidationException
                 | DateTimeParseException
                 | IllegalArgumentException

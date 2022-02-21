@@ -52,7 +52,7 @@ public class HomeWorksMenu extends Menu {
                     homeWork.getDeadline()
                 );
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -64,9 +64,11 @@ public class HomeWorksMenu extends Menu {
             for (int i = 0; i < count; i++) {
                 System.out.print("\nTask: ");
                 String task = getFromScanner();
-                homeWorkService.addHomeWork(task, getDeadLine());
+                System.out.print("Lection id: ");
+                String lectionId = getFromScanner();
+                homeWorkService.addHomeWork(task, getDeadLine(), Integer.parseInt(lectionId));
             }
-        } catch (ValidationException | SQLException e) {
+        } catch (ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
