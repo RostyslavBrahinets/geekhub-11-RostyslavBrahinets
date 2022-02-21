@@ -2,8 +2,6 @@ package org.geekhub.web.servlets.menu.course;
 
 import exceptions.ValidationException;
 import logger.Logger;
-import models.Lection;
-import models.Person;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import services.CourseService;
 
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.NAME_SESSION_PARAMETER;
 
@@ -35,11 +32,9 @@ public class CoursesAddServlet extends HttpServlet {
         HttpServletResponse response
     ) throws IOException {
         String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
-        List<Lection> lectionsOfCourse = List.of();
-        List<Person> studentsOfCourse = List.of();
         HttpSession session = request.getSession();
         session.setAttribute(NAME_SESSION_PARAMETER, name);
-        addCourse(name, lectionsOfCourse, studentsOfCourse, response);
+        addCourse(name, response);
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -61,8 +56,6 @@ public class CoursesAddServlet extends HttpServlet {
 
     private void addCourse(
         String name,
-        List<Lection> lectionsOfCourse,
-        List<Person> studentsOfCourse,
         HttpServletResponse response
     ) throws IOException {
         response.setContentType("text/html");
@@ -70,7 +63,7 @@ public class CoursesAddServlet extends HttpServlet {
             writer.write("<html><head><title>Courses Add</title></head><body>");
             try {
                 CourseService courseService = new CourseService();
-                courseService.addCourse(name, lectionsOfCourse, studentsOfCourse);
+                courseService.addCourse(name);
             } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);

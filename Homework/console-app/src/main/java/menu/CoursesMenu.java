@@ -3,11 +3,7 @@ package menu;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import models.Course;
-import models.Lection;
-import models.Person;
 import services.CourseService;
-import services.LectionService;
-import services.PersonService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,13 +13,13 @@ import java.util.Optional;
 public class CoursesMenu extends Menu {
     private final CourseService courseService;
 
-    public CoursesMenu() throws SQLException, IOException {
+    public CoursesMenu() throws SQLException {
         super();
         courseService = new CourseService();
     }
 
     @Override
-    public void runMenu() throws SQLException {
+    public void runMenu() throws SQLException, IOException {
         System.out.println(
             """
 
@@ -45,7 +41,7 @@ public class CoursesMenu extends Menu {
         }
     }
 
-    private void showCourses() throws SQLException {
+    private void showCourses() throws SQLException, IOException {
         List<Course> courses = courseService.getCourses();
         for (Course course : courses) {
             System.out.printf(
@@ -59,18 +55,12 @@ public class CoursesMenu extends Menu {
 
     private void addCourse() {
         try {
-            System.out.println("\nNew Courses");
+            System.out.println("\nNew Course");
             int count = getCount();
             for (int i = 0; i < count; i++) {
                 System.out.print("\nName: ");
                 String name = getFromScanner();
-                List<Lection> lectionsOfCourse = getLectionsOfCourse();
-                List<Person> studentsOfCourse = getStudentsOfCourse();
-                courseService.addCourse(
-                    name,
-                    lectionsOfCourse,
-                    studentsOfCourse
-                );
+                courseService.addCourse(name);
             }
         } catch (ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
@@ -97,17 +87,5 @@ public class CoursesMenu extends Menu {
         } catch (NotFoundException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
-    }
-
-    private List<Lection> getLectionsOfCourse() throws SQLException, IOException {
-        LectionsMenu lectionsMenu = new LectionsMenu();
-        lectionsMenu.addLection();
-        return new LectionService().getLections();
-    }
-
-    private List<Person> getStudentsOfCourse() throws SQLException, IOException {
-        PeopleMenu peopleMenu = new PeopleMenu();
-        peopleMenu.addPerson();
-        return new PersonService().getPeople();
     }
 }

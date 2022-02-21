@@ -1,8 +1,6 @@
 package services;
 
 import models.Course;
-import models.Lection;
-import models.Person;
 import repository.CourseRepository;
 import validators.CourseValidator;
 
@@ -15,18 +13,18 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseValidator validator;
 
-    public CourseService() throws SQLException, IOException {
+    public CourseService() throws SQLException {
         courseRepository = CourseRepository.getInstance();
         validator = new CourseValidator();
     }
 
-    public List<Course> getCourses() throws SQLException {
+    public List<Course> getCourses() throws SQLException, IOException {
         return courseRepository.getCourses();
     }
 
-    public void addCourse(String name, List<Lection> lections, List<Person> students) throws SQLException {
-        validator.validate(name, lections, students);
-        courseRepository.addCourse(new Course(name, lections, students));
+    public void addCourse(String name) throws SQLException, IOException {
+        validator.validate(name);
+        courseRepository.addCourse(new Course(name));
     }
 
     public void deleteCourse(int id) throws SQLException, IOException {

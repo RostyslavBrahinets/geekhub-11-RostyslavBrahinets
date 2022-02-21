@@ -16,6 +16,10 @@ public final class Course implements Serializable {
     public Course() {
     }
 
+    public Course(String name) {
+        this.name = name;
+    }
+
     public Course(
         String name,
         List<Lection> lections,

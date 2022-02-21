@@ -84,7 +84,7 @@ public class ResourcesRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             resource = new Resource(
                 resultSet.getInt("id"),
