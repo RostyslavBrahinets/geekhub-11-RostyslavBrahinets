@@ -73,6 +73,23 @@ public class HomeWorkRepository {
     }
 
     public Optional<HomeWork> getHomeWork(int id) throws SQLException, IOException {
-        return Optional.ofNullable(getHomeWorks().get(id));
+        HomeWork homeWork;
+        String sql = "select * from homework where id=?";
+
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery(sql);
+
+            homeWork = new HomeWork(
+                resultSet.getInt("id"),
+                resultSet.getString("task"),
+                resultSet.getTimestamp("deadline").toLocalDateTime()
+            );
+        }
+
+        return Optional.of(homeWork);
     }
 }
