@@ -34,11 +34,13 @@ public class ResourcesAddServlet extends HttpServlet {
         String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
         String type = MenuCommand.getValueOfParameter(TYPE_SESSION_PARAMETER, request, response);
         String data = MenuCommand.getValueOfParameter(DATA_SESSION_PARAMETER, request, response);
+        String lectionId = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
         HttpSession session = request.getSession();
         session.setAttribute(NAME_SESSION_PARAMETER, name);
         session.setAttribute(TYPE_SESSION_PARAMETER, type);
         session.setAttribute(DATA_SESSION_PARAMETER, data);
-        addResource(name, type, data, response);
+        session.setAttribute(ID_SESSION_PARAMETER, lectionId);
+        addResource(name, type, data, Integer.parseInt(lectionId), response);
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -57,6 +59,9 @@ public class ResourcesAddServlet extends HttpServlet {
             writer.write("<label for=\"data\">Data: </label>");
             writer.write("<input id=\"data\" type=\"text\" name=\""
                 + DATA_SESSION_PARAMETER + "\"></br>");
+            writer.write("<label for=\"lectionId\">Lection id: </label>");
+            writer.write("<input id=\"lectionId\" type=\"text\" name=\""
+                + ID_SESSION_PARAMETER + "\"></br>");
             writer.write("<input type=\"submit\" value=\"Add\">");
             writer.write("</form>");
 
@@ -68,6 +73,7 @@ public class ResourcesAddServlet extends HttpServlet {
         String name,
         String type,
         String data,
+        int lectionId,
         HttpServletResponse response
     ) throws IOException {
         response.setContentType("text/html");
@@ -75,7 +81,7 @@ public class ResourcesAddServlet extends HttpServlet {
             writer.write("<html><head><title>Resources Add</title></head><body>");
             try {
                 ResourceService resourceService = new ResourceService();
-                resourceService.addResource(name, type.toUpperCase(), data);
+                resourceService.addResource(name, type.toUpperCase(), data, lectionId);
             } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);

@@ -19,13 +19,17 @@ public class ResourceService {
         validator = new ResourceValidator();
     }
 
-    public List<Resource> getResources() throws SQLException {
+    public List<Resource> getResources() throws SQLException, IOException {
         return resourcesRepository.getResources();
     }
 
-    public void addResource(String name, String type, String data) throws SQLException {
+    public void addResource(String name, String type, String data, int lectionId)
+        throws SQLException, IOException {
         validator.validate(name, type, data);
-        resourcesRepository.addResource(new Resource(name, ResourceType.valueOf(type), data));
+        resourcesRepository.addResource(
+            new Resource(name, ResourceType.valueOf(type), data),
+            lectionId
+        );
     }
 
     public void deleteResource(int id) throws SQLException, IOException {

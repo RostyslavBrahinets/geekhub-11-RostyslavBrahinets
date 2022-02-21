@@ -1,5 +1,6 @@
 package repository;
 
+import db.DataBaseConnector;
 import models.Resource;
 import models.ResourceType;
 
@@ -11,13 +12,11 @@ import java.util.Optional;
 
 public class ResourcesRepository {
     private static ResourcesRepository instance;
-    private final Connection connection;
 
-    private ResourcesRepository() throws SQLException, IOException {
-        connection = Connector.getConnection();
+    private ResourcesRepository() {
     }
 
-    public static ResourcesRepository getInstance() throws SQLException, IOException {
+    public static ResourcesRepository getInstance() {
         if (instance == null) {
             instance = new ResourcesRepository();
         }
@@ -25,45 +24,58 @@ public class ResourcesRepository {
         return instance;
     }
 
-    public List<Resource> getResources() throws SQLException {
+    public List<Resource> getResources() throws SQLException, IOException {
         List<Resource> resources = new ArrayList<>();
 
-        Statement statement = connection.createStatement();
-        String sql = "select * from resource";
-        ResultSet resultSet = statement.executeQuery(sql);
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            Statement statement = connection.createStatement()
+        ) {
+            String sql = "select * from resource";
+            ResultSet resultSet = statement.executeQuery(sql);
 
-        while (resultSet.next()) {
-            Resource resource = new Resource(
-                resultSet.getInt("id"),
-                resultSet.getString("name"),
-                ResourceType.valueOf(resultSet.getString("type")),
-                resultSet.getString("data")
-            );
-            resources.add(resource);
+            while (resultSet.next()) {
+                Resource resource = new Resource(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    ResourceType.valueOf(resultSet.getString("type")),
+                    resultSet.getString("data")
+                );
+                resources.add(resource);
+            }
         }
 
         return resources;
     }
 
-    public void addResource(Resource resource) throws SQLException {
-        String sql = "insert into resource(name, type, date) values (?,?,?)";
+    public void addResource(Resource resource, int lectionId) throws SQLException, IOException {
+        String sql = "insert into resource(name, type, data, lection_id) values (?,?,?,?)";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, resource.getName());
-        preparedStatement.setString(2, String.valueOf(resource.getType()));
-        preparedStatement.setString(3, resource.getData());
-        preparedStatement.execute();
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setString(1, resource.getName());
+            preparedStatement.setString(2, String.valueOf(resource.getType()));
+            preparedStatement.setString(3, resource.getData());
+            preparedStatement.setInt(4, lectionId);
+            preparedStatement.execute();
+        }
     }
 
-    public void deleteResource(int id) throws SQLException {
+    public void deleteResource(int id) throws SQLException, IOException {
         String sql = "delete from resource where id=?";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
-        preparedStatement.execute();
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        }
     }
 
-    public Optional<Resource> getResource(int id) throws SQLException {
+    public Optional<Resource> getResource(int id) throws SQLException, IOException {
         return Optional.ofNullable(getResources().get(id));
     }
 }
