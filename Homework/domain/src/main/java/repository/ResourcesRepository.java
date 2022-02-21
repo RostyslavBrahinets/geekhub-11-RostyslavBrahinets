@@ -76,6 +76,24 @@ public class ResourcesRepository {
     }
 
     public Optional<Resource> getResource(int id) throws SQLException, IOException {
-        return Optional.ofNullable(getResources().get(id));
+        Resource resource;
+        String sql = "select * from resource where id=?";
+
+        try (
+            Connection connection = DataBaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery(sql);
+
+            resource = new Resource(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                ResourceType.valueOf(resultSet.getString("type")),
+                resultSet.getString("data")
+            );
+        }
+
+        return Optional.of(resource);
     }
 }
