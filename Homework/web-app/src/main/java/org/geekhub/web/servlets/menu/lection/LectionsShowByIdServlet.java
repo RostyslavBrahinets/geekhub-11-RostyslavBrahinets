@@ -1,9 +1,11 @@
 package org.geekhub.web.servlets.menu.lection;
 
+import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
 import models.Lection;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.LectionService;
 
 import javax.servlet.annotation.WebServlet;
@@ -58,6 +60,11 @@ public class LectionsShowByIdServlet extends HttpServlet {
     private void showLection(String id, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
+            AnnotationConfigApplicationContext applicationContext =
+                new AnnotationConfigApplicationContext(AppConfig.class);
+            LectionService lectionService =
+                applicationContext.getBean(LectionService.class);
+
             writer.write("<html><head><title>Lections Show By Id</title></head><body>");
             Optional<Lection> lection = Optional.empty();
 
@@ -65,7 +72,6 @@ public class LectionsShowByIdServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Lection not found");
                 }
-                LectionService lectionService = new LectionService();
                 lection = lectionService.getLection(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

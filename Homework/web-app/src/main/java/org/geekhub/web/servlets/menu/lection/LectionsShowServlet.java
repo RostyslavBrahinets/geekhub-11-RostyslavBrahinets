@@ -1,7 +1,9 @@
 package org.geekhub.web.servlets.menu.lection;
 
+import config.AppConfig;
 import logger.Logger;
 import models.Lection;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.LectionService;
 
 import javax.servlet.annotation.WebServlet;
@@ -37,7 +39,11 @@ public class LectionsShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException, SQLException {
-        LectionService lectionService = new LectionService();
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        LectionService lectionService =
+            applicationContext.getBean(LectionService.class);
+
         List<Lection> lections = lectionService.getLections();
 
         response.setContentType("text/html");

@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.resource;
 
+import config.AppConfig;
 import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.ResourceService;
 
 import javax.servlet.annotation.WebServlet;
@@ -76,11 +78,15 @@ public class ResourcesAddServlet extends HttpServlet {
         int lectionId,
         HttpServletResponse response
     ) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        ResourceService resourceService =
+            applicationContext.getBean(ResourceService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Resources Add</title></head><body>");
             try {
-                ResourceService resourceService = new ResourceService();
                 resourceService.addResource(name, type.toUpperCase(), data, lectionId);
             } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

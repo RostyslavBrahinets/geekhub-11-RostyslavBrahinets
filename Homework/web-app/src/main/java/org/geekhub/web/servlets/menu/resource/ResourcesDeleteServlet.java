@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.resource;
 
+import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.ResourceService;
 
 import javax.servlet.annotation.WebServlet;
@@ -54,6 +56,11 @@ public class ResourcesDeleteServlet extends HttpServlet {
     }
 
     private void deleteResource(String id, HttpServletResponse response) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        ResourceService resourceService =
+            applicationContext.getBean(ResourceService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Resources Delete</title></head><body>");
@@ -61,7 +68,6 @@ public class ResourcesDeleteServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Resource not found");
                 }
-                ResourceService resourceService = new ResourceService();
                 resourceService.deleteResource(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

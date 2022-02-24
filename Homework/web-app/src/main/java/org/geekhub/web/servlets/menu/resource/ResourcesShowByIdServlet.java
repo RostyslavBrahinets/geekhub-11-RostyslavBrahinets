@@ -1,9 +1,11 @@
 package org.geekhub.web.servlets.menu.resource;
 
+import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
 import models.Resource;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.ResourceService;
 
 import javax.servlet.annotation.WebServlet;
@@ -56,6 +58,11 @@ public class ResourcesShowByIdServlet extends HttpServlet {
     }
 
     private void showResource(String id, HttpServletResponse response) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        ResourceService resourceService =
+            applicationContext.getBean(ResourceService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Resources Show By Id</title></head><body>");
@@ -65,7 +72,6 @@ public class ResourcesShowByIdServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Resource not found");
                 }
-                ResourceService resourceService = new ResourceService();
                 resource = resourceService.getResource(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

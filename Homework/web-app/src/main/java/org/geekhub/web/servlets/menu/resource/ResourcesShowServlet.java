@@ -1,7 +1,9 @@
 package org.geekhub.web.servlets.menu.resource;
 
+import config.AppConfig;
 import logger.Logger;
 import models.Resource;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.ResourceService;
 
 import javax.servlet.annotation.WebServlet;
@@ -37,7 +39,11 @@ public class ResourcesShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException, SQLException {
-        ResourceService resourceService = new ResourceService();
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        ResourceService resourceService =
+            applicationContext.getBean(ResourceService.class);
+
         List<Resource> resources = resourceService.getResources();
 
         response.setContentType("text/html");

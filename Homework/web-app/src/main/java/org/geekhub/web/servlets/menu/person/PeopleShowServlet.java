@@ -1,7 +1,9 @@
 package org.geekhub.web.servlets.menu.person;
 
+import config.AppConfig;
 import logger.Logger;
 import models.Person;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.PersonService;
 
 import javax.servlet.annotation.WebServlet;
@@ -37,7 +39,11 @@ public class PeopleShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException, SQLException {
-        PersonService personService = new PersonService();
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        PersonService personService =
+            applicationContext.getBean(PersonService.class);
+
         List<Person> people = personService.getPeople();
 
         response.setContentType("text/html");

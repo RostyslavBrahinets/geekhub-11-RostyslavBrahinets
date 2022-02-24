@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.homework;
 
+import config.AppConfig;
 import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.HomeWorkService;
 
 import javax.servlet.annotation.WebServlet;
@@ -81,11 +83,15 @@ public class HomeWorksAddServlet extends HttpServlet {
         int lectionId,
         HttpServletResponse response
     ) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Home Works Add</title></head><body>");
             try {
-                HomeWorkService homeWorkService = new HomeWorkService();
                 homeWorkService.addHomeWork(
                     task,
                     LocalDateTime.parse(date + "T" + time),

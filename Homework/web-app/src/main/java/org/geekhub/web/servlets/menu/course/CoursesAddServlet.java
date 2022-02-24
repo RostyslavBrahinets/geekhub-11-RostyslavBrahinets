@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.course;
 
+import config.AppConfig;
 import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.CourseService;
 
 import javax.servlet.annotation.WebServlet;
@@ -58,11 +60,15 @@ public class CoursesAddServlet extends HttpServlet {
         String name,
         HttpServletResponse response
     ) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        CourseService courseService =
+            applicationContext.getBean(CourseService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Courses Add</title></head><body>");
             try {
-                CourseService courseService = new CourseService();
                 courseService.addCourse(name);
             } catch (ValidationException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

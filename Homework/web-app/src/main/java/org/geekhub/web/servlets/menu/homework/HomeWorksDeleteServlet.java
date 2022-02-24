@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.homework;
 
+import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.HomeWorkService;
 
 import javax.servlet.annotation.WebServlet;
@@ -54,6 +56,11 @@ public class HomeWorksDeleteServlet extends HttpServlet {
     }
 
     private void deleteHomeWork(String id, HttpServletResponse response) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Home Work Delete</title></head><body>");
@@ -61,7 +68,6 @@ public class HomeWorksDeleteServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Homework not found");
                 }
-                HomeWorkService homeWorkService = new HomeWorkService();
                 homeWorkService.deleteHomeWork(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

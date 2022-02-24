@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.lection;
 
+import config.AppConfig;
 import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.LectionService;
 
 import javax.servlet.annotation.WebServlet;
@@ -86,11 +88,15 @@ public class LectionsAddServlet extends HttpServlet {
         int courseId,
         HttpServletResponse response
     ) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        LectionService lectionService =
+            applicationContext.getBean(LectionService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Lections Add</title></head><body>");
             try {
-                LectionService lectionService = new LectionService();
                 lectionService.addLection(
                     name, describe, lecturerId, courseId
                 );

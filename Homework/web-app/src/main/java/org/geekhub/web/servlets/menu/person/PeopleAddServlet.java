@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.person;
 
+import config.AppConfig;
 import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.PersonService;
 
 import javax.servlet.annotation.WebServlet;
@@ -88,11 +90,15 @@ public class PeopleAddServlet extends HttpServlet {
         int courseId,
         HttpServletResponse response
     ) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        PersonService personService =
+            applicationContext.getBean(PersonService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>People Add</title></head><body>");
             try {
-                PersonService personService = new PersonService();
                 personService.addPerson(
                     firstName, lastName, nickName, role.toUpperCase(), courseId
                 );

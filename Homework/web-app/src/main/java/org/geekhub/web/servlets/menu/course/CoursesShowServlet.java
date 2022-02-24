@@ -1,7 +1,9 @@
 package org.geekhub.web.servlets.menu.course;
 
+import config.AppConfig;
 import logger.Logger;
 import models.Course;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.CourseService;
 
 import javax.servlet.annotation.WebServlet;
@@ -37,7 +39,11 @@ public class CoursesShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException, SQLException {
-        CourseService courseService = new CourseService();
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        CourseService courseService =
+            applicationContext.getBean(CourseService.class);
+
         List<Course> courses = courseService.getCourses();
 
         response.setContentType("text/html");

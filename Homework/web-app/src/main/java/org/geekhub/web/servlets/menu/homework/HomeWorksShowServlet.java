@@ -1,7 +1,9 @@
 package org.geekhub.web.servlets.menu.homework;
 
+import config.AppConfig;
 import logger.Logger;
 import models.HomeWork;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.HomeWorkService;
 
 import javax.servlet.annotation.WebServlet;
@@ -31,10 +33,14 @@ public class HomeWorksShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Home Works Show</title></head><body>");
-            HomeWorkService homeWorkService = new HomeWorkService();
             List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
             if (homeWorks.size() == 0) {
                 showMenuIfHomeWorksNotFound(request, response);

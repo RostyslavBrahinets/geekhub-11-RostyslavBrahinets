@@ -1,9 +1,11 @@
 package org.geekhub.web.servlets.menu.person;
 
+import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
 import models.Person;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.PersonService;
 
 import javax.servlet.annotation.WebServlet;
@@ -56,6 +58,11 @@ public class PeopleShowByIdServlet extends HttpServlet {
     }
 
     private void showPerson(String id, HttpServletResponse response) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        PersonService personService =
+            applicationContext.getBean(PersonService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>People Show By Id</title></head><body>");
@@ -65,7 +72,6 @@ public class PeopleShowByIdServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Person not found");
                 }
-                PersonService personService = new PersonService();
                 person = personService.getPerson(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

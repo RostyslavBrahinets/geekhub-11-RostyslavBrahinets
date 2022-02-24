@@ -1,9 +1,11 @@
 package org.geekhub.web.servlets.menu.homework;
 
+import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
 import models.HomeWork;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.HomeWorkService;
 
 import javax.servlet.annotation.WebServlet;
@@ -56,6 +58,11 @@ public class HomeWorksShowByIdServlet extends HttpServlet {
     }
 
     private void showHomeWork(String id, HttpServletResponse response) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Home Work Show By Id</title></head><body>");
@@ -65,7 +72,6 @@ public class HomeWorksShowByIdServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Course not found");
                 }
-                HomeWorkService homeWorkService = new HomeWorkService();
                 homeWork = homeWorkService.getHomeWork(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();

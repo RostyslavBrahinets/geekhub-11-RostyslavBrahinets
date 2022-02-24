@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets;
 
-import db.DataBaseConnector;
-import db.DataBaseStarter;
+import config.AppConfig;
+import db.DbConnectionProvider;
+import db.DbStarter;
 import logger.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -84,11 +86,15 @@ public class AuthorisationServlet extends HttpServlet {
     private void setDataBase() {
         Logger logger = new Logger();
 
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        DbConnectionProvider dbConnectionProvider =
+            applicationContext.getBean(DbConnectionProvider.class);
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             Statement statement = connection.createStatement()
         ) {
-            DataBaseStarter repository = new DataBaseStarter();
+            DbStarter repository = new DbStarter(dbConnectionProvider);
             repository.createTablesInDataBase();
 
             String sql = "select * from course";

@@ -1,8 +1,10 @@
 package org.geekhub.web.servlets.menu.person;
 
+import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.PersonService;
 
 import javax.servlet.annotation.WebServlet;
@@ -54,6 +56,11 @@ public class PeopleDeleteServlet extends HttpServlet {
     }
 
     private void deletePerson(String id, HttpServletResponse response) throws IOException {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        PersonService personService =
+            applicationContext.getBean(PersonService.class);
+
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>People Delete</title></head><body>");
@@ -61,7 +68,6 @@ public class PeopleDeleteServlet extends HttpServlet {
                 if (id.isBlank()) {
                     throw new NotFoundException("Person not found");
                 }
-                PersonService personService = new PersonService();
                 personService.deletePerson(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
