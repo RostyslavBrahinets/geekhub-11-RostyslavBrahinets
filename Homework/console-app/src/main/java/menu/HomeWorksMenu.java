@@ -13,9 +13,9 @@ import java.util.Optional;
 public class HomeWorksMenu extends Menu {
     private final HomeWorkService homeWorkService;
 
-    public HomeWorksMenu() throws SQLException, IOException {
+    public HomeWorksMenu(HomeWorkService homeWorkService) {
         super();
-        homeWorkService = new HomeWorkService();
+        this.homeWorkService = homeWorkService;
     }
 
     @Override

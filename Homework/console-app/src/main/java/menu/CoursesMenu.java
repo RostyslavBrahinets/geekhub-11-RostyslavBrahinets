@@ -13,9 +13,9 @@ import java.util.Optional;
 public class CoursesMenu extends Menu {
     private final CourseService courseService;
 
-    public CoursesMenu() throws SQLException {
+    public CoursesMenu(CourseService courseService) {
         super();
-        courseService = new CourseService();
+        this.courseService = courseService;
     }
 
     @Override

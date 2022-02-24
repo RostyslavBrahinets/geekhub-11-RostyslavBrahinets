@@ -14,9 +14,9 @@ import java.util.Optional;
 public class PeopleMenu extends Menu {
     private final PersonService personService;
 
-    public PeopleMenu() throws SQLException, IOException {
+    public PeopleMenu(PersonService personService) {
         super();
-        personService = new PersonService();
+        this.personService = personService;
     }
 
     @Override

@@ -1,9 +1,12 @@
+import config.AppConfig;
+import config.MenuConfig;
+import db.DbConnectionProvider;
+import db.DbStarter;
 import exceptions.NotFoundException;
 import logger.Logger;
 import menu.LoggerMenu;
 import menu.MainMenu;
-import db.DataBaseConnector;
-import db.DataBaseStarter;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,7 +23,9 @@ public class ApplicationStarter {
 
         while (true) {
             try {
-                MainMenu mainMenu = new MainMenu();
+                AnnotationConfigApplicationContext applicationContext =
+                    new AnnotationConfigApplicationContext(MenuConfig.class);
+                MainMenu mainMenu = applicationContext.getBean(MainMenu.class);
                 mainMenu.runMenu();
             } catch (NotFoundException | SQLException | IOException e) {
                 logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
@@ -32,7 +37,9 @@ public class ApplicationStarter {
         boolean loggerNotSet = true;
         while (loggerNotSet) {
             try {
-                LoggerMenu loggerMenu = new LoggerMenu();
+                AnnotationConfigApplicationContext applicationContext =
+                    new AnnotationConfigApplicationContext(MenuConfig.class);
+                LoggerMenu loggerMenu = applicationContext.getBean(LoggerMenu.class);
                 loggerMenu.runMenu();
                 logger = new Logger();
                 logger.getLogs().forEach(System.out::println);
@@ -44,11 +51,16 @@ public class ApplicationStarter {
     }
 
     private static void setDatabase() {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        DbConnectionProvider dbConnectionProvider =
+            applicationContext.getBean(DbConnectionProvider.class);
+
         try (
-                Connection connection = DataBaseConnector.getConnection();
-                Statement statement = connection.createStatement()
+            Connection connection = dbConnectionProvider.getConnection();
+            Statement statement = connection.createStatement()
         ) {
-            DataBaseStarter repository = new DataBaseStarter();
+            DbStarter repository = applicationContext.getBean(DbStarter.class);
             repository.createTablesInDataBase();
 
             String sql = "select * from course";

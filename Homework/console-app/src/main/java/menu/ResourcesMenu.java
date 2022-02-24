@@ -14,9 +14,9 @@ import java.util.Optional;
 public class ResourcesMenu extends Menu {
     private final ResourceService resourceService;
 
-    public ResourcesMenu() throws SQLException, IOException {
+    public ResourcesMenu(ResourceService resourceService) {
         super();
-        resourceService = new ResourceService();
+        this.resourceService = resourceService;
     }
 
     @Override

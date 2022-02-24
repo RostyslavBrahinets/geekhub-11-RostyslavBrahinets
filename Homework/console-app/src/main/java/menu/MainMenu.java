@@ -8,8 +8,25 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MainMenu extends Menu {
-    public MainMenu() {
+    private final CoursesMenu coursesMenu;
+    private final HomeWorksMenu homeWorksMenu;
+    private final LectionsMenu lectionsMenu;
+    private final PeopleMenu peopleMenu;
+    private final ResourcesMenu resourcesMenu;
+
+    public MainMenu(
+        CoursesMenu coursesMenu,
+        HomeWorksMenu homeWorksMenu,
+        LectionsMenu lectionsMenu,
+        PeopleMenu peopleMenu,
+        ResourcesMenu resourcesMenu
+    ) {
         super();
+        this.coursesMenu = coursesMenu;
+        this.homeWorksMenu = homeWorksMenu;
+        this.lectionsMenu = lectionsMenu;
+        this.peopleMenu = peopleMenu;
+        this.resourcesMenu = resourcesMenu;
     }
 
     @Override
@@ -42,24 +59,19 @@ public class MainMenu extends Menu {
 
         switch (getCommand()) {
             case "1" -> {
-                CoursesMenu coursesMenu = new CoursesMenu();
                 coursesMenu.runMenu();
             }
             case "2" -> {
-                LectionsMenu lectionsMenu = new LectionsMenu();
                 lectionsMenu.runMenu();
             }
             case "3" -> {
-                PeopleMenu peopleMenu = new PeopleMenu();
                 peopleMenu.runMenu();
             }
             case "4" -> {
-                ResourcesMenu resourcesMenu = new ResourcesMenu();
                 resourcesMenu.runMenu();
             }
             case "5" -> {
-                HomeWorksMenu homeWorkMenu = new HomeWorksMenu();
-                homeWorkMenu.runMenu();
+                homeWorksMenu.runMenu();
             }
             case "6" -> showLoggerMenu();
             case "7" -> {

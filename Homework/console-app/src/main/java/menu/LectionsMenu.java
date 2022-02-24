@@ -14,9 +14,9 @@ import java.util.Scanner;
 public class LectionsMenu extends Menu {
     private final LectionService lectionService;
 
-    public LectionsMenu() throws SQLException, IOException {
+    public LectionsMenu(LectionService lectionService) {
         super();
-        lectionService = new LectionService();
+        this.lectionService = lectionService;
     }
 
     @Override
@@ -40,8 +40,8 @@ public class LectionsMenu extends Menu {
                 System.out.println("\nShow Menu\n1 - Without sorting\n2 - Sorted ASC\n3 - Sorted DESC");
                 switch (getCommand()) {
                     case "1" -> showLections(lectionService.getLections());
-                    case "2" -> showLections(lectionService.getLectionsSortedByDateASC());
-                    case "3" -> showLections(lectionService.getLectionsSortedByDateDESC());
+                    case "2" -> showLections(lectionService.getLectionsSortedByDateAsc());
+                    case "3" -> showLections(lectionService.getLectionsSortedByDateDesc());
                     default -> throw new NotFoundException(COMMAND_NOT_FOUND);
                 }
             }
