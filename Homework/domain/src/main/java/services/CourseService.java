@@ -13,9 +13,12 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseValidator validator;
 
-    public CourseService() throws SQLException {
-        courseRepository = CourseRepository.getInstance();
-        validator = new CourseValidator();
+    public CourseService(
+        CourseRepository courseRepository,
+        CourseValidator validator
+    ) throws SQLException {
+        this.courseRepository = courseRepository;
+        this.validator = validator;
     }
 
     public List<Course> getCourses() throws SQLException, IOException {

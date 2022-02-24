@@ -13,16 +13,20 @@ public class ContactService {
     private final ContactRepository contactRepository;
     private final ContactValidator validator;
 
-    public ContactService() {
-        contactRepository = ContactRepository.getInstance();
-        validator = new ContactValidator();
+    public ContactService(
+        ContactRepository contactRepository,
+        ContactValidator validator
+    ) {
+        this.contactRepository = contactRepository;
+        this.validator = validator;
     }
 
     public List<Contact> getContacts() throws SQLException, IOException {
         return contactRepository.getContacts();
     }
 
-    public void addContact(String email, String phone, int personId) throws SQLException, IOException {
+    public void addContact(String email, String phone, int personId)
+        throws SQLException, IOException {
         validator.validate(email, phone);
         contactRepository.addContact(new Contact(email, phone), personId);
     }

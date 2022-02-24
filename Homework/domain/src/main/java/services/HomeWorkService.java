@@ -14,16 +14,20 @@ public class HomeWorkService {
     private final HomeWorkRepository homeWorkRepository;
     private final HomeWorkValidator validator;
 
-    public HomeWorkService() throws SQLException, IOException {
-        homeWorkRepository = HomeWorkRepository.getInstance();
-        validator = new HomeWorkValidator();
+    public HomeWorkService(
+        HomeWorkRepository homeWorkRepository,
+        HomeWorkValidator validator
+    ) throws SQLException {
+        this.homeWorkRepository = homeWorkRepository;
+        this.validator = validator;
     }
 
     public List<HomeWork> getHomeWorks() throws SQLException, IOException {
         return homeWorkRepository.getHomeWorks();
     }
 
-    public void addHomeWork(String task, LocalDateTime deadline, int lectionId) throws SQLException, IOException {
+    public void addHomeWork(String task, LocalDateTime deadline, int lectionId)
+        throws SQLException, IOException {
         validator.validate(task, deadline);
         homeWorkRepository.addHomeWork(new HomeWork(task, deadline), lectionId);
     }

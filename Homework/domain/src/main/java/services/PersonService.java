@@ -14,9 +14,12 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final PersonValidator validator;
 
-    public PersonService() throws SQLException {
-        personRepository = PersonRepository.getInstance();
-        validator = new PersonValidator();
+    public PersonService(
+        PersonRepository personRepository,
+        PersonValidator validator
+    ) throws SQLException {
+        this.personRepository = personRepository;
+        this.validator = validator;
     }
 
     public List<Person> getPeople() throws SQLException, IOException {

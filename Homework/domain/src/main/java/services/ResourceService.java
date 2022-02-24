@@ -2,7 +2,7 @@ package services;
 
 import models.Resource;
 import models.ResourceType;
-import repository.ResourcesRepository;
+import repository.ResourceRepository;
 import validators.ResourceValidator;
 
 import java.io.IOException;
@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class ResourceService {
-    private final ResourcesRepository resourcesRepository;
+    private final ResourceRepository resourcesRepository;
     private final ResourceValidator validator;
 
-    public ResourceService() throws SQLException, IOException {
-        resourcesRepository = ResourcesRepository.getInstance();
-        validator = new ResourceValidator();
+    public ResourceService(
+        ResourceRepository resourcesRepository,
+        ResourceValidator validator
+    ) throws SQLException {
+        this.resourcesRepository = resourcesRepository;
+        this.validator = validator;
     }
 
     public List<Resource> getResources() throws SQLException, IOException {
