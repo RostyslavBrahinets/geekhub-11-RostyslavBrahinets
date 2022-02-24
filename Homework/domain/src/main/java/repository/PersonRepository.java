@@ -1,6 +1,6 @@
 package repository;
 
-import db.DataBaseConnector;
+import db.DbConnectionProvider;
 import models.Contact;
 import models.Person;
 import models.Role;
@@ -12,24 +12,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class PersonRepository {
-    private static PersonRepository instance;
+    private final DbConnectionProvider dbConnectionProvider;
 
-    private PersonRepository() {
-    }
-
-    public static PersonRepository getInstance() {
-        if (instance == null) {
-            instance = new PersonRepository();
-        }
-
-        return instance;
+    public PersonRepository(DbConnectionProvider dbConnectionProvider) {
+        this.dbConnectionProvider = dbConnectionProvider;
     }
 
     public List<Person> getPeople() throws SQLException, IOException {
         List<Person> people = new ArrayList<>();
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from person";
@@ -60,7 +53,7 @@ public class PersonRepository {
             + "values (?,?,?,?,?)";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, person.getFirstName());
@@ -76,7 +69,7 @@ public class PersonRepository {
         String sql = "delete from person where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -89,7 +82,7 @@ public class PersonRepository {
         String sql = "select * from person where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);

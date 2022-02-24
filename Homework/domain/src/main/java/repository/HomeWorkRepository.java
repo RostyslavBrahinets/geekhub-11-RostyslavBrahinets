@@ -1,6 +1,6 @@
 package repository;
 
-import db.DataBaseConnector;
+import db.DbConnectionProvider;
 import models.HomeWork;
 
 import java.io.IOException;
@@ -10,24 +10,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class HomeWorkRepository {
-    private static HomeWorkRepository instance;
+    private final DbConnectionProvider dbConnectionProvider;
 
-    private HomeWorkRepository() {
-    }
-
-    public static HomeWorkRepository getInstance() {
-        if (instance == null) {
-            instance = new HomeWorkRepository();
-        }
-
-        return instance;
+    public HomeWorkRepository(DbConnectionProvider dbConnectionProvider) {
+        this.dbConnectionProvider = dbConnectionProvider;
     }
 
     public List<HomeWork> getHomeWorks() throws SQLException, IOException {
         List<HomeWork> homeWorks = new ArrayList<>();
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from homework";
@@ -50,7 +43,7 @@ public class HomeWorkRepository {
         String sql = "insert into homework(task, deadline, lection_id) values (?,?,?)";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, homeWork.getTask());
@@ -64,7 +57,7 @@ public class HomeWorkRepository {
         String sql = "delete from homework where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -77,7 +70,7 @@ public class HomeWorkRepository {
         String sql = "select * from homework where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);

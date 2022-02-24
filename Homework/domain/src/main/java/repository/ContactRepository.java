@@ -1,6 +1,6 @@
 package repository;
 
-import db.DataBaseConnector;
+import db.DbConnectionProvider;
 import models.Contact;
 
 import java.io.IOException;
@@ -10,24 +10,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class ContactRepository {
-    private static ContactRepository instance;
+    private final DbConnectionProvider dbConnectionProvider;
 
-    private ContactRepository() {
-    }
-
-    public static ContactRepository getInstance() {
-        if (instance == null) {
-            instance = new ContactRepository();
-        }
-
-        return instance;
+    public ContactRepository(DbConnectionProvider dbConnectionProvider) {
+        this.dbConnectionProvider = dbConnectionProvider;
     }
 
     public List<Contact> getContacts() throws SQLException, IOException {
         List<Contact> contacts = new ArrayList<>();
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from contacts";
@@ -52,7 +45,7 @@ public class ContactRepository {
             + "values (?,?,?)";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, contact.getEmail());
@@ -66,7 +59,7 @@ public class ContactRepository {
         String sql = "delete from contacts where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -79,7 +72,7 @@ public class ContactRepository {
         String sql = "select * from contacts";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();

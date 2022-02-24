@@ -1,6 +1,6 @@
 package repository;
 
-import db.DataBaseConnector;
+import db.DbConnectionProvider;
 import models.Resource;
 import models.ResourceType;
 
@@ -10,25 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ResourcesRepository {
-    private static ResourcesRepository instance;
+public class ResourceRepository {
+    private final DbConnectionProvider dbConnectionProvider;
 
-    private ResourcesRepository() {
-    }
-
-    public static ResourcesRepository getInstance() {
-        if (instance == null) {
-            instance = new ResourcesRepository();
-        }
-
-        return instance;
+    public ResourceRepository(DbConnectionProvider dbConnectionProvider) {
+        this.dbConnectionProvider = dbConnectionProvider;
     }
 
     public List<Resource> getResources() throws SQLException, IOException {
         List<Resource> resources = new ArrayList<>();
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from resource";
@@ -52,7 +45,7 @@ public class ResourcesRepository {
         String sql = "insert into resource(name, type, data, lection_id) values (?,?,?,?)";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, resource.getName());
@@ -67,7 +60,7 @@ public class ResourcesRepository {
         String sql = "delete from resource where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -80,7 +73,7 @@ public class ResourcesRepository {
         String sql = "select * from resource where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);

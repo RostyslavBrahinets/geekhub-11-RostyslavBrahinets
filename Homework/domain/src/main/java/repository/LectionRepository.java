@@ -1,6 +1,6 @@
 package repository;
 
-import db.DataBaseConnector;
+import db.DbConnectionProvider;
 import models.*;
 
 import java.io.IOException;
@@ -10,31 +10,28 @@ import java.util.List;
 import java.util.Optional;
 
 public class LectionRepository {
-    private static LectionRepository instance;
+    private final DbConnectionProvider dbConnectionProvider;
+    private final PersonRepository personRepository;
 
-    private LectionRepository() {
-    }
-
-    public static LectionRepository getInstance() {
-        if (instance == null) {
-            instance = new LectionRepository();
-        }
-
-        return instance;
+    public LectionRepository(
+        DbConnectionProvider dbConnectionProvider,
+        PersonRepository personRepository
+    ) {
+        this.dbConnectionProvider = dbConnectionProvider;
+        this.personRepository = personRepository;
     }
 
     public List<Lection> getLections() throws SQLException, IOException {
         List<Lection> lections = new ArrayList<>();
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from lection";
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                PersonRepository personRepository = PersonRepository.getInstance();
                 int id = resultSet.getInt("id");
                 int lecturerId = resultSet.getInt("lecturer_id");
                 List<Resource> resources = getResources(connection, id);
@@ -67,7 +64,7 @@ public class LectionRepository {
             + "values (?,?,?,?)";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, lection.getName());
@@ -82,7 +79,7 @@ public class LectionRepository {
         String sql = "delete from lection where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -95,14 +92,13 @@ public class LectionRepository {
         String sql = "select * from lection where id=?";
 
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                PersonRepository personRepository = PersonRepository.getInstance();
                 int lecturerId = resultSet.getInt("lecturer_id");
                 List<Resource> resources = getResources(connection, id);
                 Optional<Person> lecturerOptional = personRepository.getPerson(lecturerId);
