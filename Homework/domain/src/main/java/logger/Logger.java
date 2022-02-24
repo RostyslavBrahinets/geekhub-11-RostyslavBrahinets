@@ -1,6 +1,5 @@
 package logger;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class Logger implements LoggerStorageDao {
