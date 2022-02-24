@@ -5,7 +5,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DataBaseStarter {
+public class DbStarter {
+    private final DbConnectionProvider dbConnectionProvider;
+
+    public DbStarter(DbConnectionProvider dbConnectionProvider) {
+        this.dbConnectionProvider = dbConnectionProvider;
+    }
+
     public void createTablesInDataBase() throws SQLException, IOException {
         String sql = "create table if not exists course"
             + "("
@@ -100,7 +106,7 @@ public class DataBaseStarter {
             + "('Bohdan', 'Cherniak', 'bcherniak', 'TEACHER', 1),"
             + "('Volodymyr', 'Vedula', 'vvedula', 'TEACHER', 1),"
             + "('Vladyslav', 'Nikolenko', 'vnikolenko', 'TEACHER', 1),"
-            + "('Vladyslav', 'Rudas', 'vrudas', 'TEACHER', 1),"
+            + "('Vasia', 'Rudas', 'vrudas', 'TEACHER', 1),"
             + "('Rostyslav', 'Brahinets', 'rbrahinets', 'STUDENT', 1);";
         runSql(sql);
 
@@ -144,7 +150,7 @@ public class DataBaseStarter {
 
     private void runSql(String sql) throws SQLException, IOException {
         try (
-            Connection connection = DataBaseConnector.getConnection();
+            Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
             statement.execute();
