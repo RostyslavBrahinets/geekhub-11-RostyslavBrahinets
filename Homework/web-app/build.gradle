@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation project(':Homework:domain')
     providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation libs.spring.context
 }
 
 test {
