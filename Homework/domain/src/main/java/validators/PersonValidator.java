@@ -3,15 +3,19 @@ package validators;
 import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
-import models.Contact;
 import models.Role;
 import repository.PersonRepository;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 public class PersonValidator {
+    private final PersonRepository personRepository;
+
+    public PersonValidator(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
     public void validate(String firstName, String lastName,
                          String gitHubNickname, String role) {
         if (firstName == null || firstName.isBlank()) {
@@ -26,8 +30,7 @@ public class PersonValidator {
     }
 
     public void validate(int id) throws SQLException, IOException {
-        PersonRepository personSource = PersonRepository.getInstance();
-        if (id < 1 || id > personSource.getPeople().size()) {
+        if (id < 1 || id > personRepository.getPeople().size()) {
             throw new NotFoundException("Person not found");
         }
     }

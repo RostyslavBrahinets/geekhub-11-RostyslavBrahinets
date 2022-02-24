@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class CourseValidator {
+    private final CourseRepository courseRepository;
+
+    public CourseValidator(CourseRepository courseSource) {
+        this.courseRepository = courseSource;
+    }
+
     public void validate(String name) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of course is invalid");
@@ -15,8 +21,7 @@ public class CourseValidator {
     }
 
     public void validate(int id) throws SQLException, IOException {
-        CourseRepository courseSource = CourseRepository.getInstance();
-        if (id < 1 || id > courseSource.getCourses().size()) {
+        if (id < 1 || id > courseRepository.getCourses().size()) {
             throw new NotFoundException("Course not found");
         }
     }

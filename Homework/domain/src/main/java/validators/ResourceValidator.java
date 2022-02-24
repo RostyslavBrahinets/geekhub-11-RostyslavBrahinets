@@ -4,12 +4,18 @@ import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import models.ResourceType;
-import repository.ResourcesRepository;
+import repository.ResourceRepository;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class ResourceValidator {
+    private final ResourceRepository resourcesRepository;
+
+    public ResourceValidator(ResourceRepository resourcesRepository) {
+        this.resourcesRepository = resourcesRepository;
+    }
+
     public void validate(String name, String type, String data) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of resource is invalid");
@@ -21,8 +27,7 @@ public class ResourceValidator {
     }
 
     public void validate(int id) throws SQLException, IOException {
-        ResourcesRepository resourcesSource = ResourcesRepository.getInstance();
-        if (id < 1 || id > resourcesSource.getResources().size()) {
+        if (id < 1 || id > resourcesRepository.getResources().size()) {
             throw new NotFoundException("Resource not found");
         }
     }

@@ -9,6 +9,12 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class HomeWorkValidator {
+    private final HomeWorkRepository homeWorkRepository;
+
+    public HomeWorkValidator(HomeWorkRepository homeworkSource) {
+        this.homeWorkRepository = homeworkSource;
+    }
+
     public void validate(String task, LocalDateTime deadline) {
         if (task == null || task.isBlank()) {
             throw new ValidationException("Task of homework is invalid");
@@ -18,8 +24,7 @@ public class HomeWorkValidator {
     }
 
     public void validate(int id) throws SQLException, IOException {
-        HomeWorkRepository homeworkSource = HomeWorkRepository.getInstance();
-        if (id < 1 || id > homeworkSource.getHomeWorks().size()) {
+        if (id < 1 || id > homeWorkRepository.getHomeWorks().size()) {
             throw new NotFoundException("HomeWork not found");
         }
     }

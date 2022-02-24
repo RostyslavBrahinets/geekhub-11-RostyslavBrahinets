@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class LectionValidator {
+    private final LectionRepository lectionRepository;
+
+    public LectionValidator(LectionRepository lectionRepository) {
+        this.lectionRepository = lectionRepository;
+    }
+
     public void validate(String name, String describe) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of lection is invalid");
@@ -17,8 +23,7 @@ public class LectionValidator {
     }
 
     public void validate(int id) throws SQLException, IOException {
-        LectionRepository lectionSource = LectionRepository.getInstance();
-        if (id < 1 || id > lectionSource.getLections().size()) {
+        if (id < 1 || id > lectionRepository.getLections().size()) {
             throw new NotFoundException("Lection not found");
         }
     }
