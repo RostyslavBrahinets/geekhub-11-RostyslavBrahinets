@@ -27,7 +27,8 @@ public class LoggerStorageFactory {
             case "memory" -> new LoggerWithStorageInMemory();
             case "file" -> new LoggerWithStorageInFile();
             case "memory_file" -> new LoggerWithStorageInMemoryAndFile();
-            default -> throw new IllegalArgumentException("Failed to resolve property 'logger.storage.type'");
+            default -> throw
+                new IllegalArgumentException("Failed to resolve property 'logger.storage.type'");
         };
     }
 

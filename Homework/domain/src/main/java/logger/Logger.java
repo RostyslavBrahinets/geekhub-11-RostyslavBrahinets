@@ -3,7 +3,7 @@ package logger;
 import java.util.List;
 
 public class Logger implements LoggerStorageDao {
-    private static final LoggerStorageDao storage = LoggerStorageFactory.getStorage();
+    private final LoggerStorageDao storage = LoggerStorageFactory.getStorage();
 
     @Override
     public void info(String className, String message) {
