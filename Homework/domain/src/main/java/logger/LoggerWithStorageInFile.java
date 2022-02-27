@@ -41,67 +41,93 @@ public class LoggerWithStorageInFile implements LoggerStorageDao {
     }
 
     @Override
-    public List<Log> getLogs() {
+    public List<String> getLogs() {
         return readLogsFromFile();
     }
 
     @Override
-    public List<Log> getSortedLogsByDateAsc() {
-        List<Log> logs = readLogsFromFile();
-        return logs.stream()
-            .sorted(Comparator.comparing(Log::getLocalDateTime))
-            .toList();
+    public List<String> getSortedLogsByDateAsc() {
+        return getSortedLogs();
     }
 
     @Override
-    public List<Log> getSortedLogsByDateDesc() {
-        List<Log> logs = readLogsFromFile();
-        return logs.stream()
-            .sorted(Comparator.comparing(Log::getLocalDateTime).reversed())
-            .toList();
+    public List<String> getSortedLogsByDateDesc() {
+        List<String> sortedLogs = getSortedLogs();
+        List<String> reversedLogs = new ArrayList<>();
+
+        int length = sortedLogs.size() - 1;
+        for (int i = length; i >= 0; i--) {
+            reversedLogs.add(sortedLogs.get(i));
+            sortedLogs.remove(i);
+        }
+
+        return reversedLogs;
     }
 
     @Override
-    public List<Log> getLogsByStatus(LogType status) {
-        List<Log> logs = readLogsFromFile();
+    public List<String> getLogsByStatus(LogType status) {
+        List<String> logs = readLogsFromFile();
         return logs.stream()
-            .filter(log -> log.getType() == status)
+            .filter(log -> log.toUpperCase().contains(status.toString().toUpperCase()))
             .toList();
     }
 
     protected void writeLogToFile(Log log) {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(LOGS_FILE, true);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(log);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOGS_FILE, true));) {
+            String str = log.toString() + "\n";
+            writer.write(str);
         } catch (IOException e) {
-//            System.out.println(e.getMessage() + "\n" + e.getCause());
-            e.printStackTrace();
+            System.out.println(
+                getClass().getName() + " " + e.getMessage() + " " + e.getCause()
+            );
         }
     }
 
-    private List<Log> readLogsFromFile() {
-        List<Log> logs = new ArrayList<>();
+    private List<String> readLogsFromFile() {
+        List<String> logs = new ArrayList<>();
 
-        try {
-            FileInputStream fileInputStream = new FileInputStream(LOGS_FILE);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-            while (true) {
-                Object object = objectInputStream.readObject();
-                if (object == null) {
-                    break;
-                }
-
-                Log log = (Log) object;
-                logs.add(log);
+        try (
+            BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream(LOGS_FILE))
+            )
+        ) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                logs.add(line);
             }
-        } catch (EOFException ignored) {
-        } catch (IOException | ClassNotFoundException e) {
-//            System.out.println(e.getMessage() + "\n" + e.getCause());
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println(
+                getClass().getName() + " " + e.getMessage() + " " + e.getCause()
+            );
         }
 
         return logs;
+    }
+
+    private List<String> getSortedLogs() {
+        List<String> logs = readLogsFromFile();
+        List<List<String>> splitLogs = new ArrayList<>();
+
+        for (String log : logs) {
+            List<String> splitLog = List.of(log.split(" "));
+            splitLogs.add(splitLog);
+        }
+
+        List<List<String>> sortedSplitLogs = splitLogs.stream().sorted(
+            Comparator.comparing((log) -> LocalDateTime.parse(
+                log.get(log.size() - 2) + "T" + log.get(log.size() - 1)
+            ))
+        ).toList();
+
+        List<String> sortedLogs = new ArrayList<>();
+        for (List<String> sortedSplitLog : sortedSplitLogs) {
+            StringBuilder s = new StringBuilder();
+            for (String log : sortedSplitLog) {
+                s.append(log).append(" ");
+            }
+            sortedLogs.add(s.toString());
+        }
+
+        return sortedLogs;
     }
 }

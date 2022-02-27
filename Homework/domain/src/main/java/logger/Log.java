@@ -58,16 +58,17 @@ public class Log implements Serializable {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:ms");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ms");
         StringBuilder logString = new StringBuilder();
-        logString.append("\n[").append(type).append("] ")
+        logString.append("[").append(type).append("] ")
             .append(className).append(": ")
-            .append(message).append("\n")
-            .append(localDateTime.format(formatter)).append("\n");
+            .append(message).append(" ");
 
         if (exception != null) {
-            logString.append(exception.getStackTrace()[0]).append("\n");
+            logString.append(exception.getStackTrace()[0]).append(" ");
         }
+
+        logString.append(localDateTime.format(formatter));
 
         return logString.toString();
     }

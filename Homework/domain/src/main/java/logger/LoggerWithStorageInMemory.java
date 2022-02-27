@@ -37,28 +37,28 @@ public class LoggerWithStorageInMemory implements LoggerStorageDao {
     }
 
     @Override
-    public List<Log> getLogs() {
-        return logs;
+    public List<String> getLogs() {
+        return logs.stream().map(Log::toString).toList();
     }
 
     @Override
-    public List<Log> getSortedLogsByDateAsc() {
+    public List<String> getSortedLogsByDateAsc() {
         return logs.stream()
             .sorted(Comparator.comparing(Log::getLocalDateTime))
-            .toList();
+            .toList().stream().map(Log::toString).toList();
     }
 
     @Override
-    public List<Log> getSortedLogsByDateDesc() {
+    public List<String> getSortedLogsByDateDesc() {
         return logs.stream()
             .sorted(Comparator.comparing(Log::getLocalDateTime).reversed())
-            .toList();
+            .toList().stream().map(Log::toString).toList();
     }
 
     @Override
-    public List<Log> getLogsByStatus(LogType status) {
+    public List<String> getLogsByStatus(LogType status) {
         return logs.stream()
             .filter(log -> log.getType() == status)
-            .toList();
+            .toList().stream().map(Log::toString).toList();
     }
 }

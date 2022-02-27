@@ -11,11 +11,11 @@ public interface LoggerStorageDao {
 
     void error(String className, String message, Exception e);
 
-    List<Log> getLogs();
+    List<String> getLogs();
 
-    List<Log> getSortedLogsByDateAsc();
+    List<String> getSortedLogsByDateAsc();
 
-    List<Log> getSortedLogsByDateDesc();
+    List<String> getSortedLogsByDateDesc();
 
-    List<Log> getLogsByStatus(LogType status);
+    List<String> getLogsByStatus(LogType status);
 }

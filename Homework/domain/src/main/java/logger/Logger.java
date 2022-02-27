@@ -26,22 +26,22 @@ public class Logger implements LoggerStorageDao {
     }
 
     @Override
-    public List<Log> getLogs() {
+    public List<String> getLogs() {
         return storage.getLogs();
     }
 
     @Override
-    public List<Log> getSortedLogsByDateAsc() {
+    public List<String> getSortedLogsByDateAsc() {
         return storage.getSortedLogsByDateAsc();
     }
 
     @Override
-    public List<Log> getSortedLogsByDateDesc() {
+    public List<String> getSortedLogsByDateDesc() {
         return storage.getSortedLogsByDateDesc();
     }
 
     @Override
-    public List<Log> getLogsByStatus(LogType status) {
+    public List<String> getLogsByStatus(LogType status) {
         return storage.getLogsByStatus(status);
     }
 }

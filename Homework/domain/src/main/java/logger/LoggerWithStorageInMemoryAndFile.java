@@ -2,7 +2,6 @@ package logger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class LoggerWithStorageInMemoryAndFile extends LoggerWithStorageInFile implements LoggerStorageDao {
@@ -38,10 +37,5 @@ public class LoggerWithStorageInMemoryAndFile extends LoggerWithStorageInFile im
         logs.add(log);
         writeLogToFile(log);
         System.out.println(log);
-    }
-
-    @Override
-    public List<Log> getLogs() {
-        return logs;
     }
 }
