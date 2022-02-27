@@ -1,6 +1,5 @@
 package org.geekhub.web.servlets;
 
-import logger.Log;
 import logger.Logger;
 
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +24,8 @@ public class LogsServlet extends HttpServlet {
             writer.write("<html><head><title>Logs</title></head><body>");
             writer.write("<h1>Logs</h1>");
 
-            List<Log> logs = logger.getLogs();
-            for (Log log : logs) {
+            List<String> logs = logger.getLogs();
+            for (String log : logs) {
                 writer.write("<p>" + log + "</p>");
             }
 
