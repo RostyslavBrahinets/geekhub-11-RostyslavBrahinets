@@ -37,7 +37,12 @@ public class LectionsMenu extends Menu {
 
         switch (getCommand()) {
             case "1" -> {
-                System.out.println("\nShow Menu\n1 - Without sorting\n2 - Sorted ASC\n3 - Sorted DESC");
+                System.out.println("""
+
+                    Show Menu
+                    1 - Without sorting
+                    2 - Sorted ASC
+                    3 - Sorted DESC""");
                 switch (getCommand()) {
                     case "1" -> showLections(lectionService.getLections());
                     case "2" -> showLections(lectionService.getLectionsSortedByDateAsc());

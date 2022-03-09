@@ -5,9 +5,7 @@ import logger.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public abstract class Menu {
@@ -48,17 +46,6 @@ public abstract class Menu {
 
     protected String getFromScanner() {
         return scanner.nextLine();
-    }
-
-    protected List<String> getContacts() {
-        System.out.println("\nContacts");
-        List<String> contacts = new ArrayList<>();
-        int count = getCount();
-        for (int i = 0; i < count; i++) {
-            System.out.print("Input contact: ");
-            contacts.add(scanner.nextLine());
-        }
-        return contacts;
     }
 
     protected LocalDateTime getDeadLine() {

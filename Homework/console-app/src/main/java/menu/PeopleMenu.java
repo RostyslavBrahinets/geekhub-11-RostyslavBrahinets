@@ -71,7 +71,13 @@ public class PeopleMenu extends Menu {
                 String role = getFromScanner().toUpperCase();
                 System.out.print("Role: ");
                 String courseId = getFromScanner();
-                personService.addPerson(firstName, lastName, nickname, role, Integer.parseInt(courseId));
+                personService.addPerson(
+                    firstName,
+                    lastName,
+                    nickname,
+                    role,
+                    Integer.parseInt(courseId)
+                );
             }
         } catch (InvalidArgumentException | ValidationException | SQLException | IOException e) {
             logger.error(getClass().getName(), e.getMessage(), e);

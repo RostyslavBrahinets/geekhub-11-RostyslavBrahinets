@@ -58,21 +58,11 @@ public class MainMenu extends Menu {
         );
 
         switch (getCommand()) {
-            case "1" -> {
-                coursesMenu.runMenu();
-            }
-            case "2" -> {
-                lectionsMenu.runMenu();
-            }
-            case "3" -> {
-                peopleMenu.runMenu();
-            }
-            case "4" -> {
-                resourcesMenu.runMenu();
-            }
-            case "5" -> {
-                homeWorksMenu.runMenu();
-            }
+            case "1" -> coursesMenu.runMenu();
+            case "2" -> lectionsMenu.runMenu();
+            case "3" -> peopleMenu.runMenu();
+            case "4" -> resourcesMenu.runMenu();
+            case "5" -> homeWorksMenu.runMenu();
             case "6" -> showLoggerMenu();
             case "7" -> {
                 Menu.closeScanner();
