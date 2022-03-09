@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/menu/homeworks")
-public class HomeWorksMenuServlet extends HttpServlet {
+public class HomeWorkMenuServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,

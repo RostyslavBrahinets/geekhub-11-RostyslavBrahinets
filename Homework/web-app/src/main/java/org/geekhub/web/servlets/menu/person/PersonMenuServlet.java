@@ -1,4 +1,4 @@
-package org.geekhub.web.servlets.menu.course;
+package org.geekhub.web.servlets.menu.person;
 
 import exceptions.NotFoundException;
 import logger.Logger;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(urlPatterns = "/menu/courses")
-public class CoursesMenuServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/menu/people")
+public class PersonMenuServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,
@@ -41,9 +41,9 @@ public class CoursesMenuServlet extends HttpServlet {
     ) throws IOException {
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses</title></head><body>");
-            writer.write("<h1>Courses</h1>");
-            writer.write("<form action=\"courses\" method=\"post\">");
+            writer.write("<html><head><title>People</title></head><body>");
+            writer.write("<h1>People</h1>");
+            writer.write("<form action=\"people\" method=\"post\">");
             MenuCommand.showCommands(request, response);
             writer.write("</form>");
             writer.write("</body></html>");

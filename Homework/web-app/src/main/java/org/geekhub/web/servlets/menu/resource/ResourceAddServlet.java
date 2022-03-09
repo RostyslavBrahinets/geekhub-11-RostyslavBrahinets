@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import static org.geekhub.web.servlets.SessionAttributes.*;
 
 @WebServlet(urlPatterns = "/menu/resources/add")
-public class ResourcesAddServlet extends HttpServlet {
+public class ResourceAddServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,

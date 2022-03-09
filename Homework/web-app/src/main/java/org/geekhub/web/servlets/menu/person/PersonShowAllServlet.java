@@ -20,7 +20,7 @@ import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMET
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @WebServlet(urlPatterns = "/menu/people/show")
-public class PeopleShowServlet extends HttpServlet {
+public class PersonShowAllServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,

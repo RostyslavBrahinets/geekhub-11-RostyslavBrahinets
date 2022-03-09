@@ -21,7 +21,7 @@ import java.time.format.DateTimeParseException;
 import static org.geekhub.web.servlets.SessionAttributes.*;
 
 @WebServlet(urlPatterns = "/menu/homeworks/add")
-public class HomeWorksAddServlet extends HttpServlet {
+public class HomeWorkAddServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,

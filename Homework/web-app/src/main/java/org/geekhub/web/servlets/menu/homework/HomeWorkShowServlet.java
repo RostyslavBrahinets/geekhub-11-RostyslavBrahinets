@@ -3,6 +3,7 @@ package org.geekhub.web.servlets.menu.homework;
 import config.AppConfig;
 import exceptions.NotFoundException;
 import logger.Logger;
+import models.HomeWork;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import services.HomeWorkService;
@@ -15,11 +16,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import static org.geekhub.web.servlets.SessionAttributes.ID_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/homeworks/delete")
-public class HomeWorksDeleteServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/menu/homeworks/show-by-id")
+public class HomeWorkShowServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,
@@ -36,26 +38,26 @@ public class HomeWorksDeleteServlet extends HttpServlet {
         String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
-        deleteHomeWork(id, response);
+        showHomeWork(id, response);
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Home Work Delete</title></head><body>");
+            writer.write("<html><head><title>Home Works Show By Id</title></head><body>");
 
-            writer.write("<form action=\"delete\" method=\"post\">");
+            writer.write("<form action=\"show-by-id\" method=\"post\">");
             writer.write("<label for=\"id\">Id: </label>");
             writer.write("<input id=\"id\" type=\"text\" name=\"" + ID_SESSION_PARAMETER + "\">");
-            writer.write("<input type=\"submit\" value=\"Delete\">");
+            writer.write("<input type=\"submit\" value=\"Show\">");
             writer.write("</form>");
 
             writer.write("</body></html>");
         }
     }
 
-    private void deleteHomeWork(String id, HttpServletResponse response) throws IOException {
+    private void showHomeWork(String id, HttpServletResponse response) throws IOException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         HomeWorkService homeWorkService =
@@ -63,18 +65,28 @@ public class HomeWorksDeleteServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Home Work Delete</title></head><body>");
+            writer.write("<html><head><title>Home Work Show By Id</title></head><body>");
+            Optional<HomeWork> homeWork = Optional.empty();
+
             try {
                 if (id.isBlank()) {
-                    throw new NotFoundException("Homework not found");
+                    throw new NotFoundException("Course not found");
                 }
-                homeWorkService.deleteHomeWork(Integer.parseInt(id));
+                homeWork = homeWorkService.getHomeWork(Integer.parseInt(id));
             } catch (NotFoundException | IllegalArgumentException | SQLException e) {
                 Logger logger = new Logger();
                 logger.error(getClass().getSimpleName(), e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }
-            writer.write("<h1>Homework with id '" + id + "' deleted</h1>");
+
+            homeWork.ifPresent(
+                value -> writer.write(
+                    "<h3>"
+                        + value.getTask() + " ["
+                        + value.getDeadline()
+                        + "]</h3>"
+                ));
+
             writer.write("</body></html>");
         }
     }

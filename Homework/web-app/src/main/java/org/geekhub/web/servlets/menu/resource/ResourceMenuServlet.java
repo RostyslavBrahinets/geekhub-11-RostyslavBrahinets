@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/menu/resources")
-public class ResourcesMenuServlet extends HttpServlet {
+public class ResourceMenuServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,

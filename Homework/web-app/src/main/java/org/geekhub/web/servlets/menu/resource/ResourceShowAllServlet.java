@@ -1,10 +1,10 @@
-package org.geekhub.web.servlets.menu.course;
+package org.geekhub.web.servlets.menu.resource;
 
 import config.AppConfig;
 import logger.Logger;
-import models.Course;
+import models.Resource;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import services.CourseService;
+import services.ResourceService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +19,8 @@ import java.util.List;
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/courses/show")
-public class CoursesShowServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/menu/resources/show")
+public class ResourceShowAllServlet extends HttpServlet {
     @Override
     protected void doGet(
         HttpServletRequest request,
@@ -41,35 +41,35 @@ public class CoursesShowServlet extends HttpServlet {
     ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        CourseService courseService =
-            applicationContext.getBean(CourseService.class);
+        ResourceService resourceService =
+            applicationContext.getBean(ResourceService.class);
 
-        List<Course> courses = courseService.getCourses();
+        List<Resource> resources = resourceService.getResources();
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Show</title></head><body>");
-            if (courses.size() == 0) {
-                showMenuIfCoursesNotFound(request, response);
+            writer.write("<html><head><title>Resources Show</title></head><body>");
+            if (resources.size() == 0) {
+                showMenuIfResourcesNotFound(request, response);
                 return;
             }
-            showMenuIfCoursesFound(courses, response);
+            showMenuIfResourcesFound(resources, response);
             writer.write("</body></html>");
         }
     }
 
-    private void showMenuIfCoursesNotFound(
+    private void showMenuIfResourcesNotFound(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<h1>Courses not found!<h1>");
+            writer.write("<h1>Resources not found!<h1>");
 
             HttpSession session = request.getSession();
             String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
 
             if (userName.equals("admin")) {
-                writer.write("<h1>Do you want add new course?<h1>");
+                writer.write("<h1>Do you want add new resource?<h1>");
                 writer.write("<form action=\"add\" method=\"get\">");
                 writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
                     + "\" value=\"Add new\"></br></br>");
@@ -78,14 +78,18 @@ public class CoursesShowServlet extends HttpServlet {
         }
     }
 
-    private void showMenuIfCoursesFound(
-        List<Course> courses,
+    private void showMenuIfResourcesFound(
+        List<Resource> resources,
         HttpServletResponse response
     ) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<h1>Courses:</h1><ul>");
-            for (Course course : courses) {
-                writer.write("<li>" + course.getName() + "</li>");
+            writer.write("<h1>Resources:</h1><ul>");
+            for (Resource resource : resources) {
+                writer.write("<li>"
+                    + resource.getName() + ": "
+                    + resource.getType() + ", "
+                    + resource.getData()
+                    + "</li>");
             }
             writer.write("<ul>");
         }
