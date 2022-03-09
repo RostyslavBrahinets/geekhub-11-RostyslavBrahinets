@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.*;
 
@@ -49,7 +48,6 @@ public class PeopleAddServlet extends HttpServlet {
         session.setAttribute(SURNAME_SESSION_PARAMETER, lastName);
         session.setAttribute(NICKNAME_SESSION_PARAMETER, nickName);
         session.setAttribute(ROLE_SESSION_PARAMETER, role);
-        List<String> contacts = List.of();
         addPerson(firstName, lastName, nickName, role, Integer.parseInt(courseId), response);
     }
 
