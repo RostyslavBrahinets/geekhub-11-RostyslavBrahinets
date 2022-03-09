@@ -30,17 +30,9 @@ public class PersonRepository {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                List<Contact> contacts = getContacts(connection, id);
-
-                Person person = new Person(
-                    id,
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    contacts,
-                    resultSet.getString("git_hub_nickname"),
-                    Role.valueOf(resultSet.getString("role"))
-                );
-                people.add(person);
+                MethodsForRepository repository = new MethodsForRepository();
+                Optional<Person> person = repository.getPerson(connection, resultSet, id);
+                person.ifPresent(people::add);
             }
         }
 
@@ -88,12 +80,14 @@ public class PersonRepository {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            MethodsForRepository repository = new MethodsForRepository();
+            List<Contact> contacts = repository.getContactsByPeople(connection, id);
             if (resultSet.next()) {
                 person = new Person(
                     resultSet.getInt("id"),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
-                    getContacts(connection, id),
+                    contacts,
                     resultSet.getString("git_hub_nickname"),
                     Role.valueOf(resultSet.getString("role"))
                 );
@@ -101,26 +95,5 @@ public class PersonRepository {
         }
 
         return Optional.ofNullable(person);
-    }
-
-    private List<Contact> getContacts(Connection connection, int id) throws SQLException {
-        List<Contact> contacts = new ArrayList<>();
-        String sql = "select * from contacts where person_id=?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Contact contact = new Contact(
-                    resultSet.getInt("id"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phone")
-                );
-                contacts.add(contact);
-            }
-        }
-
-        return contacts;
     }
 }

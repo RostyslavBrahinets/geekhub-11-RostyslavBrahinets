@@ -43,7 +43,9 @@ public class Contact implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Contact contact = (Contact) o;
-        return id == contact.id && Objects.equals(email, contact.email) && Objects.equals(phone, contact.phone);
+        return id == contact.id
+            && Objects.equals(email, contact.email)
+            && Objects.equals(phone, contact.phone);
     }
 
     @Override

@@ -69,12 +69,13 @@ public class ContactRepository {
 
     public Optional<Contact> getContact(int id) throws SQLException, IOException {
         Contact contact = null;
-        String sql = "select * from contacts";
+        String sql = "select * from contacts where id=?";
 
         try (
             Connection connection = dbConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {

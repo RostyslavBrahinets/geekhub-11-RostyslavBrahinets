@@ -65,7 +65,11 @@ public final class Person implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(contacts, person.contacts) && Objects.equals(gitHubNickname, person.gitHubNickname) && role == person.role;
+        return Objects.equals(firstName, person.firstName)
+            && Objects.equals(lastName, person.lastName)
+            && Objects.equals(contacts, person.contacts)
+            && Objects.equals(gitHubNickname, person.gitHubNickname)
+            && role == person.role;
     }
 
     @Override

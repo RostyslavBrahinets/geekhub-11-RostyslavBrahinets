@@ -73,7 +73,7 @@ public class LoggerWithStorageInFile implements LoggerStorageDao {
     }
 
     protected void writeLogToFile(Log log) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOGS_FILE, true));) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOGS_FILE, true))) {
             String str = log.toString() + "\n";
             writer.write(str);
         } catch (IOException e) {

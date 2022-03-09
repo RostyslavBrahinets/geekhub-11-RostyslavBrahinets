@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoggerWithStorageInMemoryAndFile extends LoggerWithStorageInFile implements LoggerStorageDao {
+public class LoggerWithStorageInMemoryAndFile extends LoggerWithStorageInFile
+    implements LoggerStorageDao {
     private static final List<Log> logs = new ArrayList<>();
 
     @Override

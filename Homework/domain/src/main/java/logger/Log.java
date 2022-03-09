@@ -16,17 +16,27 @@ public class Log implements Serializable {
     private final LocalDateTime localDateTime;
     private Exception exception;
 
-    public Log(LogType type, String className, String message, LocalDateTime localDateTime, Exception exception) {
-        this.className = className;
+    public Log(
+        LogType type,
+        String className,
+        String message,
+        LocalDateTime localDateTime,
+        Exception exception) {
         this.type = type;
+        this.className = className;
         this.message = message;
         this.localDateTime = localDateTime;
         this.exception = exception;
     }
 
-    public Log(LogType type, String className, String message, LocalDateTime localDateTime) {
-        this.className = className;
+    public Log(
+        LogType type,
+        String className,
+        String message,
+        LocalDateTime localDateTime
+    ) {
         this.type = type;
+        this.className = className;
         this.message = message;
         this.localDateTime = localDateTime;
     }

@@ -1,7 +1,9 @@
 package repository;
 
 import db.DbConnectionProvider;
-import models.*;
+import models.Course;
+import models.Lection;
+import models.Person;
 
 import java.io.IOException;
 import java.sql.*;
@@ -101,74 +103,16 @@ public class CourseRepository {
         ) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            MethodsForRepository repository = new MethodsForRepository();
 
             while (resultSet.next()) {
-                int lecturerId = resultSet.getInt("lecturer_id");
-                List<Resource> resources = getResources(connection, id);
-                Optional<Person> lecturerOptional = personRepository.getPerson(lecturerId);
-                Person lecturer = null;
-                if (lecturerOptional.isPresent()) {
-                    lecturer = lecturerOptional.get();
-                }
-                List<HomeWork> homeWorks = getHomeWorks(connection, id);
-
-                Lection lection = new Lection(
-                    id,
-                    resultSet.getString("name"),
-                    resultSet.getString("describe"),
-                    resources,
-                    lecturer,
-                    homeWorks,
-                    resultSet.getTimestamp("creation_date").toLocalDateTime().toLocalDate()
-                );
-                lections.add(lection);
+                Optional<Lection> lection = repository
+                    .getLection(connection, resultSet, id, personRepository);
+                lection.ifPresent(lections::add);
             }
         }
 
         return lections;
-    }
-
-    private List<Resource> getResources(Connection connection, int id) throws SQLException {
-        List<Resource> resources = new ArrayList<>();
-        String sql = "select * from resource where lection_id=?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Resource resource = new Resource(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    ResourceType.valueOf(resultSet.getString("type")),
-                    resultSet.getString("data")
-                );
-                resources.add(resource);
-            }
-        }
-
-        return resources;
-    }
-
-    private List<HomeWork> getHomeWorks(Connection connection, int id) throws SQLException {
-        List<HomeWork> homeWorks = new ArrayList<>();
-        String sql = "select * from homework where lection_id=?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                HomeWork homeWork = new HomeWork(
-                    resultSet.getInt("id"),
-                    resultSet.getString("task"),
-                    resultSet.getTimestamp("deadline").toLocalDateTime()
-                );
-                homeWorks.add(homeWork);
-            }
-        }
-
-        return homeWorks;
     }
 
     private List<Person> getPeople(Connection connection, int id) throws SQLException {
@@ -180,41 +124,12 @@ public class CourseRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                List<Contact> contacts = getContacts(connection, id);
-
-                Person person = new Person(
-                    id,
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    contacts,
-                    resultSet.getString("git_hub_nickname"),
-                    Role.valueOf(resultSet.getString("role"))
-                );
-                people.add(person);
+                MethodsForRepository repository = new MethodsForRepository();
+                Optional<Person> person = repository.getPerson(connection, resultSet, id);
+                person.ifPresent(people::add);
             }
         }
 
         return people;
-    }
-
-    private List<Contact> getContacts(Connection connection, int id) throws SQLException {
-        List<Contact> contacts = new ArrayList<>();
-        String sql = "select * from contacts where person_id=?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Contact contact = new Contact(
-                    resultSet.getInt("id"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phone")
-                );
-                contacts.add(contact);
-            }
-        }
-
-        return contacts;
     }
 }

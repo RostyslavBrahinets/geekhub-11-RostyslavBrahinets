@@ -37,7 +37,9 @@ public final class Resource implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resource resource = (Resource) o;
-        return Objects.equals(name, resource.name) && type == resource.type && Objects.equals(data, resource.data);
+        return Objects.equals(name, resource.name)
+            && type == resource.type
+            && Objects.equals(data, resource.data);
     }
 
     @Override
