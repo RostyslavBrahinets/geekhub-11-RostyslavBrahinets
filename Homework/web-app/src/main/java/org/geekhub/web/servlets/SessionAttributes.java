@@ -16,4 +16,6 @@ public class SessionAttributes {
     public static final String SURNAME_SESSION_PARAMETER = "surname";
     public static final String NICKNAME_SESSION_PARAMETER = "nickname";
     public static final String ROLE_SESSION_PARAMETER = "role";
+    public static final String EMAIL_SESSION_PARAMETER = "email";
+    public static final String PHONE_SESSION_PARAMETER = "phone";
 }

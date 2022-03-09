@@ -32,6 +32,10 @@ public class MainMenuServlet extends HttpServlet {
             writer.write("<input type=\"submit\" value=\"People Menu\"></br></br>");
             writer.write("</form>");
 
+            writer.write("<form action=\"menu/contacts\" method=\"get\">");
+            writer.write("<input type=\"submit\" value=\"Contacts Menu\"></br></br>");
+            writer.write("</form>");
+
             writer.write("<form action=\"menu/resources\" method=\"get\">");
             writer.write("<input type=\"submit\" value=\"Resources Menu\"></br></br>");
             writer.write("</form>");
