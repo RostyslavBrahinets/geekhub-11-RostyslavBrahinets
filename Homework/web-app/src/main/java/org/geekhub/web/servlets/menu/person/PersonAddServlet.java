@@ -1,7 +1,6 @@
 package org.geekhub.web.servlets.menu.person;
 
 import config.AppConfig;
-import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -34,28 +33,34 @@ public class PersonAddServlet extends HttpServlet {
         HttpServletResponse response
     ) throws IOException {
         String firstName = MenuCommand
-            .getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(NAME_SESSION_PARAMETER, request);
         String lastName = MenuCommand
-            .getValueOfParameter(SURNAME_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(SURNAME_SESSION_PARAMETER, request);
         String nickName = MenuCommand
-            .getValueOfParameter(NICKNAME_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(NICKNAME_SESSION_PARAMETER, request);
         String role = MenuCommand
-            .getValueOfParameter(ROLE_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(ROLE_SESSION_PARAMETER, request);
         String courseId = MenuCommand
-            .getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(NAME_SESSION_PARAMETER, firstName);
         session.setAttribute(SURNAME_SESSION_PARAMETER, lastName);
         session.setAttribute(NICKNAME_SESSION_PARAMETER, nickName);
         session.setAttribute(ROLE_SESSION_PARAMETER, role);
-        addPerson(firstName, lastName, nickName, role, Integer.parseInt(courseId), response);
+        try {
+            addPerson(firstName, lastName, nickName, role, Integer.parseInt(courseId), response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Add</title></head><body>");
+            writer.write("<html><head><title>Person Add</title></head><body>");
 
             writer.write("<form action=\"add\" method=\"post\">");
             writer.write("<label for=\"name\">First name: </label>");
@@ -87,7 +92,7 @@ public class PersonAddServlet extends HttpServlet {
         String role,
         int courseId,
         HttpServletResponse response
-    ) throws IOException {
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         PersonService personService =
@@ -95,16 +100,10 @@ public class PersonAddServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>People Add</title></head><body>");
-            try {
-                personService.addPerson(
-                    firstName, lastName, nickName, role.toUpperCase(), courseId
-                );
-            } catch (ValidationException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            }
+            writer.write("<html><head><title>Person Add</title></head><body>");
+            personService.addPerson(
+                firstName, lastName, nickName, role.toUpperCase(), courseId
+            );
             writer.write("<h1>Person with name '" + firstName + "' added</h1>");
             writer.write("</body></html>");
         }

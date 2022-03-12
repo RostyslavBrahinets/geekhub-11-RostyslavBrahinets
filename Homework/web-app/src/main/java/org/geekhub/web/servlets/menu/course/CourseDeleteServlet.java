@@ -33,17 +33,23 @@ public class CourseDeleteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
-        deleteCourse(id, response);
+        try {
+            deleteCourse(id, response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Delete</title></head><body>");
+            writer.write("<html><head><title>Course Delete</title></head><body>");
 
             writer.write("<form action=\"delete\" method=\"post\">");
             writer.write("<label for=\"id\">Id: </label>");
@@ -55,7 +61,10 @@ public class CourseDeleteServlet extends HttpServlet {
         }
     }
 
-    private void deleteCourse(String id, HttpServletResponse response) throws IOException {
+    private void deleteCourse(
+        String id,
+        HttpServletResponse response
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         CourseService courseService =
@@ -63,17 +72,11 @@ public class CourseDeleteServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Delete</title></head><body>");
-            try {
-                if (id.isBlank()) {
-                    throw new NotFoundException("Course not found");
-                }
-                courseService.deleteCourse(Integer.parseInt(id));
-            } catch (NotFoundException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            writer.write("<html><head><title>Course Delete</title></head><body>");
+            if (id.isBlank()) {
+                throw new NotFoundException("Course not found");
             }
+            courseService.deleteCourse(Integer.parseInt(id));
             writer.write("<h1>Course with id '" + id + "' deleted</h1>");
             writer.write("</body></html>");
         }

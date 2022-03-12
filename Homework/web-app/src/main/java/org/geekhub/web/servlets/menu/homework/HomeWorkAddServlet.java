@@ -1,7 +1,6 @@
 package org.geekhub.web.servlets.menu.homework;
 
 import config.AppConfig;
-import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 
 import static org.geekhub.web.servlets.SessionAttributes.*;
 
@@ -35,26 +33,32 @@ public class HomeWorkAddServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String task = MenuCommand.getValueOfParameter(TASK_SESSION_PARAMETER, request, response);
+        String task = MenuCommand.getValueOfParameter(TASK_SESSION_PARAMETER, request);
         String date = MenuCommand
-            .getValueOfParameter(DATE_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(DATE_SESSION_PARAMETER, request);
         String time = MenuCommand
-            .getValueOfParameter(TIME_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(TIME_SESSION_PARAMETER, request);
         String lectionId = MenuCommand
-            .getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(TASK_SESSION_PARAMETER, task);
         session.setAttribute(DATE_SESSION_PARAMETER, date);
         session.setAttribute(TIME_SESSION_PARAMETER, time);
         session.setAttribute(ID_SESSION_PARAMETER, lectionId);
-        addCourse(task, date, time, Integer.parseInt(lectionId), response);
+        try {
+            addCourse(task, date, time, Integer.parseInt(lectionId), response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Home Works Add</title></head><body>");
+            writer.write("<html><head><title>Home Work Add</title></head><body>");
 
             writer.write("<form action=\"add\" method=\"post\">");
             writer.write("<label for=\"task\">Task: </label>");
@@ -82,7 +86,7 @@ public class HomeWorkAddServlet extends HttpServlet {
         String time,
         int lectionId,
         HttpServletResponse response
-    ) throws IOException {
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         HomeWorkService homeWorkService =
@@ -90,22 +94,12 @@ public class HomeWorkAddServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Home Works Add</title></head><body>");
-            try {
-                homeWorkService.addHomeWork(
-                    task,
-                    LocalDateTime.parse(date + "T" + time),
-                    lectionId)
-                ;
-            } catch (ValidationException
-                | DateTimeParseException
-                | IllegalArgumentException
-                | SQLException e
-            ) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            }
+            writer.write("<html><head><title>Home Work Add</title></head><body>");
+            homeWorkService.addHomeWork(
+                task,
+                LocalDateTime.parse(date + "T" + time),
+                lectionId
+            );
             writer.write("<h1>Home work with task '" + task + "' added</h1>");
             writer.write("</body></html>");
         }

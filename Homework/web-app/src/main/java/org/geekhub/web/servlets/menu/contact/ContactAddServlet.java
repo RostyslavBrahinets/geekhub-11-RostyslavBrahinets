@@ -1,7 +1,6 @@
 package org.geekhub.web.servlets.menu.contact;
 
 import config.AppConfig;
-import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -33,15 +32,21 @@ public class ContactAddServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String email = MenuCommand.getValueOfParameter(EMAIL_SESSION_PARAMETER, request, response);
-        String phone = MenuCommand.getValueOfParameter(PHONE_SESSION_PARAMETER, request, response);
+        String email = MenuCommand.getValueOfParameter(EMAIL_SESSION_PARAMETER, request);
+        String phone = MenuCommand.getValueOfParameter(PHONE_SESSION_PARAMETER, request);
         String personId = MenuCommand
-            .getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+            .getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(EMAIL_SESSION_PARAMETER, email);
         session.setAttribute(PHONE_SESSION_PARAMETER, phone);
         session.setAttribute(ID_SESSION_PARAMETER, personId);
-        addContact(email, phone, Integer.parseInt(personId), response);
+        try {
+            addContact(email, phone, Integer.parseInt(personId), response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -72,7 +77,7 @@ public class ContactAddServlet extends HttpServlet {
         String phone,
         int personId,
         HttpServletResponse response
-    ) throws IOException {
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         ContactService contactService =
@@ -81,13 +86,7 @@ public class ContactAddServlet extends HttpServlet {
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Contact Add</title></head><body>");
-            try {
-                contactService.addContact(email, phone, personId);
-            } catch (ValidationException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            }
+            contactService.addContact(email, phone, personId);
             writer.write("<h1>Contact with name '" + email + "' added</h1>");
             writer.write("</body></html>");
         }

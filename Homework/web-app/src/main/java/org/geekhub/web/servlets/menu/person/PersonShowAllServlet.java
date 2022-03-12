@@ -19,7 +19,7 @@ import java.util.List;
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/people/show")
+@WebServlet(urlPatterns = "/menu/people/show-all")
 public class PersonShowAllServlet extends HttpServlet {
     @Override
     protected void doGet(
@@ -28,7 +28,7 @@ public class PersonShowAllServlet extends HttpServlet {
     ) throws IOException {
         try {
             showMenu(request, response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger logger = new Logger();
             logger.error(getClass().getSimpleName(), e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
@@ -48,7 +48,7 @@ public class PersonShowAllServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>People Show</title></head><body>");
+            writer.write("<html><head><title>People Show All</title></head><body>");
             if (people.size() == 0) {
                 showMenuIfPeopleNotFound(request, response);
                 return;

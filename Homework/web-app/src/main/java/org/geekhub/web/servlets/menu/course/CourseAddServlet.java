@@ -1,7 +1,6 @@
 package org.geekhub.web.servlets.menu.course;
 
 import config.AppConfig;
-import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -33,17 +32,23 @@ public class CourseAddServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
+        String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(NAME_SESSION_PARAMETER, name);
-        addCourse(name, response);
+        try {
+            addCourse(name, response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Add</title></head><body>");
+            writer.write("<html><head><title>Course Add</title></head><body>");
 
             writer.write("<form action=\"add\" method=\"post\">");
             writer.write("<label for=\"name\">Name: </label>");
@@ -59,7 +64,7 @@ public class CourseAddServlet extends HttpServlet {
     private void addCourse(
         String name,
         HttpServletResponse response
-    ) throws IOException {
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         CourseService courseService =
@@ -67,14 +72,8 @@ public class CourseAddServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Add</title></head><body>");
-            try {
-                courseService.addCourse(name);
-            } catch (ValidationException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            }
+            writer.write("<html><head><title>Course Add</title></head><body>");
+            courseService.addCourse(name);
             writer.write("<h1>Course with name '" + name + "' added</h1>");
             writer.write("</body></html>");
         }

@@ -1,7 +1,6 @@
 package menu;
 
 import exceptions.NotFoundException;
-import exceptions.ValidationException;
 import models.Course;
 import services.CourseService;
 
@@ -62,7 +61,7 @@ public class CoursesMenu extends Menu {
                 String name = getFromScanner();
                 courseService.addCourse(name);
             }
-        } catch (ValidationException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -70,7 +69,7 @@ public class CoursesMenu extends Menu {
     private void deleteCourse() {
         try {
             courseService.deleteCourse(getId());
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -84,7 +83,7 @@ public class CoursesMenu extends Menu {
                 value.getLections(),
                 value.getStudents()
             ));
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

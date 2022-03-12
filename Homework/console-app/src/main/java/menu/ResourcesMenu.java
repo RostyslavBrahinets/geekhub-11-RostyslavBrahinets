@@ -1,8 +1,6 @@
 package menu;
 
-import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
-import exceptions.ValidationException;
 import models.Resource;
 import services.ResourceService;
 
@@ -70,7 +68,7 @@ public class ResourcesMenu extends Menu {
                 String id = getFromScanner();
                 resourceService.addResource(name, type, data, Integer.parseInt(id));
             }
-        } catch (InvalidArgumentException | ValidationException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -78,7 +76,7 @@ public class ResourcesMenu extends Menu {
     private void deleteResource() {
         try {
             resourceService.deleteResource(getId());
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -92,7 +90,7 @@ public class ResourcesMenu extends Menu {
                 value.getType(),
                 value.getData()
             ));
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

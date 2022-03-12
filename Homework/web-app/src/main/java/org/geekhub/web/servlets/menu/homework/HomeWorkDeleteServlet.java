@@ -33,10 +33,16 @@ public class HomeWorkDeleteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
-        deleteHomeWork(id, response);
+        try {
+            deleteHomeWork(id, response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -55,7 +61,10 @@ public class HomeWorkDeleteServlet extends HttpServlet {
         }
     }
 
-    private void deleteHomeWork(String id, HttpServletResponse response) throws IOException {
+    private void deleteHomeWork(
+        String id,
+        HttpServletResponse response
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         HomeWorkService homeWorkService =
@@ -64,16 +73,10 @@ public class HomeWorkDeleteServlet extends HttpServlet {
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Home Work Delete</title></head><body>");
-            try {
-                if (id.isBlank()) {
-                    throw new NotFoundException("Homework not found");
-                }
-                homeWorkService.deleteHomeWork(Integer.parseInt(id));
-            } catch (NotFoundException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            if (id.isBlank()) {
+                throw new NotFoundException("Homework not found");
             }
+            homeWorkService.deleteHomeWork(Integer.parseInt(id));
             writer.write("<h1>Homework with id '" + id + "' deleted</h1>");
             writer.write("</body></html>");
         }

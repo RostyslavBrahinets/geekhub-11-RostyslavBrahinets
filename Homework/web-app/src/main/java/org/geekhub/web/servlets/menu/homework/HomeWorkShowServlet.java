@@ -20,7 +20,7 @@ import java.util.Optional;
 
 import static org.geekhub.web.servlets.SessionAttributes.ID_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/homeworks/show-by-id")
+@WebServlet(urlPatterns = "/menu/homeworks/show")
 public class HomeWorkShowServlet extends HttpServlet {
     @Override
     protected void doGet(
@@ -35,19 +35,25 @@ public class HomeWorkShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
-        showHomeWork(id, response);
+        try {
+            showHomeWork(id, response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Home Works Show By Id</title></head><body>");
+            writer.write("<html><head><title>Home Works Show</title></head><body>");
 
-            writer.write("<form action=\"show-by-id\" method=\"post\">");
+            writer.write("<form action=\"show\" method=\"post\">");
             writer.write("<label for=\"id\">Id: </label>");
             writer.write("<input id=\"id\" type=\"text\" name=\"" + ID_SESSION_PARAMETER + "\">");
             writer.write("<input type=\"submit\" value=\"Show\">");
@@ -57,7 +63,10 @@ public class HomeWorkShowServlet extends HttpServlet {
         }
     }
 
-    private void showHomeWork(String id, HttpServletResponse response) throws IOException {
+    private void showHomeWork(
+        String id,
+        HttpServletResponse response
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         HomeWorkService homeWorkService =
@@ -65,19 +74,12 @@ public class HomeWorkShowServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Home Work Show By Id</title></head><body>");
-            Optional<HomeWork> homeWork = Optional.empty();
+            writer.write("<html><head><title>Home Work Show</title></head><body>");
 
-            try {
-                if (id.isBlank()) {
-                    throw new NotFoundException("Course not found");
-                }
-                homeWork = homeWorkService.getHomeWork(Integer.parseInt(id));
-            } catch (NotFoundException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            if (id.isBlank()) {
+                throw new NotFoundException("Course not found");
             }
+            Optional<HomeWork> homeWork = homeWorkService.getHomeWork(Integer.parseInt(id));
 
             homeWork.ifPresent(
                 value -> writer.write(

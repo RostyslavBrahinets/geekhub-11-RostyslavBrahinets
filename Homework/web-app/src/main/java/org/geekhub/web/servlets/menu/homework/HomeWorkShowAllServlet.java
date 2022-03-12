@@ -13,13 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/homeworks/show")
+@WebServlet(urlPatterns = "/menu/homeworks/show-all")
 public class HomeWorkShowAllServlet extends HttpServlet {
     @Override
     protected void doGet(
@@ -40,7 +39,7 @@ public class HomeWorkShowAllServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Home Works Show</title></head><body>");
+            writer.write("<html><head><title>Home Works Show All</title></head><body>");
             List<HomeWork> homeWorks = homeWorkService.getHomeWorks();
             if (homeWorks.size() == 0) {
                 showMenuIfHomeWorksNotFound(request, response);
@@ -48,7 +47,7 @@ public class HomeWorkShowAllServlet extends HttpServlet {
             }
             showMenuIfHomeWorksFound(homeWorks, response);
             writer.write("</body></html>");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger logger = new Logger();
             logger.error(getClass().getSimpleName(), e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());

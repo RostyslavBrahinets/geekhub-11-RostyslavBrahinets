@@ -1,11 +1,7 @@
 package org.geekhub.web.servlets;
 
-import logger.Logger;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.Optional;
 
 public class RequestParameter {
@@ -16,19 +12,9 @@ public class RequestParameter {
 
     public void setRequestParameterToSessionAttribute(
         String name,
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws IOException {
-        Optional<String> parameter;
-        try {
-            parameter = extractParameter(name, request);
-        } catch (IllegalArgumentException e) {
-            Logger logger = new Logger();
-            logger.error(getClass().getSimpleName(), e.getMessage(), e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            return;
-        }
-
+        HttpServletRequest request
+    ) {
+        Optional<String> parameter = extractParameter(name, request);
         HttpSession session = request.getSession();
         session.setAttribute(name, parameter.orElse(""));
     }

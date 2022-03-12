@@ -19,7 +19,7 @@ import java.util.List;
 import static org.geekhub.web.servlets.SessionAttributes.COMMAND_SESSION_PARAMETER;
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/courses/show")
+@WebServlet(urlPatterns = "/menu/courses/show-all")
 public class CourseShowAllServlet extends HttpServlet {
     @Override
     protected void doGet(
@@ -28,7 +28,7 @@ public class CourseShowAllServlet extends HttpServlet {
     ) throws IOException {
         try {
             showMenu(request, response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger logger = new Logger();
             logger.error(getClass().getSimpleName(), e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
@@ -48,7 +48,7 @@ public class CourseShowAllServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Show</title></head><body>");
+            writer.write("<html><head><title>Courses Show All</title></head><body>");
             if (courses.size() == 0) {
                 showMenuIfCoursesNotFound(request, response);
                 return;

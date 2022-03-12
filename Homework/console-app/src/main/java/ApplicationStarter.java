@@ -2,16 +2,13 @@ import config.AppConfig;
 import config.MenuConfig;
 import db.DbConnectionProvider;
 import db.DbStarter;
-import exceptions.NotFoundException;
 import logger.Logger;
 import menu.LoggerMenu;
 import menu.MainMenu;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ApplicationStarter {
@@ -27,7 +24,7 @@ public class ApplicationStarter {
                     new AnnotationConfigApplicationContext(MenuConfig.class);
                 MainMenu mainMenu = applicationContext.getBean(MainMenu.class);
                 mainMenu.runMenu();
-            } catch (NotFoundException | SQLException | IOException e) {
+            } catch (Exception e) {
                 logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
             }
         }
@@ -44,7 +41,7 @@ public class ApplicationStarter {
                 logger = new Logger();
                 logger.getLogs().forEach(System.out::println);
                 loggerNotSet = false;
-            } catch (IllegalArgumentException | NotFoundException e) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -74,7 +71,7 @@ public class ApplicationStarter {
                 logger.info(ApplicationStarter.class.getName(),
                     "Tables already created in database!");
             }
-        } catch (SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(ApplicationStarter.class.getName(), e.getMessage(), e);
         }
     }

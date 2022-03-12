@@ -20,7 +20,7 @@ import java.util.Optional;
 
 import static org.geekhub.web.servlets.SessionAttributes.ID_SESSION_PARAMETER;
 
-@WebServlet(urlPatterns = "/menu/contacts/show-by-id")
+@WebServlet(urlPatterns = "/menu/contacts/show")
 public class ContactShowServlet extends HttpServlet {
     @Override
     protected void doGet(
@@ -35,19 +35,25 @@ public class ContactShowServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
-        showContact(id, response);
+        try {
+            showContact(id, response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Contact Show By Id</title></head><body>");
+            writer.write("<html><head><title>Contact Show</title></head><body>");
 
-            writer.write("<form action=\"show-by-id\" method=\"post\">");
+            writer.write("<form action=\"show\" method=\"post\">");
             writer.write("<label for=\"id\">Id: </label>");
             writer.write("<input id=\"id\" type=\"text\" name=\"" + ID_SESSION_PARAMETER + "\">");
             writer.write("<input type=\"submit\" value=\"Show\">");
@@ -57,7 +63,10 @@ public class ContactShowServlet extends HttpServlet {
         }
     }
 
-    private void showContact(String id, HttpServletResponse response) throws IOException {
+    private void showContact(
+        String id,
+        HttpServletResponse response
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         ContactService contactService =
@@ -65,19 +74,12 @@ public class ContactShowServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Contact Show By Id</title></head><body>");
-            Optional<Contact> contact = Optional.empty();
+            writer.write("<html><head><title>Contact Show</title></head><body>");
 
-            try {
-                if (id.isBlank()) {
-                    throw new NotFoundException("Contact not found");
-                }
-                contact = contactService.getContact(Integer.parseInt(id));
-            } catch (NotFoundException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            if (id.isBlank()) {
+                throw new NotFoundException("Contact not found");
             }
+            Optional<Contact> contact = contactService.getContact(Integer.parseInt(id));
 
             contact.ifPresent(
                 value -> writer.write(

@@ -5,7 +5,6 @@ import logger.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class Menu {
@@ -35,7 +34,7 @@ public abstract class Menu {
         try {
             count = scanner.nextInt();
             scanner.nextLine();
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), "Count is invalid");
             count = 0;
             scanner.nextLine();
@@ -67,7 +66,7 @@ public abstract class Menu {
             int minute = scanner.nextInt();
             scanner.nextLine();
             return LocalDateTime.of(year, month, day, hour, minute);
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             scanner.nextLine();
             logger.error(getClass().getName(), "Date is invalid");
         }
@@ -82,7 +81,7 @@ public abstract class Menu {
         try {
             id = scanner.nextInt();
             scanner.nextLine();
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             id = -1;
             scanner.nextLine();
         }

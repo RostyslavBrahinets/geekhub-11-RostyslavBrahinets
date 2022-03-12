@@ -1,8 +1,6 @@
 package menu;
 
-import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
-import exceptions.ValidationException;
 import models.Person;
 import services.PersonService;
 
@@ -79,7 +77,7 @@ public class PeopleMenu extends Menu {
                     Integer.parseInt(courseId)
                 );
             }
-        } catch (InvalidArgumentException | ValidationException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -87,7 +85,7 @@ public class PeopleMenu extends Menu {
     private void deletePerson() {
         try {
             personService.deletePerson(getId());
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -103,7 +101,7 @@ public class PeopleMenu extends Menu {
                 value.getGitHubNickname(),
                 value.getRole()
             ));
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

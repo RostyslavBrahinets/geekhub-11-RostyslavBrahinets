@@ -1,12 +1,9 @@
 package menu;
 
 import exceptions.NotFoundException;
-import exceptions.ValidationException;
 import models.HomeWork;
 import services.HomeWorkService;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +49,7 @@ public class HomeWorksMenu extends Menu {
                     homeWork.getDeadline()
                 );
             }
-        } catch (SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -68,7 +65,7 @@ public class HomeWorksMenu extends Menu {
                 String lectionId = getFromScanner();
                 homeWorkService.addHomeWork(task, getDeadLine(), Integer.parseInt(lectionId));
             }
-        } catch (ValidationException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -76,7 +73,7 @@ public class HomeWorksMenu extends Menu {
     private void deleteHomeWork() {
         try {
             homeWorkService.deleteHomeWork(getId());
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }
@@ -89,7 +86,7 @@ public class HomeWorksMenu extends Menu {
                 work.getTask(),
                 work.getDeadline()
             ));
-        } catch (NotFoundException | SQLException | IOException e) {
+        } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
         }
     }

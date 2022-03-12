@@ -1,7 +1,6 @@
 package org.geekhub.web.servlets.menu;
 
 import exceptions.NotFoundException;
-import logger.Logger;
 import org.geekhub.web.servlets.RequestParameter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,13 +30,13 @@ public class MenuCommand {
 
             if (userName.equals("admin")) {
                 writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                    + "\" value=\"Add new\"></br></br>");
+                    + "\" value=\"Add\"></br></br>");
                 writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                    + "\" value=\"Delete by id\"></br></br>");
+                    + "\" value=\"Delete\"></br></br>");
             }
 
             writer.write("<input type=\"submit\" name=\"" + COMMAND_SESSION_PARAMETER
-                + "\" value=\"Show by id\"></br></br>");
+                + "\" value=\"Show\"></br></br>");
         }
     }
 
@@ -48,35 +47,27 @@ public class MenuCommand {
         RequestParameter parameter = new RequestParameter();
         parameter.setRequestParameterToSessionAttribute(
             COMMAND_SESSION_PARAMETER,
-            request, response
+            request
         );
 
         HttpSession session = request.getSession();
         String command = (String) session.getAttribute(COMMAND_SESSION_PARAMETER);
 
         switch (command) {
-            case "Show all" -> response.sendRedirect(request.getRequestURI() + "/show");
-            case "Add new" -> response.sendRedirect(request.getRequestURI() + "/add");
-            case "Delete by id" -> response.sendRedirect(request.getRequestURI() + "/delete");
-            case "Show by id" -> response.sendRedirect(request.getRequestURI() + "/show-by-id");
+            case "Show all" -> response.sendRedirect(request.getRequestURI() + "/show-all");
+            case "Add" -> response.sendRedirect(request.getRequestURI() + "/add");
+            case "Delete" -> response.sendRedirect(request.getRequestURI() + "/delete");
+            case "Show" -> response.sendRedirect(request.getRequestURI() + "/show");
             default -> throw new NotFoundException("Command not found");
         }
     }
 
     public static String getValueOfParameter(
         String parameter,
-        HttpServletRequest request,
-        HttpServletResponse response
+        HttpServletRequest request
     ) throws IOException {
-        Optional<String> optionalId = Optional.empty();
-        try {
-            RequestParameter requestParameter = new RequestParameter();
-            optionalId = requestParameter.extractParameter(parameter, request);
-        } catch (IllegalArgumentException e) {
-            Logger logger = new Logger();
-            logger.error(MenuCommand.class.getSimpleName(), e.getMessage(), e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-        }
+        RequestParameter requestParameter = new RequestParameter();
+        Optional<String> optionalId = requestParameter.extractParameter(parameter, request);
         return optionalId.orElse("");
     }
 }

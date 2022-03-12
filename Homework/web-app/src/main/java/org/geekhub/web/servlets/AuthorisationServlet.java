@@ -40,7 +40,7 @@ public class AuthorisationServlet extends HttpServlet {
         RequestParameter parameter = new RequestParameter();
         parameter.setRequestParameterToSessionAttribute(
             USER_NAME_SESSION_PARAMETER,
-            request, response
+            request
         );
 
         List<String> users = List.of("admin", "user");

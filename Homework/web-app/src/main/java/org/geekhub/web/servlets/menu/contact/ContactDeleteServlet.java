@@ -33,10 +33,16 @@ public class ContactDeleteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+        String id = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(ID_SESSION_PARAMETER, id);
-        deleteContact(id, response);
+        try {
+            deleteContact(id, response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
@@ -55,7 +61,10 @@ public class ContactDeleteServlet extends HttpServlet {
         }
     }
 
-    private void deleteContact(String id, HttpServletResponse response) throws IOException {
+    private void deleteContact(
+        String id,
+        HttpServletResponse response
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         ContactService contactService =
@@ -64,16 +73,10 @@ public class ContactDeleteServlet extends HttpServlet {
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Contact Delete</title></head><body>");
-            try {
-                if (id.isBlank()) {
-                    throw new NotFoundException("Contact not found");
-                }
-                contactService.deleteContact(Integer.parseInt(id));
-            } catch (NotFoundException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            if (id.isBlank()) {
+                throw new NotFoundException("Contact not found");
             }
+            contactService.deleteContact(Integer.parseInt(id));
             writer.write("<h1>Contact with id '" + id + "' deleted</h1>");
             writer.write("</body></html>");
         }

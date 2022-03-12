@@ -1,6 +1,7 @@
 package org.geekhub.web.servlets.menu.contact;
 
 import exceptions.NotFoundException;
+import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +28,9 @@ public class ContactMenuServlet extends HttpServlet {
     ) throws IOException {
         try {
             MenuCommand.handleCommands(request, response);
-        } catch (NotFoundException e) {
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }

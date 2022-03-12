@@ -1,7 +1,6 @@
 package org.geekhub.web.servlets.menu;
 
 import exceptions.NotFoundException;
-import logger.Logger;
 import logger.LoggerStorageFactory;
 import org.geekhub.web.servlets.SessionAttributes;
 
@@ -47,24 +46,11 @@ public class LoggerMenuServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        Optional<String> optionalLoggerStorage;
-
-        try {
-            optionalLoggerStorage = extractLoggerStorageParameter(request);
-        } catch (IllegalArgumentException e) {
-            Logger logger = new Logger();
-            logger.error(getClass().getSimpleName(), e.getMessage(), e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            return;
-        }
-
+        Optional<String> optionalLoggerStorage = extractLoggerStorageParameter(request);
         String loggerStorage = optionalLoggerStorage.orElse("");
-
         HttpSession session = request.getSession();
         session.setAttribute(LOGGER_STORAGE_SESSION_PARAMETER, loggerStorage);
-
         setLoggerStorage(loggerStorage);
-
         response.sendRedirect("/main");
     }
 

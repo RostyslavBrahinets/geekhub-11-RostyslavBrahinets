@@ -1,7 +1,6 @@
 package org.geekhub.web.servlets.menu.resource;
 
 import config.AppConfig;
-import exceptions.ValidationException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -33,23 +32,29 @@ public class ResourceAddServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request, response);
-        String type = MenuCommand.getValueOfParameter(TYPE_SESSION_PARAMETER, request, response);
-        String data = MenuCommand.getValueOfParameter(DATA_SESSION_PARAMETER, request, response);
-        String lectionId = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request, response);
+        String name = MenuCommand.getValueOfParameter(NAME_SESSION_PARAMETER, request);
+        String type = MenuCommand.getValueOfParameter(TYPE_SESSION_PARAMETER, request);
+        String data = MenuCommand.getValueOfParameter(DATA_SESSION_PARAMETER, request);
+        String lectionId = MenuCommand.getValueOfParameter(ID_SESSION_PARAMETER, request);
         HttpSession session = request.getSession();
         session.setAttribute(NAME_SESSION_PARAMETER, name);
         session.setAttribute(TYPE_SESSION_PARAMETER, type);
         session.setAttribute(DATA_SESSION_PARAMETER, data);
         session.setAttribute(ID_SESSION_PARAMETER, lectionId);
-        addResource(name, type, data, Integer.parseInt(lectionId), response);
+        try {
+            addResource(name, type, data, Integer.parseInt(lectionId), response);
+        } catch (Exception e) {
+            Logger logger = new Logger();
+            logger.error(getClass().getSimpleName(), e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
     }
 
     private void showMenu(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Courses Add</title></head><body>");
+            writer.write("<html><head><title>Resource Add</title></head><body>");
 
             writer.write("<form action=\"add\" method=\"post\">");
             writer.write("<label for=\"name\">Name: </label>");
@@ -77,7 +82,7 @@ public class ResourceAddServlet extends HttpServlet {
         String data,
         int lectionId,
         HttpServletResponse response
-    ) throws IOException {
+    ) throws IOException, SQLException {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         ResourceService resourceService =
@@ -85,14 +90,8 @@ public class ResourceAddServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.write("<html><head><title>Resources Add</title></head><body>");
-            try {
-                resourceService.addResource(name, type.toUpperCase(), data, lectionId);
-            } catch (ValidationException | IllegalArgumentException | SQLException e) {
-                Logger logger = new Logger();
-                logger.error(getClass().getSimpleName(), e.getMessage(), e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            }
+            writer.write("<html><head><title>Resource Add</title></head><body>");
+            resourceService.addResource(name, type.toUpperCase(), data, lectionId);
             writer.write("<h1>Resource with name '" + name + "' added</h1>");
             writer.write("</body></html>");
         }

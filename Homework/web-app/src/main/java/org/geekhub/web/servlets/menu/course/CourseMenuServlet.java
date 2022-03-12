@@ -1,6 +1,5 @@
 package org.geekhub.web.servlets.menu.course;
 
-import exceptions.NotFoundException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 
@@ -28,7 +27,7 @@ public class CourseMenuServlet extends HttpServlet {
     ) throws IOException {
         try {
             MenuCommand.handleCommands(request, response);
-        } catch (NotFoundException e) {
+        } catch (Exception e) {
             Logger logger = new Logger();
             logger.error(getClass().getSimpleName(), e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
