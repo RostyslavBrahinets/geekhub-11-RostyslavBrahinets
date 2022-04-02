@@ -15,7 +15,7 @@ public class DbConnectionProvider {
         }
         Properties properties = new Properties();
         properties.load(DbConnectionProvider.class.getClassLoader()
-            .getResourceAsStream("application.properties"));
+            .getResourceAsStream("database.properties"));
         return DriverManager
             .getConnection(properties.getProperty("url"), properties);
     }
