@@ -1,98 +1,61 @@
 package repository;
 
-import models.Contact;
+import jdbc.DatabaseTemplate;
 import models.Person;
 import models.Role;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class PersonRepository {
-    private final DataSource dataSource;
+    private static final NamedParameterJdbcTemplate jdbcTemplate =
+        DatabaseTemplate.getJdbcTemplate();
 
-    public PersonRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    private static RowMapper<Person> mapper() {
+        return (rs, rowNum) -> new Person(
+            rs.getInt("id"),
+            rs.getString("first_name"),
+            rs.getString("last_name"),
+            MethodsForRepository.getContactsByPeople(rs.getInt("id")),
+            rs.getString("git_hub_nickname"),
+            Role.valueOf(rs.getString("role"))
+        );
     }
 
-    public List<Person> getPeople() throws SQLException {
-        List<Person> people = new ArrayList<>();
-
-        try (
-            Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement()
-        ) {
-            String sql = "select * from person";
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                MethodsForRepository repository = new MethodsForRepository();
-                Optional<Person> person = repository.getPerson(connection, resultSet, id);
-                person.ifPresent(people::add);
-            }
-        }
-
-        return people;
+    public List<Person> getPeople() {
+        String sql = "SELECT * FROM person";
+        return jdbcTemplate.query(sql, mapper());
     }
 
-    public void addPerson(Person person, int courseId) throws SQLException {
+    public void addPerson(Person person, int courseId) {
         String sql = "insert into person"
             + "(first_name, last_name, git_hub_nickname, role, course_id)"
-            + "values (?,?,?,?,?)";
+            + "values (:first_name, :last_name, :git_hub_nickname, :role, :course_id)";
 
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setString(1, person.getFirstName());
-            preparedStatement.setString(2, person.getLastName());
-            preparedStatement.setString(3, person.getGitHubNickname());
-            preparedStatement.setString(4, String.valueOf(person.getRole()));
-            preparedStatement.setInt(5, courseId);
-            preparedStatement.execute();
-        }
+        Map<String, Object> param = Map.of(
+            "first_name", person.getFirstName(),
+            "last_name", person.getLastName(),
+            "git_hub_nickname", person.getGitHubNickname(),
+            "role", person.getRole().toString(),
+            "course_id", courseId
+        );
+
+        jdbcTemplate.update(sql, param);
     }
 
-    public void deletePerson(int id) throws SQLException {
-        String sql = "delete from person where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-        }
+    public void deletePerson(int id) {
+        String sql = "DELETE FROM person WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Person> getPerson(int id) throws SQLException {
-        Person person = null;
-        String sql = "select * from person where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            MethodsForRepository repository = new MethodsForRepository();
-            List<Contact> contacts = repository.getContactsByPeople(connection, id);
-            if (resultSet.next()) {
-                person = new Person(
-                    resultSet.getInt("id"),
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    contacts,
-                    resultSet.getString("git_hub_nickname"),
-                    Role.valueOf(resultSet.getString("role"))
-                );
-            }
-        }
-
+    public Optional<Person> getPerson(int id) {
+        String sql = "SELECT * FROM person WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        Person person = jdbcTemplate.queryForObject(sql, param, mapper());
         return Optional.ofNullable(person);
     }
 }
