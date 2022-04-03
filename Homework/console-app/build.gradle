@@ -10,8 +10,8 @@ repositories {
 
 dependencies {
     implementation project(':Homework:domain')
-    implementation libs.spring.context
-    
+    implementation 'org.springframework:spring-context:5.3.18'
+    implementation 'org.flywaydb:flyway-core:8.5.5'
 }
 
 test {
