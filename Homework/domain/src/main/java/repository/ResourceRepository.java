@@ -1,93 +1,57 @@
 package repository;
 
+import jdbc.DatabaseTemplate;
 import models.Resource;
 import models.ResourceType;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ResourceRepository {
-    private final DataSource dataSource;
+    private static final NamedParameterJdbcTemplate jdbcTemplate =
+        DatabaseTemplate.getJdbcTemplate();
 
-    public ResourceRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    private static RowMapper<Resource> mapper() {
+        return (rs, rowNum) -> new Resource(
+            rs.getInt("id"),
+            rs.getString("name"),
+            ResourceType.valueOf(rs.getString("type")),
+            rs.getString("data")
+        );
     }
 
-    public List<Resource> getResources() throws SQLException {
-        List<Resource> resources = new ArrayList<>();
-
-        try (
-            Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement()
-        ) {
-            String sql = "select * from resource";
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            while (resultSet.next()) {
-                Resource resource = new Resource(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    ResourceType.valueOf(resultSet.getString("type")),
-                    resultSet.getString("data")
-                );
-                resources.add(resource);
-            }
-        }
-
-        return resources;
+    public List<Resource> getResources() {
+        String sql = "SELECT * FROM resource";
+        return jdbcTemplate.query(sql, mapper());
     }
 
-    public void addResource(Resource resource, int lectionId) throws SQLException {
-        String sql = "insert into resource(name, type, data, lection_id) values (?,?,?,?)";
+    public void addResource(Resource resource, int lectionId) {
+        String sql = "INSERT INTO resource(name, type, data, lection_id)"
+            + " values (:name, :type, :data, :lection_id)";
 
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setString(1, resource.getName());
-            preparedStatement.setString(2, String.valueOf(resource.getType()));
-            preparedStatement.setString(3, resource.getData());
-            preparedStatement.setInt(4, lectionId);
-            preparedStatement.execute();
-        }
+        Map<String, Object> param = Map.of(
+            "name", resource.getName(),
+            "type", resource.getType().toString(),
+            "data", resource.getData(),
+            "lection_id", lectionId
+        );
+
+        jdbcTemplate.update(sql, param);
     }
 
-    public void deleteResource(int id) throws SQLException {
-        String sql = "delete from resource where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-        }
+    public void deleteResource(int id) {
+        String sql = "DELETE FROM resource WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Resource> getResource(int id) throws SQLException {
-        Resource resource = null;
-        String sql = "select * from resource where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                resource = new Resource(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    ResourceType.valueOf(resultSet.getString("type")),
-                    resultSet.getString("data")
-                );
-            }
-        }
-
+    public Optional<Resource> getResource(int id) {
+        String sql = "SELECT * FROM resource WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        Resource resource = jdbcTemplate.queryForObject(sql, param, mapper());
         return Optional.ofNullable(resource);
     }
 }
