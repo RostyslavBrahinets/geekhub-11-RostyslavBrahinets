@@ -1,91 +1,54 @@
 package repository;
 
+import jdbc.DatabaseTemplate;
 import models.Contact;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ContactRepository {
-    private final DataSource dataSource;
+    private static final NamedParameterJdbcTemplate jdbcTemplate =
+        DatabaseTemplate.getJdbcTemplate();
 
-    public ContactRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    private static RowMapper<Contact> mapper() {
+        return (rs, rowNum) -> new Contact(
+            rs.getInt("id"),
+            rs.getString("email"),
+            rs.getString("phone")
+        );
     }
 
-    public List<Contact> getContacts() throws SQLException {
-        List<Contact> contacts = new ArrayList<>();
-
-        try (
-            Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement()
-        ) {
-            String sql = "select * from contacts";
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            while (resultSet.next()) {
-                Contact contact = new Contact(
-                    resultSet.getInt("id"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phone")
-                );
-                contacts.add(contact);
-            }
-        }
-
-        return contacts;
+    public List<Contact> getContacts() {
+        String sql = "SELECT * FROM contacts";
+        return jdbcTemplate.query(sql, mapper());
     }
 
-    public void addContact(Contact contact, int personId) throws SQLException {
-        String sql = "insert into contacts"
-            + "(email, phone, person_id)"
-            + "values (?,?,?)";
+    public void addContact(Contact contact, int personId) {
+        String sql = "INSERT INTO contacts (email, phone, person_id)"
+            + " VALUES (:email, :phone, :person_id)";
 
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setString(1, contact.getEmail());
-            preparedStatement.setString(2, contact.getPhone());
-            preparedStatement.setInt(3, personId);
-            preparedStatement.execute();
-        }
+        Map<String, Object> param = Map.of(
+            "email", contact.getEmail(),
+            "phone", contact.getPhone(),
+            "person_id", personId
+        );
+
+        jdbcTemplate.update(sql, param);
     }
 
-    public void deleteContact(int id) throws SQLException {
-        String sql = "delete from contacts where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-        }
+    public void deleteContact(int id) {
+        String sql = "DELETE FROM contacts WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Contact> getContact(int id) throws SQLException {
-        Contact contact = null;
-        String sql = "select * from contacts where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                contact = new Contact(
-                    resultSet.getInt("id"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phone")
-                );
-            }
-        }
-
+    public Optional<Contact> getContact(int id) {
+        String sql = "SELECT * FROM contacts WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        Contact contact = jdbcTemplate.queryForObject(sql, param, mapper());
         return Optional.ofNullable(contact);
     }
 }
