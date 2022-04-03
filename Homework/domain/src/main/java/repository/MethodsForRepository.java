@@ -1,135 +1,100 @@
 package repository;
 
+import jdbc.DatabaseTemplate;
 import models.*;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class MethodsForRepository {
-    public List<HomeWork> getHomeWorksByLections(
-        Connection connection,
-        int id
-    ) throws SQLException {
-        List<HomeWork> homeWorks = new ArrayList<>();
-        String sql = "select * from homework where lection_id=?";
+    private static final NamedParameterJdbcTemplate jdbcTemplate =
+        DatabaseTemplate.getJdbcTemplate();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                HomeWork homeWork = new HomeWork(
-                    resultSet.getInt("id"),
-                    resultSet.getString("task"),
-                    resultSet.getTimestamp("deadline").toLocalDateTime()
-                );
-                homeWorks.add(homeWork);
-            }
-        }
-
-        return homeWorks;
+    private static RowMapper<HomeWork> mapperHomeWork() {
+        return (rs, rowNum) -> new HomeWork(
+            rs.getInt("id"),
+            rs.getString("task"),
+            rs.getTimestamp("deadline").toLocalDateTime()
+        );
     }
 
-    public List<Resource> getResourcesByLections(
-        Connection connection,
-        int id
-    ) throws SQLException {
-        List<Resource> resources = new ArrayList<>();
-        String sql = "select * from resource where lection_id=?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Resource resource = new Resource(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    ResourceType.valueOf(resultSet.getString("type")),
-                    resultSet.getString("data")
-                );
-                resources.add(resource);
-            }
-        }
-
-        return resources;
+    private static RowMapper<Resource> mapperResource() {
+        return (rs, rowNum) -> new Resource(
+            rs.getInt("id"),
+            rs.getString("name"),
+            ResourceType.valueOf(rs.getString("type")),
+            rs.getString("data")
+        );
     }
 
-    public List<Contact> getContactsByPeople(Connection connection, int id) throws SQLException {
-        List<Contact> contacts = new ArrayList<>();
-        String sql = "select * from contacts where person_id=?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Contact contact = new Contact(
-                    resultSet.getInt("id"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phone")
-                );
-                contacts.add(contact);
-            }
-        }
-
-        return contacts;
+    private static RowMapper<Contact> mapperContact() {
+        return (rs, rowNum) -> new Contact(
+            rs.getInt("id"),
+            rs.getString("email"),
+            rs.getString("phone")
+        );
     }
 
-    public Optional<Person> getPerson(
-        Connection connection,
-        ResultSet resultSet,
-        int id
-    ) throws SQLException {
-        Person person = null;
-        if (resultSet.next()) {
-            person = new Person(
-                id,
-                resultSet.getString("first_name"),
-                resultSet.getString("last_name"),
-                getContactsByPeople(connection, id),
-                resultSet.getString("git_hub_nickname"),
-                Role.valueOf(resultSet.getString("role"))
-            );
-        }
+    private static RowMapper<Person> mapperPerson() {
+        return (rs, rowNum) -> new Person(
+            rs.getInt("id"),
+            rs.getString("first_name"),
+            rs.getString("last_name"),
+            getContactsByPeople(rs.getInt("id")),
+            rs.getString("git_hub_nickname"),
+            Role.valueOf(rs.getString("role"))
+        );
+    }
 
+    private static RowMapper<Lection> mapperLection() {
+        return (rs, rowNum) -> new Lection(
+            rs.getInt("id"),
+            rs.getString("name"),
+            rs.getString("describe"),
+            getResourcesByLections(rs.getInt("id")),
+            getPerson(rs.getInt("lecturer_id")).get(),
+            getHomeWorksByLections(rs.getInt("id")),
+            rs.getTimestamp("creation_date").toLocalDateTime().toLocalDate()
+        );
+    }
+
+    public static List<HomeWork> getHomeWorksByLections(int id) {
+        String sql = "SELECT * FROM homework WHERE lection_id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        return jdbcTemplate.query(sql, param, mapperHomeWork());
+    }
+
+    public static List<Resource> getResourcesByLections(int id) {
+        String sql = "SELECT * FROM resource WHERE lection_id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        return jdbcTemplate.query(sql, param, mapperResource());
+    }
+
+    public static List<Contact> getContactsByPeople(int id) {
+        String sql = "SELECT * FROM contacts where person_id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        return jdbcTemplate.query(sql, param, mapperContact());
+    }
+
+    public static List<Lection> getLectionsByCourse(int id) {
+        String sql = "SELECT * FROM lection where course_id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        return jdbcTemplate.query(sql, param, mapperLection());
+    }
+
+    public static List<Person> getPeopleByCourse(int id) {
+        String sql = "SELECT * FROM person where course_id=:id and role='STUDENT'";
+        Map<String, Integer> param = Map.of("id", id);
+        return jdbcTemplate.query(sql, param, mapperPerson());
+    }
+
+    public static Optional<Person> getPerson(int id) {
+        String sql = "SELECT * FROM person WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        Person person = jdbcTemplate.queryForObject(sql, param, mapperPerson());
         return Optional.ofNullable(person);
-    }
-
-    public Optional<Lection> getLection(
-        Connection connection,
-        ResultSet resultSet,
-        int id,
-        PersonRepository personRepository
-    ) throws SQLException {
-        Lection lection = null;
-
-        if (resultSet.next()) {
-            int lecturerId = resultSet.getInt("lecturer_id");
-            List<Resource> resources = getResourcesByLections(connection, id);
-            Optional<Person> lecturerOptional = personRepository.getPerson(lecturerId);
-            Person lecturer = null;
-            if (lecturerOptional.isPresent()) {
-                lecturer = lecturerOptional.get();
-            }
-            List<HomeWork> homeWorks = getHomeWorksByLections(connection, id);
-
-            lection = new Lection(
-                id,
-                resultSet.getString("name"),
-                resultSet.getString("describe"),
-                resources,
-                lecturer,
-                homeWorks,
-                resultSet.getTimestamp("creation_date").toLocalDateTime().toLocalDate()
-            );
-        }
-
-        return Optional.ofNullable(lection);
     }
 }

@@ -5,44 +5,36 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import repository.*;
 
-import javax.sql.DataSource;
-
 @Configuration
 @Import(DatabaseConfig.class)
 public class RepositoryConfig {
     @Bean
-    public ContactRepository contactRepository(DataSource dataSource) {
-        return new ContactRepository(dataSource);
+    public ContactRepository contactRepository() {
+        return new ContactRepository();
     }
 
     @Bean
-    public CourseRepository courseRepository(
-        DataSource dataSource,
-        PersonRepository personRepository
-    ) {
-        return new CourseRepository(dataSource, personRepository);
+    public CourseRepository courseRepository() {
+        return new CourseRepository();
     }
 
     @Bean
-    public HomeWorkRepository homeWorkRepository(DataSource dataSource) {
-        return new HomeWorkRepository(dataSource);
+    public HomeWorkRepository homeWorkRepository() {
+        return new HomeWorkRepository();
     }
 
     @Bean
-    public LectionRepository lectionRepository(
-        DataSource dataSource,
-        PersonRepository personRepository
-    ) {
-        return new LectionRepository(dataSource, personRepository);
+    public LectionRepository lectionRepository() {
+        return new LectionRepository();
     }
 
     @Bean
-    public PersonRepository personRepository(DataSource dataSource) {
-        return new PersonRepository(dataSource);
+    public PersonRepository personRepository() {
+        return new PersonRepository();
     }
 
     @Bean
-    public ResourceRepository resourceRepository(DataSource dataSource) {
-        return new ResourceRepository(dataSource);
+    public ResourceRepository resourceRepository() {
+        return new ResourceRepository();
     }
 }
