@@ -1,89 +1,54 @@
 package repository;
 
+import jdbc.DatabaseTemplate;
 import models.HomeWork;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class HomeWorkRepository {
-    private final DataSource dataSource;
+    private static final NamedParameterJdbcTemplate jdbcTemplate =
+        DatabaseTemplate.getJdbcTemplate();
 
-    public HomeWorkRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    private static RowMapper<HomeWork> mapper() {
+        return (rs, rowNum) -> new HomeWork(
+            rs.getInt("id"),
+            rs.getString("task"),
+            rs.getTimestamp("deadline").toLocalDateTime()
+        );
     }
 
-    public List<HomeWork> getHomeWorks() throws SQLException {
-        List<HomeWork> homeWorks = new ArrayList<>();
-
-        try (
-            Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement()
-        ) {
-            String sql = "select * from homework";
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            while (resultSet.next()) {
-                HomeWork homeWork = new HomeWork(
-                    resultSet.getInt("id"),
-                    resultSet.getString("task"),
-                    resultSet.getTimestamp("deadline").toLocalDateTime()
-                );
-                homeWorks.add(homeWork);
-            }
-        }
-
-        return homeWorks;
+    public List<HomeWork> getHomeWorks() {
+        String sql = "SELECT * FROM homework";
+        return jdbcTemplate.query(sql, mapper());
     }
 
-    public void addHomeWork(HomeWork homeWork, int lectionId) throws SQLException {
-        String sql = "insert into homework(task, deadline, lection_id) values (?,?,?)";
+    public void addHomeWork(HomeWork homeWork, int lectionId) {
+        String sql = "INSERT INTO homework(task, deadline, lection_id)"
+            + " VALUES (:task, :deadline, :lection_id)";
 
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setString(1, homeWork.getTask());
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(homeWork.getDeadline()));
-            preparedStatement.setInt(3, lectionId);
-            preparedStatement.execute();
-        }
+        Map<String, Object> param = Map.of(
+            "task", homeWork.getTask(),
+            "deadline", homeWork.getDeadline(),
+            "lection_id", lectionId
+        );
+
+        jdbcTemplate.update(sql, param);
     }
 
-    public void deleteHomeWork(int id) throws SQLException {
-        String sql = "delete from homework where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-        }
+    public void deleteHomeWork(int id) {
+        String sql = "DELETE FROM homework WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        jdbcTemplate.update(sql, param);
     }
 
-    public Optional<HomeWork> getHomeWork(int id) throws SQLException {
-        HomeWork homeWork = null;
-        String sql = "select * from homework where id=?";
-
-        try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                homeWork = new HomeWork(
-                    resultSet.getInt("id"),
-                    resultSet.getString("task"),
-                    resultSet.getTimestamp("deadline").toLocalDateTime()
-                );
-            }
-        }
-
+    public Optional<HomeWork> getHomeWork(int id) {
+        String sql = "SELECT * FROM homework WHERE id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+        HomeWork homeWork = jdbcTemplate.queryForObject(sql, param, mapper());
         return Optional.ofNullable(homeWork);
     }
 }
