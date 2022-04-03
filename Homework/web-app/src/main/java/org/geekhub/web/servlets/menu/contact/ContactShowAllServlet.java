@@ -87,7 +87,7 @@ public class ContactShowAllServlet extends HttpServlet {
             for (Contact contact : contacts) {
                 writer.write("<li>"
                     + contact.getEmail() + ": "
-                    + contact.getPhone() + ", "
+                    + contact.getPhone()
                     + "</li>");
             }
             writer.write("<ul>");

@@ -87,7 +87,7 @@ public class ContactAddServlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<html><head><title>Contact Add</title></head><body>");
             contactService.addContact(email, phone, personId);
-            writer.write("<h1>Contact with name '" + email + "' added</h1>");
+            writer.write("<h1>Contact for person '" + personId + "' added</h1>");
             writer.write("</body></html>");
         }
     }
