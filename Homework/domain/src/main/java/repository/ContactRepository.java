@@ -1,26 +1,25 @@
 package repository;
 
-import db.DbConnectionProvider;
 import models.Contact;
 
-import java.io.IOException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ContactRepository {
-    private final DbConnectionProvider dbConnectionProvider;
+    private final DataSource dataSource;
 
-    public ContactRepository(DbConnectionProvider dbConnectionProvider) {
-        this.dbConnectionProvider = dbConnectionProvider;
+    public ContactRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    public List<Contact> getContacts() throws SQLException, IOException {
+    public List<Contact> getContacts() throws SQLException {
         List<Contact> contacts = new ArrayList<>();
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from contacts";
@@ -39,13 +38,13 @@ public class ContactRepository {
         return contacts;
     }
 
-    public void addContact(Contact contact, int personId) throws SQLException, IOException {
+    public void addContact(Contact contact, int personId) throws SQLException {
         String sql = "insert into contacts"
             + "(email, phone, person_id)"
             + "values (?,?,?)";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, contact.getEmail());
@@ -55,11 +54,11 @@ public class ContactRepository {
         }
     }
 
-    public void deleteContact(int id) throws SQLException, IOException {
+    public void deleteContact(int id) throws SQLException {
         String sql = "delete from contacts where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -67,12 +66,12 @@ public class ContactRepository {
         }
     }
 
-    public Optional<Contact> getContact(int id) throws SQLException, IOException {
+    public Optional<Contact> getContact(int id) throws SQLException {
         Contact contact = null;
         String sql = "select * from contacts where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);

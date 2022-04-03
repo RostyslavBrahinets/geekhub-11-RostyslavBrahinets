@@ -1,33 +1,29 @@
 package repository;
 
-import db.DbConnectionProvider;
 import models.Course;
 import models.Lection;
 import models.Person;
 
-import java.io.IOException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class CourseRepository {
-    private final DbConnectionProvider dbConnectionProvider;
+    private final DataSource dataSource;
     private final PersonRepository personRepository;
 
-    public CourseRepository(
-        DbConnectionProvider dbConnectionProvider,
-        PersonRepository personRepository
-    ) {
-        this.dbConnectionProvider = dbConnectionProvider;
+    public CourseRepository(DataSource dataSource, PersonRepository personRepository) {
+        this.dataSource = dataSource;
         this.personRepository = personRepository;
     }
 
-    public List<Course> getCourses() throws SQLException, IOException {
+    public List<Course> getCourses() throws SQLException {
         List<Course> courses = new ArrayList<>();
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from course";
@@ -47,11 +43,11 @@ public class CourseRepository {
         return courses;
     }
 
-    public void addCourse(Course course) throws SQLException, IOException {
+    public void addCourse(Course course) throws SQLException {
         String sql = "insert into course(name) values (?)";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, course.getName());
@@ -59,11 +55,11 @@ public class CourseRepository {
         }
     }
 
-    public void deleteCourse(int id) throws SQLException, IOException {
+    public void deleteCourse(int id) throws SQLException {
         String sql = "delete from course where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -71,12 +67,12 @@ public class CourseRepository {
         }
     }
 
-    public Optional<Course> getCourse(int id) throws SQLException, IOException {
+    public Optional<Course> getCourse(int id) throws SQLException {
         Course course = null;
         String sql = "select * from course where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -94,7 +90,7 @@ public class CourseRepository {
     }
 
     private List<Lection> getLections(Connection connection, int id)
-        throws SQLException, IOException {
+        throws SQLException {
         List<Lection> lections = new ArrayList<>();
         String sql = "select * from lection where course_id=?";
 

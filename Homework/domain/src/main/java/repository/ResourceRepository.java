@@ -1,27 +1,26 @@
 package repository;
 
-import db.DbConnectionProvider;
 import models.Resource;
 import models.ResourceType;
 
-import java.io.IOException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ResourceRepository {
-    private final DbConnectionProvider dbConnectionProvider;
+    private final DataSource dataSource;
 
-    public ResourceRepository(DbConnectionProvider dbConnectionProvider) {
-        this.dbConnectionProvider = dbConnectionProvider;
+    public ResourceRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    public List<Resource> getResources() throws SQLException, IOException {
+    public List<Resource> getResources() throws SQLException {
         List<Resource> resources = new ArrayList<>();
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from resource";
@@ -41,11 +40,11 @@ public class ResourceRepository {
         return resources;
     }
 
-    public void addResource(Resource resource, int lectionId) throws SQLException, IOException {
+    public void addResource(Resource resource, int lectionId) throws SQLException {
         String sql = "insert into resource(name, type, data, lection_id) values (?,?,?,?)";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, resource.getName());
@@ -56,11 +55,11 @@ public class ResourceRepository {
         }
     }
 
-    public void deleteResource(int id) throws SQLException, IOException {
+    public void deleteResource(int id) throws SQLException {
         String sql = "delete from resource where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -68,12 +67,12 @@ public class ResourceRepository {
         }
     }
 
-    public Optional<Resource> getResource(int id) throws SQLException, IOException {
+    public Optional<Resource> getResource(int id) throws SQLException {
         Resource resource = null;
         String sql = "select * from resource where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);

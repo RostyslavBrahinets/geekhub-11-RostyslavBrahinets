@@ -1,34 +1,30 @@
 package repository;
 
-import db.DbConnectionProvider;
 import models.HomeWork;
 import models.Lection;
 import models.Person;
 import models.Resource;
 
-import java.io.IOException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class LectionRepository {
-    private final DbConnectionProvider dbConnectionProvider;
+    private final DataSource dataSource;
     private final PersonRepository personRepository;
 
-    public LectionRepository(
-        DbConnectionProvider dbConnectionProvider,
-        PersonRepository personRepository
-    ) {
-        this.dbConnectionProvider = dbConnectionProvider;
+    public LectionRepository(DataSource dataSource, PersonRepository personRepository) {
+        this.dataSource = dataSource;
         this.personRepository = personRepository;
     }
 
-    public List<Lection> getLections() throws SQLException, IOException {
+    public List<Lection> getLections() throws SQLException {
         List<Lection> lections = new ArrayList<>();
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from lection";
@@ -66,13 +62,13 @@ public class LectionRepository {
         Lection lection,
         int lecturerId,
         int courseId
-    ) throws SQLException, IOException {
+    ) throws SQLException {
         String sql = "insert into lection"
             + "(name, describe, lecturer_id, course_id)"
             + "values (?,?,?,?)";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, lection.getName());
@@ -83,11 +79,11 @@ public class LectionRepository {
         }
     }
 
-    public void deleteLection(int id) throws SQLException, IOException {
+    public void deleteLection(int id) throws SQLException {
         String sql = "delete from lection where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -95,12 +91,12 @@ public class LectionRepository {
         }
     }
 
-    public Optional<Lection> getLection(int id) throws SQLException, IOException {
+    public Optional<Lection> getLection(int id) throws SQLException {
         Optional<Lection> lection;
         String sql = "select * from lection where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);

@@ -2,7 +2,6 @@ package repository;
 
 import models.*;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -107,7 +106,7 @@ public class MethodsForRepository {
         ResultSet resultSet,
         int id,
         PersonRepository personRepository
-    ) throws SQLException, IOException {
+    ) throws SQLException {
         Lection lection = null;
 
         if (resultSet.next()) {

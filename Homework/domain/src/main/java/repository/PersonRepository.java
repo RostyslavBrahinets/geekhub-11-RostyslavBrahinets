@@ -1,28 +1,27 @@
 package repository;
 
-import db.DbConnectionProvider;
 import models.Contact;
 import models.Person;
 import models.Role;
 
-import java.io.IOException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PersonRepository {
-    private final DbConnectionProvider dbConnectionProvider;
+    private final DataSource dataSource;
 
-    public PersonRepository(DbConnectionProvider dbConnectionProvider) {
-        this.dbConnectionProvider = dbConnectionProvider;
+    public PersonRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    public List<Person> getPeople() throws SQLException, IOException {
+    public List<Person> getPeople() throws SQLException {
         List<Person> people = new ArrayList<>();
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()
         ) {
             String sql = "select * from person";
@@ -39,13 +38,13 @@ public class PersonRepository {
         return people;
     }
 
-    public void addPerson(Person person, int courseId) throws SQLException, IOException {
+    public void addPerson(Person person, int courseId) throws SQLException {
         String sql = "insert into person"
             + "(first_name, last_name, git_hub_nickname, role, course_id)"
             + "values (?,?,?,?,?)";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, person.getFirstName());
@@ -57,11 +56,11 @@ public class PersonRepository {
         }
     }
 
-    public void deletePerson(int id) throws SQLException, IOException {
+    public void deletePerson(int id) throws SQLException {
         String sql = "delete from person where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);
@@ -69,12 +68,12 @@ public class PersonRepository {
         }
     }
 
-    public Optional<Person> getPerson(int id) throws SQLException, IOException {
+    public Optional<Person> getPerson(int id) throws SQLException {
         Person person = null;
         String sql = "select * from person where id=?";
 
         try (
-            Connection connection = dbConnectionProvider.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setInt(1, id);

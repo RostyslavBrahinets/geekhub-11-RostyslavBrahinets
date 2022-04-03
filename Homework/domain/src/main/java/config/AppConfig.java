@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-    DbConfig.class,
+    DatabaseConfig.class,
     ModelsConfig.class,
     RepositoryConfig.class,
     ServiceConfig.class,

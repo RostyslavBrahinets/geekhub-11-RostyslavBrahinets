@@ -1,47 +1,48 @@
 package config;
 
-import db.DbConnectionProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import repository.*;
 
+import javax.sql.DataSource;
+
 @Configuration
-@Import(DbConfig.class)
+@Import(DatabaseConfig.class)
 public class RepositoryConfig {
     @Bean
-    public ContactRepository contactRepository(DbConnectionProvider dbConnectionProvider) {
-        return new ContactRepository(dbConnectionProvider);
+    public ContactRepository contactRepository(DataSource dataSource) {
+        return new ContactRepository(dataSource);
     }
 
     @Bean
     public CourseRepository courseRepository(
-        DbConnectionProvider dbConnectionProvider,
+        DataSource dataSource,
         PersonRepository personRepository
     ) {
-        return new CourseRepository(dbConnectionProvider, personRepository);
+        return new CourseRepository(dataSource, personRepository);
     }
 
     @Bean
-    public HomeWorkRepository homeWorkRepository(DbConnectionProvider dbConnectionProvider) {
-        return new HomeWorkRepository(dbConnectionProvider);
+    public HomeWorkRepository homeWorkRepository(DataSource dataSource) {
+        return new HomeWorkRepository(dataSource);
     }
 
     @Bean
     public LectionRepository lectionRepository(
-        DbConnectionProvider dbConnectionProvider,
+        DataSource dataSource,
         PersonRepository personRepository
     ) {
-        return new LectionRepository(dbConnectionProvider, personRepository);
+        return new LectionRepository(dataSource, personRepository);
     }
 
     @Bean
-    public PersonRepository personRepository(DbConnectionProvider dbConnectionProvider) {
-        return new PersonRepository(dbConnectionProvider);
+    public PersonRepository personRepository(DataSource dataSource) {
+        return new PersonRepository(dataSource);
     }
 
     @Bean
-    public ResourceRepository resourceRepository(DbConnectionProvider dbConnectionProvider) {
-        return new ResourceRepository(dbConnectionProvider);
+    public ResourceRepository resourceRepository(DataSource dataSource) {
+        return new ResourceRepository(dataSource);
     }
 }
