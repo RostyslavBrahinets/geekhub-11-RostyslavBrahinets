@@ -1,6 +1,5 @@
 package org.geekhub.web.servlets.menu.contact;
 
-import exceptions.NotFoundException;
 import logger.Logger;
 import org.geekhub.web.servlets.menu.MenuCommand;
 

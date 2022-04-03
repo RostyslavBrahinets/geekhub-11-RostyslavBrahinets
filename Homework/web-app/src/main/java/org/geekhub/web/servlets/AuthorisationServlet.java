@@ -1,9 +1,7 @@
 package org.geekhub.web.servlets;
 
-import config.AppConfig;
-import db.DbConnectionProvider;
-import db.DbStarter;
-import logger.Logger;
+import config.DatabaseConfig;
+import org.flywaydb.core.Flyway;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.annotation.WebServlet;
@@ -13,10 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
@@ -28,7 +22,7 @@ public class AuthorisationServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        setDataBase();
+        setDatabase();
         showMenu(response);
     }
 
@@ -83,33 +77,12 @@ public class AuthorisationServlet extends HttpServlet {
         }
     }
 
-    private void setDataBase() {
-        Logger logger = new Logger();
+    private void setDatabase() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+            DatabaseConfig.class
+        );
 
-        AnnotationConfigApplicationContext applicationContext =
-            new AnnotationConfigApplicationContext(AppConfig.class);
-        DbConnectionProvider dbConnectionProvider =
-            applicationContext.getBean(DbConnectionProvider.class);
-        try (
-            Connection connection = dbConnectionProvider.getConnection();
-            Statement statement = connection.createStatement()
-        ) {
-            DbStarter repository = new DbStarter(dbConnectionProvider);
-            repository.createTablesInDataBase();
-
-            String sql = "select * from course";
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            if (!resultSet.next()) {
-                repository.insertDataToTablesInDataBase();
-                logger.info(getClass().getName(),
-                    "Tables created in database! Data inserted to tables!");
-            } else {
-                logger.info(getClass().getName(),
-                    "Tables already created in database!");
-            }
-        } catch (SQLException | IOException e) {
-            logger.error(getClass().getName(), e.getMessage(), e);
-        }
+        Flyway flyway = (Flyway) context.getBean("flyway");
+        flyway.migrate();
     }
 }
