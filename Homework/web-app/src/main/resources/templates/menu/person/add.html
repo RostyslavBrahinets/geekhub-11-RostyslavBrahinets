@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add person</title>
+</head>
+<body>
+
+<h1>Add person</h1>
+
+<form th:action="@{/menu/person/add}" method="post">
+    <label for="firstName">First name: </label>
+    <input id="firstName" type="text" name="firstName">
+    <br/> <br/>
+    <label for="lastName">Last name: </label>
+    <input id="lastName" type="text" name="lastName">
+    <br/> <br/>
+    <label for="nickName">Nick name: </label>
+    <input id="nickName" type="text" name="nickName">
+    <br/> <br/>
+    <label for="role">Role: </label>
+    <input id="role" type="text" name="role">
+    <br/> <br/>
+    <label for="courseId">Course id: </label>
+    <input id="courseId" type="text" name="courseId">
+    <br/> <br/>
+    <input type="submit" value="Add">
+</form>
+
+</body>
+</html>
