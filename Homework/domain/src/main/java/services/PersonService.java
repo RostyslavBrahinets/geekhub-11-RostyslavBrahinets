@@ -5,8 +5,6 @@ import models.Role;
 import repository.PersonRepository;
 import validators.PersonValidator;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,12 +15,12 @@ public class PersonService {
     public PersonService(
         PersonRepository personRepository,
         PersonValidator validator
-    ) throws SQLException {
+    ) {
         this.personRepository = personRepository;
         this.validator = validator;
     }
 
-    public List<Person> getPeople() throws SQLException, IOException {
+    public List<Person> getPeople() {
         return personRepository.getPeople();
     }
 
@@ -32,7 +30,7 @@ public class PersonService {
         String gitHubNickname,
         String role,
         int courseId
-    ) throws SQLException, IOException {
+    ) {
         validator.validate(
             firstName,
             lastName,
@@ -50,12 +48,12 @@ public class PersonService {
         );
     }
 
-    public void deletePerson(int id) throws SQLException, IOException {
+    public void deletePerson(int id) {
         validator.validate(id);
         personRepository.deletePerson(id);
     }
 
-    public Optional<Person> getPerson(int id) throws SQLException, IOException {
+    public Optional<Person> getPerson(int id) {
         validator.validate(id);
         return personRepository.getPerson(id);
     }

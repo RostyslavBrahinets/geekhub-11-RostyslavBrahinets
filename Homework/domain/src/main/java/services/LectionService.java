@@ -6,8 +6,6 @@ import models.Resource;
 import repository.LectionRepository;
 import validators.LectionValidator;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -22,17 +20,16 @@ public class LectionService {
     public LectionService(
         LectionRepository lectionRepository,
         LectionValidator validator
-    ) throws SQLException {
+    ) {
         this.lectionRepository = lectionRepository;
         this.validator = validator;
     }
 
-    public List<Lection> getLections() throws SQLException, IOException {
+    public List<Lection> getLections() {
         return lectionRepository.getLections();
     }
 
-    public void addLection(String name, String describe, int lecturerId, int courseId)
-        throws SQLException, IOException {
+    public void addLection(String name, String describe, int lecturerId, int courseId) {
         validator.validate(name, describe);
         lectionRepository.addLection(
             new Lection(name, describe, LocalDate.now()),
@@ -41,31 +38,29 @@ public class LectionService {
         );
     }
 
-    public void deleteLection(int id) throws SQLException, IOException {
+    public void deleteLection(int id) {
         validator.validate(id);
         lectionRepository.deleteLection(id);
     }
 
-    public Optional<Lection> getLection(int id) throws SQLException, IOException {
+    public Optional<Lection> getLection(int id) {
         validator.validate(id);
         return lectionRepository.getLection(id);
     }
 
-    public Map<String, List<Resource>> getResourcesGroupedByLecture()
-        throws SQLException, IOException {
+    public Map<String, List<Resource>> getResourcesGroupedByLecture() {
         return lectionRepository.getLections()
             .stream()
             .collect(Collectors.toMap(Lection::getName, Lection::getResources));
     }
 
-    public Map<String, List<HomeWork>> getHomeWorksGroupedByLecture()
-        throws SQLException, IOException {
+    public Map<String, List<HomeWork>> getHomeWorksGroupedByLecture() {
         return lectionRepository.getLections()
             .stream()
             .collect(Collectors.toMap(Lection::getName, Lection::getHomeWorks));
     }
 
-    public List<Lection> getLectionsSortedByDateAsc() throws SQLException, IOException {
+    public List<Lection> getLectionsSortedByDateAsc() {
         List<Lection> lections = lectionRepository.getLections();
         List<Lection> sortedLections;
 
@@ -76,7 +71,7 @@ public class LectionService {
         return sortedLections;
     }
 
-    public List<Lection> getLectionsSortedByDateDesc() throws SQLException, IOException {
+    public List<Lection> getLectionsSortedByDateDesc() {
         List<Lection> lections = lectionRepository.getLections();
         List<Lection> sortedLections;
 

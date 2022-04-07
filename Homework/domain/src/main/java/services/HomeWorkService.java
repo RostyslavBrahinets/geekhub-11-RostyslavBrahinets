@@ -4,8 +4,6 @@ import models.HomeWork;
 import repository.HomeWorkRepository;
 import validators.HomeWorkValidator;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,27 +15,26 @@ public class HomeWorkService {
     public HomeWorkService(
         HomeWorkRepository homeWorkRepository,
         HomeWorkValidator validator
-    ) throws SQLException {
+    ) {
         this.homeWorkRepository = homeWorkRepository;
         this.validator = validator;
     }
 
-    public List<HomeWork> getHomeWorks() throws SQLException, IOException {
+    public List<HomeWork> getHomeWorks() {
         return homeWorkRepository.getHomeWorks();
     }
 
-    public void addHomeWork(String task, LocalDateTime deadline, int lectionId)
-        throws SQLException, IOException {
+    public void addHomeWork(String task, LocalDateTime deadline, int lectionId) {
         validator.validate(task, deadline);
         homeWorkRepository.addHomeWork(new HomeWork(task, deadline), lectionId);
     }
 
-    public void deleteHomeWork(int id) throws SQLException, IOException {
+    public void deleteHomeWork(int id) {
         validator.validate(id);
         homeWorkRepository.deleteHomeWork(id);
     }
 
-    public Optional<HomeWork> getHomeWork(int id) throws SQLException, IOException {
+    public Optional<HomeWork> getHomeWork(int id) {
         validator.validate(id);
         return homeWorkRepository.getHomeWork(id);
     }
