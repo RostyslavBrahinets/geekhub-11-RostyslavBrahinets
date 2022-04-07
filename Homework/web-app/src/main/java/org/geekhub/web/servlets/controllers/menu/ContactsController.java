@@ -44,6 +44,22 @@ public class ContactsController {
         };
     }
 
+    @PostMapping("/add")
+    public String show(
+        @ModelAttribute("email") String email,
+        @ModelAttribute("phone") String phone,
+        @ModelAttribute("personId") int personId
+    ) {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        ContactService contactService =
+            applicationContext.getBean(ContactService.class);
+
+        contactService.addContact(email, phone, personId);
+
+        return "redirect:/menu/contacts";
+    }
+
     @PostMapping("/delete")
     public String delete(
         @ModelAttribute("id") int id
