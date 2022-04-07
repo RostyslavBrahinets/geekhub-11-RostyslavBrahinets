@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+
+<h1>Main</h1>
+
+<form th:action="@{/menu/course}" method="get">
+    <input type="submit" value="Courses Menu">
+</form>
+
+<br/>
+
+<form th:action="@{/menu/lection}" method="get">
+    <input type="submit" value="Lections Menu">
+</form>
+
+<br/>
+
+<form th:action="@{/menu/person}" method="get">
+    <input type="submit" value="People Menu">
+</form>
+
+<br/>
+
+<form th:action="@{/menu/contacts}" method="get">
+    <input type="submit" value="Contacts Menu">
+</form>
+
+<br/>
+
+<form th:action="@{/menu/resource}" method="get">
+    <input type="submit" value="Resources Menu">
+</form>
+
+<br/>
+
+<form th:action="@{/menu/homework}" method="get">
+    <input type="submit" value="Home Works Menu">
+</form>
+
+<br/>
+
+<form th:action="@{/menu/logger}" method="get">
+    <input type="submit" value="Logger Menu">
+</form>
+
+</body>
+</html>
