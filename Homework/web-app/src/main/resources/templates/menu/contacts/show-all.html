@@ -2,14 +2,14 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Show all</title>
+    <title>Contacts</title>
 </head>
 <body>
 
-<h1>Show all</h1>
+<h1>Contacts</h1>
 
 <div th:each="contact : ${contacts}">
-    <span th:text="${contact.getId() + ': ' + contact.getEmail() + ', ' + contact.getPhone()}">contact</span>
+    <span th:text="${contact.getId() + ': ' + contact.getEmail() + ', ' + contact.getPhone()}">VALUE</span>
 </div>
 
 </body>

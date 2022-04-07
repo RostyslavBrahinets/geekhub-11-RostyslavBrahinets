@@ -87,7 +87,7 @@ public class ContactsController {
         Optional<Contact> contact = contactService.getContact(id);
         contact.ifPresent(value -> model.addAttribute("contact", value));
 
-        return "menu/contacts/show-contacts";
+        return "menu/contacts/show-by-id";
     }
 
     private String getViewForShowAll(Model model) {
