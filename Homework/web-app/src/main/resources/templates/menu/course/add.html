@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add course</title>
+</head>
+<body>
+
+<h1>Add course</h1>
+
+<form th:action="@{/menu/course/add}" method="post">
+    <label for="name">Name: </label>
+    <input id="name" type="text" name="name">
+    <br/> <br/>
+    <input type="submit" value="Add">
+</form>
+
+</body>
+</html>
