@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Logger Menu</title>
+</head>
+<body>
+
+<h1>Logger Menu</h1>
+
+<form th:action="@{/menu/logger/settings}" method="get">
+    <input type="submit" value="Settings">
+</form>
+
+<br/>
+
+<form th:action="@{/menu/logger/show}" method="get">
+    <input type="submit" value="Show">
+</form>
+
+</body>
+</html>
