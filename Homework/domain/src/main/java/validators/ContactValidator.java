@@ -4,9 +4,6 @@ import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import repository.ContactRepository;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 public class ContactValidator {
     private final ContactRepository contactRepository;
 
@@ -23,7 +20,7 @@ public class ContactValidator {
         }
     }
 
-    public void validate(int id) throws SQLException, IOException {
+    public void validate(int id) {
         if (id < 1 || id > contactRepository.getContacts().size()) {
             throw new NotFoundException("Contact not found");
         }

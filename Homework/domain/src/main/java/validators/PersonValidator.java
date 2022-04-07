@@ -6,9 +6,6 @@ import exceptions.ValidationException;
 import models.Role;
 import repository.PersonRepository;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 public class PersonValidator {
     private final PersonRepository personRepository;
 
@@ -16,8 +13,12 @@ public class PersonValidator {
         this.personRepository = personRepository;
     }
 
-    public void validate(String firstName, String lastName,
-                         String gitHubNickname, String role) {
+    public void validate(
+        String firstName,
+        String lastName,
+        String gitHubNickname,
+        String role
+    ) {
         if (firstName == null || firstName.isBlank()) {
             throw new ValidationException("First name is invalid");
         } else if (lastName == null || lastName.isBlank()) {
@@ -29,7 +30,7 @@ public class PersonValidator {
         }
     }
 
-    public void validate(int id) throws SQLException, IOException {
+    public void validate(int id) {
         if (id < 1 || id > personRepository.getPeople().size()) {
             throw new NotFoundException("Person not found");
         }

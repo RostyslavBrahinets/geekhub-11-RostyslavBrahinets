@@ -4,8 +4,6 @@ import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import repository.HomeWorkRepository;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class HomeWorkValidator {
@@ -23,7 +21,7 @@ public class HomeWorkValidator {
         }
     }
 
-    public void validate(int id) throws SQLException, IOException {
+    public void validate(int id) {
         if (id < 1 || id > homeWorkRepository.getHomeWorks().size()) {
             throw new NotFoundException("HomeWork not found");
         }

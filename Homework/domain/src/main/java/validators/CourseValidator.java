@@ -4,9 +4,6 @@ import exceptions.NotFoundException;
 import exceptions.ValidationException;
 import repository.CourseRepository;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 public class CourseValidator {
     private final CourseRepository courseRepository;
 
@@ -20,7 +17,7 @@ public class CourseValidator {
         }
     }
 
-    public void validate(int id) throws SQLException, IOException {
+    public void validate(int id) {
         if (id < 1 || id > courseRepository.getCourses().size()) {
             throw new NotFoundException("Course not found");
         }

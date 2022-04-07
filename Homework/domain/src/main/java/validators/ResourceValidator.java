@@ -6,9 +6,6 @@ import exceptions.ValidationException;
 import models.ResourceType;
 import repository.ResourceRepository;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 public class ResourceValidator {
     private final ResourceRepository resourcesRepository;
 
@@ -26,7 +23,7 @@ public class ResourceValidator {
         }
     }
 
-    public void validate(int id) throws SQLException, IOException {
+    public void validate(int id) {
         if (id < 1 || id > resourcesRepository.getResources().size()) {
             throw new NotFoundException("Resource not found");
         }
