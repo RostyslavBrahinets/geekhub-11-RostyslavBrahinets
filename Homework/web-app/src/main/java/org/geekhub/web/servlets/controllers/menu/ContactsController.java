@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import services.ContactService;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
@@ -30,9 +31,12 @@ public class ContactsController {
     }
 
     @GetMapping("/{command}")
-    public String doCommand(@PathVariable("command") String command) {
+    public String doCommand(
+        @PathVariable("command") String command,
+        Model model
+    ) {
         return switch (command) {
-            case "show-all" -> "menu/contacts/show-all";
+            case "show-all" -> getViewForShowAll(model);
             case "add" -> "menu/contacts/add";
             case "delete" -> "menu/contacts/delete";
             case "show" -> "menu/contacts/show";
@@ -54,5 +58,16 @@ public class ContactsController {
         contact.ifPresent(value -> model.addAttribute("contact", value));
 
         return "menu/contacts/show-contacts";
+    }
+
+    private String getViewForShowAll(Model model) {
+        AnnotationConfigApplicationContext applicationContext =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        ContactService contactService =
+            applicationContext.getBean(ContactService.class);
+
+        List<Contact> contacts = contactService.getContacts();
+        model.addAttribute("contacts", contacts);
+        return "menu/contacts/show-all";
     }
 }
