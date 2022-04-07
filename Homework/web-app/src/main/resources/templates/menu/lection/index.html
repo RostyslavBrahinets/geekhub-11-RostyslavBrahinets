@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lection menu</title>
+</head>
+<body>
+
+<h1>Lection menu</h1>
+
+<form th:action="@{/menu/lection/show-all}" method="get">
+    <input type="submit" value="Show all">
+</form>
+
+<br/>
+
+<div th:if="${userName == 'admin'}">
+    <form th:action="@{/menu/lection/add}" method="get">
+        <input type="submit" value="Add">
+    </form>
+
+    <br/>
+
+    <form th:action="@{/menu/lection/delete}" method="get">
+        <input type="submit" value="Delete">
+    </form>
+</div>
+
+<br/>
+
+<form th:action="@{/menu/lection/show}" method="get">
+    <input type="submit" value="Show">
+</form>
+
+</body>
+</html>

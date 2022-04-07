@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add lection</title>
+</head>
+<body>
+
+<h1>Add lection</h1>
+
+<form th:action="@{/menu/lection/add}" method="post">
+    <label for="name">Name: </label>
+    <input id="name" type="text" name="name">
+    <br/> <br/>
+    <label for="describe">Describe: </label>
+    <input id="describe" type="text" name="describe">
+    <br/> <br/>
+    <label for="lecturerId">Lecturer id: </label>
+    <input id="lecturerId" type="text" name="lecturerId">
+    <br/> <br/>
+    <label for="courseId">Course id: </label>
+    <input id="courseId" type="text" name="courseId">
+    <br/> <br/>
+    <input type="submit" value="Add">
+</form>
+
+</body>
+</html>

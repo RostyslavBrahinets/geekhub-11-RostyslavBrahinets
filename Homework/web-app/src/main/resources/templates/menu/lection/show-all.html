@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lections</title>
+</head>
+<body>
+
+<h1>Lections</h1>
+
+<div th:each="lection : ${lections}">
+    <span th:text="${lection.getId() + ': ' + lection.getName()
+        + ', ' + lection.getDescribe() + ', '
+        + lection.getLecturer().getFirstName() + ' ' + lection.getLecturer().getLastName()
+        + ' ['+ lection.getCreationDate() + ']'}">VALUE</span>
+</div>
+
+</body>
+</html>
