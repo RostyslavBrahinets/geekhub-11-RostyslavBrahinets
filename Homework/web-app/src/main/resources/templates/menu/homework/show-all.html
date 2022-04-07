@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Homeworks</title>
+</head>
+<body>
+
+<h1>Homeworks</h1>
+
+<div th:each="homework : ${homeworks}">
+    <span th:text="${homework.getId() + ': ' + homework.getTask() + ' [' + homework.getDeadline() + ']'}">VALUE</span>
+</div>
+
+</body>
+</html>
