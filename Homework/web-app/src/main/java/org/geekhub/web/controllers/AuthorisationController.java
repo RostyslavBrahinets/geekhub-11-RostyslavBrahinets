@@ -17,7 +17,6 @@ import java.util.List;
 public class AuthorisationController {
     @GetMapping("/authorisation")
     public String authorisation() {
-        setDatabase();
         return "authorisation";
     }
 
@@ -39,14 +38,5 @@ public class AuthorisationController {
     public String logOut(HttpSession session) {
         session.setAttribute(SessionAttributes.USER_NAME_SESSION_PARAMETER, null);
         return "redirect:/authorisation";
-    }
-
-    private void setDatabase() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-            DatabaseConfig.class
-        );
-
-        Flyway flyway = (Flyway) context.getBean("flyway");
-        flyway.migrate();
     }
 }
