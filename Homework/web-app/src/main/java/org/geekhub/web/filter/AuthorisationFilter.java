@@ -1,6 +1,6 @@
-package org.geekhub.web.servlets.filter;
+package org.geekhub.web.filter;
 
-import org.geekhub.web.servlets.SessionAttributes;
+import org.geekhub.web.SessionAttributes;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

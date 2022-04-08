@@ -1,4 +1,4 @@
-package org.geekhub.web.servlets.controllers;
+package org.geekhub.web.controllers;
 
 import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;

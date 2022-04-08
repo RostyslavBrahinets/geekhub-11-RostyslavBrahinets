@@ -1,4 +1,4 @@
-package org.geekhub.web.servlets.controllers.menu;
+package org.geekhub.web.controllers.menu;
 
 import exceptions.NotFoundException;
 import logger.Logger;

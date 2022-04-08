@@ -1,22 +1,22 @@
-package org.geekhub.web.servlets.controllers.menu;
+package org.geekhub.web.controllers.menu;
 
 import config.AppConfig;
-import models.Course;
+import models.Contact;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import services.CourseService;
+import services.ContactService;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
-import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
+import static org.geekhub.web.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @Controller
-@RequestMapping("/menu/course")
-public class CourseController {
+@RequestMapping("/menu/contacts")
+public class ContactsController {
     @GetMapping("")
     public String index(
         HttpSession session,
@@ -24,7 +24,7 @@ public class CourseController {
     ) {
         String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
         model.addAttribute("userName", userName);
-        return "menu/course/index";
+        return "menu/contacts/index";
     }
 
     @GetMapping("/{command}")
@@ -34,23 +34,27 @@ public class CourseController {
     ) {
         return switch (command) {
             case "show-all" -> getViewForShowAll(model);
-            case "add" -> "menu/course/add";
-            case "delete" -> "menu/course/delete";
-            case "show" -> "menu/course/show";
-            default -> "menu/course/index";
+            case "add" -> "menu/contacts/add";
+            case "delete" -> "menu/contacts/delete";
+            case "show" -> "menu/contacts/show";
+            default -> "menu/contacts/index";
         };
     }
 
     @PostMapping("/add")
-    public String show(@ModelAttribute("name") String name) {
+    public String show(
+        @ModelAttribute("email") String email,
+        @ModelAttribute("phone") String phone,
+        @ModelAttribute("personId") int personId
+    ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        CourseService courseService =
-            applicationContext.getBean(CourseService.class);
+        ContactService contactService =
+            applicationContext.getBean(ContactService.class);
 
-        courseService.addCourse(name);
+        contactService.addContact(email, phone, personId);
 
-        return "redirect:/menu/course";
+        return "redirect:/menu/contacts";
     }
 
     @PostMapping("/delete")
@@ -59,12 +63,12 @@ public class CourseController {
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        CourseService courseService =
-            applicationContext.getBean(CourseService.class);
+        ContactService contactService =
+            applicationContext.getBean(ContactService.class);
 
-        courseService.deleteCourse(id);
+        contactService.deleteContact(id);
 
-        return "redirect:/menu/course";
+        return "redirect:/menu/contacts";
     }
 
     @PostMapping("/show")
@@ -74,23 +78,23 @@ public class CourseController {
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        CourseService courseService =
-            applicationContext.getBean(CourseService.class);
+        ContactService contactService =
+            applicationContext.getBean(ContactService.class);
 
-        Optional<Course> course = courseService.getCourse(id);
-        course.ifPresent(value -> model.addAttribute("course", value));
+        Optional<Contact> contact = contactService.getContact(id);
+        contact.ifPresent(value -> model.addAttribute("contact", value));
 
-        return "menu/course/show-by-id";
+        return "menu/contacts/show-by-id";
     }
 
     private String getViewForShowAll(Model model) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        CourseService courseService =
-            applicationContext.getBean(CourseService.class);
+        ContactService contactService =
+            applicationContext.getBean(ContactService.class);
 
-        List<Course> courses = courseService.getCourses();
-        model.addAttribute("courses", courses);
-        return "menu/course/show-all";
+        List<Contact> contacts = contactService.getContacts();
+        model.addAttribute("contacts", contacts);
+        return "menu/contacts/show-all";
     }
 }

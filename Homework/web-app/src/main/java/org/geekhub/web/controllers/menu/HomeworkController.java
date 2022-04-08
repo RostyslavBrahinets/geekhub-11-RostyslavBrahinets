@@ -1,22 +1,23 @@
-package org.geekhub.web.servlets.controllers.menu;
+package org.geekhub.web.controllers.menu;
 
 import config.AppConfig;
-import models.Resource;
+import models.HomeWork;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import services.ResourceService;
+import services.HomeWorkService;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
+import static org.geekhub.web.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @Controller
-@RequestMapping("/menu/resource")
-public class ResourceController {
+@RequestMapping("/menu/homework")
+public class HomeworkController {
     @GetMapping("")
     public String index(
         HttpSession session,
@@ -24,7 +25,7 @@ public class ResourceController {
     ) {
         String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
         model.addAttribute("userName", userName);
-        return "menu/resource/index";
+        return "menu/homework/index";
     }
 
     @GetMapping("/{command}")
@@ -34,28 +35,28 @@ public class ResourceController {
     ) {
         return switch (command) {
             case "show-all" -> getViewForShowAll(model);
-            case "add" -> "menu/resource/add";
-            case "delete" -> "menu/resource/delete";
-            case "show" -> "menu/resource/show";
-            default -> "menu/resource/index";
+            case "add" -> "menu/homework/add";
+            case "delete" -> "menu/homework/delete";
+            case "show" -> "menu/homework/show";
+            default -> "menu/homework/index";
         };
     }
 
     @PostMapping("/add")
     public String show(
-        @ModelAttribute("name") String name,
-        @ModelAttribute("type") String type,
-        @ModelAttribute("data") String data,
+        @ModelAttribute("task") String task,
+        @ModelAttribute("date") String date,
+        @ModelAttribute("time") String time,
         @ModelAttribute("lectionId") int lectionId
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        ResourceService resourceService =
-            applicationContext.getBean(ResourceService.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
 
-        resourceService.addResource(name, type, data, lectionId);
+        homeWorkService.addHomeWork(task, LocalDateTime.parse(date + "T" + time), lectionId);
 
-        return "redirect:/menu/resource";
+        return "redirect:/menu/homework";
     }
 
     @PostMapping("/delete")
@@ -64,12 +65,12 @@ public class ResourceController {
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        ResourceService resourceService =
-            applicationContext.getBean(ResourceService.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
 
-        resourceService.deleteResource(id);
+        homeWorkService.deleteHomeWork(id);
 
-        return "redirect:/menu/resource";
+        return "redirect:/menu/homework";
     }
 
     @PostMapping("/show")
@@ -79,23 +80,23 @@ public class ResourceController {
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        ResourceService resourceService =
-            applicationContext.getBean(ResourceService.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
 
-        Optional<Resource> resource = resourceService.getResource(id);
-        resource.ifPresent(value -> model.addAttribute("resource", value));
+        Optional<HomeWork> homeWork = homeWorkService.getHomeWork(id);
+        homeWork.ifPresent(value -> model.addAttribute("homework", value));
 
-        return "menu/resource/show-by-id";
+        return "menu/homework/show-by-id";
     }
 
     private String getViewForShowAll(Model model) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        ResourceService resourceService =
-            applicationContext.getBean(ResourceService.class);
+        HomeWorkService homeWorkService =
+            applicationContext.getBean(HomeWorkService.class);
 
-        List<Resource> resources = resourceService.getResources();
-        model.addAttribute("resources", resources);
-        return "menu/resource/show-all";
+        List<HomeWork> homeWork = homeWorkService.getHomeWorks();
+        model.addAttribute("homeworks", homeWork);
+        return "menu/homework/show-all";
     }
 }

@@ -1,22 +1,22 @@
-package org.geekhub.web.servlets.controllers.menu;
+package org.geekhub.web.controllers.menu;
 
 import config.AppConfig;
-import models.Person;
+import models.Lection;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import services.PersonService;
+import services.LectionService;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
-import static org.geekhub.web.servlets.SessionAttributes.USER_NAME_SESSION_PARAMETER;
+import static org.geekhub.web.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @Controller
-@RequestMapping("/menu/person")
-public class PersonController {
+@RequestMapping("/menu/lection")
+public class LectionController {
     @GetMapping("")
     public String index(
         HttpSession session,
@@ -24,7 +24,7 @@ public class PersonController {
     ) {
         String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
         model.addAttribute("userName", userName);
-        return "menu/person/index";
+        return "menu/lection/index";
     }
 
     @GetMapping("/{command}")
@@ -34,29 +34,28 @@ public class PersonController {
     ) {
         return switch (command) {
             case "show-all" -> getViewForShowAll(model);
-            case "add" -> "menu/person/add";
-            case "delete" -> "menu/person/delete";
-            case "show" -> "menu/person/show";
-            default -> "menu/person/index";
+            case "add" -> "menu/lection/add";
+            case "delete" -> "menu/lection/delete";
+            case "show" -> "menu/lection/show";
+            default -> "menu/lection/index";
         };
     }
 
     @PostMapping("/add")
     public String show(
-        @ModelAttribute("firstName") String firstName,
-        @ModelAttribute("lastName") String lastName,
-        @ModelAttribute("nickName") String nickName,
-        @ModelAttribute("role") String role,
+        @ModelAttribute("name") String name,
+        @ModelAttribute("describe") String describe,
+        @ModelAttribute("lecturerId") int lecturerId,
         @ModelAttribute("courseId") int courseId
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        PersonService personService =
-            applicationContext.getBean(PersonService.class);
+        LectionService lectionService =
+            applicationContext.getBean(LectionService.class);
 
-        personService.addPerson(firstName, lastName, nickName, role, courseId);
+        lectionService.addLection(name, describe, lecturerId, courseId);
 
-        return "redirect:/menu/person";
+        return "redirect:/menu/lection";
     }
 
     @PostMapping("/delete")
@@ -65,12 +64,12 @@ public class PersonController {
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        PersonService personService =
-            applicationContext.getBean(PersonService.class);
+        LectionService lectionService =
+            applicationContext.getBean(LectionService.class);
 
-        personService.deletePerson(id);
+        lectionService.deleteLection(id);
 
-        return "redirect:/menu/person";
+        return "redirect:/menu/lection";
     }
 
     @PostMapping("/show")
@@ -80,23 +79,23 @@ public class PersonController {
     ) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        PersonService personService =
-            applicationContext.getBean(PersonService.class);
+        LectionService lectionService =
+            applicationContext.getBean(LectionService.class);
 
-        Optional<Person> person = personService.getPerson(id);
-        person.ifPresent(value -> model.addAttribute("person", value));
+        Optional<Lection> lection = lectionService.getLection(id);
+        lection.ifPresent(value -> model.addAttribute("lection", value));
 
-        return "menu/person/show-by-id";
+        return "menu/lection/show-by-id";
     }
 
     private String getViewForShowAll(Model model) {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
-        PersonService personService =
-            applicationContext.getBean(PersonService.class);
+        LectionService lectionService =
+            applicationContext.getBean(LectionService.class);
 
-        List<Person> people = personService.getPeople();
-        model.addAttribute("people", people);
-        return "menu/person/show-all";
+        List<Lection> lections = lectionService.getLections();
+        model.addAttribute("lections", lections);
+        return "menu/lection/show-all";
     }
 }
