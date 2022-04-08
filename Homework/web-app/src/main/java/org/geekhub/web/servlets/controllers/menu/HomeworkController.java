@@ -24,10 +24,7 @@ public class HomeworkController {
         Model model
     ) {
         String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
-        userName = "admin";
-
         model.addAttribute("userName", userName);
-
         return "menu/homework/index";
     }
 

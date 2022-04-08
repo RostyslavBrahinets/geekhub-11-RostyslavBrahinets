@@ -23,10 +23,7 @@ public class LectionController {
         Model model
     ) {
         String userName = (String) session.getAttribute(USER_NAME_SESSION_PARAMETER);
-        userName = "admin";
-
         model.addAttribute("userName", userName);
-
         return "menu/lection/index";
     }
 
