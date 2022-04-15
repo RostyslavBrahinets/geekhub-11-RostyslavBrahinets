@@ -2,6 +2,7 @@ package validators;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
+import models.HomeWork;
 import repository.HomeWorkRepository;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,10 @@ public class HomeWorkValidator {
         this.homeWorkRepository = homeworkSource;
     }
 
-    public void validate(String task, LocalDateTime deadline) {
+    public void validate(HomeWork homeWork) {
+        String task = homeWork.getTask();
+        LocalDateTime deadline = homeWork.getDeadline();
+
         if (task == null || task.isBlank()) {
             throw new ValidationException("Task of homework is invalid");
         } else if (deadline == null) {

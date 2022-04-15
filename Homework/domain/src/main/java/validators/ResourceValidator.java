@@ -3,6 +3,7 @@ package validators;
 import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
+import models.Resource;
 import models.ResourceType;
 import repository.ResourceRepository;
 
@@ -13,7 +14,11 @@ public class ResourceValidator {
         this.resourcesRepository = resourcesRepository;
     }
 
-    public void validate(String name, String type, String data) {
+    public void validate(Resource resource) {
+        String name = resource.getName();
+        String type = resource.getType().toString();
+        String data = resource.getData();
+
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of resource is invalid");
         } else if (isInvalidType(type)) {

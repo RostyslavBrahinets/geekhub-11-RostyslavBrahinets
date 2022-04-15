@@ -3,6 +3,7 @@ package validators;
 import exceptions.InvalidArgumentException;
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
+import models.Person;
 import models.Role;
 import repository.PersonRepository;
 
@@ -13,12 +14,12 @@ public class PersonValidator {
         this.personRepository = personRepository;
     }
 
-    public void validate(
-        String firstName,
-        String lastName,
-        String gitHubNickname,
-        String role
-    ) {
+    public void validate(Person person) {
+        String firstName = person.getFirstName();
+        String lastName = person.getLastName();
+        String gitHubNickname = person.getGitHubNickname();
+        String role = person.getRole().toString();
+
         if (firstName == null || firstName.isBlank()) {
             throw new ValidationException("First name is invalid");
         } else if (lastName == null || lastName.isBlank()) {

@@ -2,6 +2,7 @@ package validators;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
+import models.Contact;
 import repository.ContactRepository;
 
 public class ContactValidator {
@@ -11,8 +12,10 @@ public class ContactValidator {
         this.contactRepository = contactRepository;
     }
 
+    public void validate(Contact contact) {
+        String email = contact.getEmail();
+        String phone = contact.getPhone();
 
-    public void validate(String email, String phone) {
         if (email == null || email.isBlank()) {
             throw new ValidationException("E-mail of contact is invalid");
         } else if (phone == null || phone.isBlank()) {

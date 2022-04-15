@@ -2,6 +2,7 @@ package validators;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
+import models.Lection;
 import repository.LectionRepository;
 
 public class LectionValidator {
@@ -11,7 +12,10 @@ public class LectionValidator {
         this.lectionRepository = lectionRepository;
     }
 
-    public void validate(String name, String describe) {
+    public void validate(Lection lection) {
+        String name = lection.getName();
+        String describe = lection.getDescribe();
+
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of lection is invalid");
         } else if (describe == null || describe.isBlank()) {

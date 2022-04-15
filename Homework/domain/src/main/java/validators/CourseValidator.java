@@ -2,6 +2,7 @@ package validators;
 
 import exceptions.NotFoundException;
 import exceptions.ValidationException;
+import models.Course;
 import repository.CourseRepository;
 
 public class CourseValidator {
@@ -11,7 +12,8 @@ public class CourseValidator {
         this.courseRepository = courseSource;
     }
 
-    public void validate(String name) {
+    public void validate(Course course) {
+        String name = course.getName();
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of course is invalid");
         }
