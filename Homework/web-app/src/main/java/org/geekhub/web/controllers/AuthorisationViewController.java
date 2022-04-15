@@ -11,7 +11,7 @@ import java.util.List;
 import static org.geekhub.web.SessionAttributes.USER_NAME_SESSION_PARAMETER;
 
 @Controller
-public class AuthorisationController {
+public class AuthorisationViewController {
     @GetMapping("/authorisation")
     public String authorisation() {
         return "authorisation";
@@ -19,8 +19,8 @@ public class AuthorisationController {
 
     @PostMapping("/authorisation")
     public String logIn(
-        @ModelAttribute("userName") String userName,
-        HttpSession session
+            @ModelAttribute("userName") String userName,
+            HttpSession session
     ) {
         List<String> users = List.of("admin", "user");
         if (users.contains(userName)) {
