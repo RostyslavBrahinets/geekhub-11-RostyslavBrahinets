@@ -1,7 +1,6 @@
 package services;
 
 import models.Resource;
-import models.ResourceType;
 import repository.ResourceRepository;
 import validators.ResourceValidator;
 
@@ -24,12 +23,10 @@ public class ResourceService {
         return resourcesRepository.getResources();
     }
 
-    public void addResource(String name, String type, String data, int lectionId) {
-        validator.validate(name, type, data);
-        resourcesRepository.addResource(
-            new Resource(name, ResourceType.valueOf(type), data),
-            lectionId
-        );
+    public Optional<Resource> addResource(Resource resource, int lectionId) {
+        validator.validate(resource);
+        resourcesRepository.addResource(resource, lectionId);
+        return Optional.of(resource);
     }
 
     public void deleteResource(int id) {

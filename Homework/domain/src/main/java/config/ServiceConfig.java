@@ -13,11 +13,11 @@ import java.sql.SQLException;
 @Import({RepositoryConfig.class, ValidatorConfig.class})
 public class ServiceConfig {
     @Bean
-    public ContactService contactService(
+    public ContactsService contactService(
         ContactRepository contactRepository,
         ContactValidator contactValidator
     ) {
-        return new ContactService(contactRepository, contactValidator);
+        return new ContactsService(contactRepository, contactValidator);
     }
 
     @Bean

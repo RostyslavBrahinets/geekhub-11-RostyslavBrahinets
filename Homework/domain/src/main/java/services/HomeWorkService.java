@@ -4,7 +4,6 @@ import models.HomeWork;
 import repository.HomeWorkRepository;
 import validators.HomeWorkValidator;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +23,10 @@ public class HomeWorkService {
         return homeWorkRepository.getHomeWorks();
     }
 
-    public void addHomeWork(String task, LocalDateTime deadline, int lectionId) {
-        validator.validate(task, deadline);
-        homeWorkRepository.addHomeWork(new HomeWork(task, deadline), lectionId);
+    public Optional<HomeWork> addHomeWork(HomeWork homeWork, int lectionId) {
+        validator.validate(homeWork);
+        homeWorkRepository.addHomeWork(homeWork, lectionId);
+        return Optional.of(homeWork);
     }
 
     public void deleteHomeWork(int id) {

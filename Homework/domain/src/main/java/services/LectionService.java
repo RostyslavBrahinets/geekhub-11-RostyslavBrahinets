@@ -6,7 +6,6 @@ import models.Resource;
 import repository.LectionRepository;
 import validators.LectionValidator;
 
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -29,13 +28,14 @@ public class LectionService {
         return lectionRepository.getLections();
     }
 
-    public void addLection(String name, String describe, int lecturerId, int courseId) {
-        validator.validate(name, describe);
+    public Optional<Lection> addLection(Lection lection, int lecturerId, int courseId) {
+        validator.validate(lection);
         lectionRepository.addLection(
-            new Lection(name, describe, LocalDate.now()),
+            lection,
             lecturerId,
             courseId
         );
+        return Optional.of(lection);
     }
 
     public void deleteLection(int id) {

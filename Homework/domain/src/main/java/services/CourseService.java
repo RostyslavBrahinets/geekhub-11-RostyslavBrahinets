@@ -23,9 +23,10 @@ public class CourseService {
         return courseRepository.getCourses();
     }
 
-    public void addCourse(String name) {
-        validator.validate(name);
-        courseRepository.addCourse(new Course(name));
+    public Optional<Course> addCourse(Course course) {
+        validator.validate(course);
+        courseRepository.addCourse(course);
+        return Optional.of(course);
     }
 
     public void deleteCourse(int id) {

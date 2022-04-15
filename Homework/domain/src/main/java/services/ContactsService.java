@@ -7,11 +7,11 @@ import validators.ContactValidator;
 import java.util.List;
 import java.util.Optional;
 
-public class ContactService {
+public class ContactsService {
     private final ContactRepository contactRepository;
     private final ContactValidator validator;
 
-    public ContactService(
+    public ContactsService(
         ContactRepository contactRepository,
         ContactValidator validator
     ) {
@@ -23,9 +23,10 @@ public class ContactService {
         return contactRepository.getContacts();
     }
 
-    public void addContact(String email, String phone, int personId) {
-        validator.validate(email, phone);
-        contactRepository.addContact(new Contact(email, phone), personId);
+    public Optional<Contact> addContact(Contact contact, int personId) {
+        validator.validate(contact);
+        contactRepository.addContact(contact, personId);
+        return Optional.of(contact);
     }
 
     public void deleteContact(int id) {

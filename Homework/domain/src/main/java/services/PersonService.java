@@ -1,7 +1,6 @@
 package services;
 
 import models.Person;
-import models.Role;
 import repository.PersonRepository;
 import validators.PersonValidator;
 
@@ -24,28 +23,10 @@ public class PersonService {
         return personRepository.getPeople();
     }
 
-    public void addPerson(
-        String firstName,
-        String lastName,
-        String gitHubNickname,
-        String role,
-        int courseId
-    ) {
-        validator.validate(
-            firstName,
-            lastName,
-            gitHubNickname,
-            role
-        );
-        personRepository.addPerson(
-            new Person(
-                firstName,
-                lastName,
-                gitHubNickname,
-                Role.valueOf(role)
-            ),
-            courseId
-        );
+    public Optional<Person> addPerson(Person person, int courseId) {
+        validator.validate(person);
+        personRepository.addPerson(person, courseId);
+        return Optional.of(person);
     }
 
     public void deletePerson(int id) {
