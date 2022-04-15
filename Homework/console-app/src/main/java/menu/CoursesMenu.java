@@ -59,7 +59,7 @@ public class CoursesMenu extends Menu {
             for (int i = 0; i < count; i++) {
                 System.out.print("\nName: ");
                 String name = getFromScanner();
-                courseService.addCourse(name);
+                courseService.addCourse(new Course(name));
             }
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);

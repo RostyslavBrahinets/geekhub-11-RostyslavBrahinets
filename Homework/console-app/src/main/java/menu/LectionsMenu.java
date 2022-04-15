@@ -6,6 +6,7 @@ import services.LectionService;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -94,7 +95,9 @@ public class LectionsMenu extends Menu {
                 String courseId = getFromScanner();
 
                 lectionService.addLection(
-                    name, describe, Integer.parseInt(lecturerId), Integer.parseInt(courseId)
+                    new Lection(name, describe, LocalDate.now()),
+                    Integer.parseInt(lecturerId),
+                    Integer.parseInt(courseId)
                 );
             }
         } catch (Exception e) {

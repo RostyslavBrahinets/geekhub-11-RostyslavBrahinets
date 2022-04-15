@@ -2,6 +2,7 @@ package menu;
 
 import exceptions.NotFoundException;
 import models.Resource;
+import models.ResourceType;
 import services.ResourceService;
 
 import java.io.IOException;
@@ -66,7 +67,10 @@ public class ResourcesMenu extends Menu {
                 String data = getFromScanner();
                 System.out.print("Lection id: ");
                 String id = getFromScanner();
-                resourceService.addResource(name, type, data, Integer.parseInt(id));
+                resourceService.addResource(
+                    new Resource(name, ResourceType.valueOf(type), data),
+                    Integer.parseInt(id)
+                );
             }
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);

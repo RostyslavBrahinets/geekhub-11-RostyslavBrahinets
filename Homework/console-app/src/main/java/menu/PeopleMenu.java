@@ -2,6 +2,7 @@ package menu;
 
 import exceptions.NotFoundException;
 import models.Person;
+import models.Role;
 import services.PersonService;
 
 import java.io.IOException;
@@ -70,10 +71,12 @@ public class PeopleMenu extends Menu {
                 System.out.print("Role: ");
                 String courseId = getFromScanner();
                 personService.addPerson(
-                    firstName,
-                    lastName,
-                    nickname,
-                    role,
+                    new Person(
+                        firstName,
+                        lastName,
+                        nickname,
+                        Role.valueOf(role)
+                    ),
                     Integer.parseInt(courseId)
                 );
             }

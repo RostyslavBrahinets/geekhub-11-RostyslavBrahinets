@@ -63,7 +63,10 @@ public class HomeWorksMenu extends Menu {
                 String task = getFromScanner();
                 System.out.print("Lection id: ");
                 String lectionId = getFromScanner();
-                homeWorkService.addHomeWork(task, getDeadLine(), Integer.parseInt(lectionId));
+                homeWorkService.addHomeWork(
+                    new HomeWork(task, getDeadLine()),
+                    Integer.parseInt(lectionId)
+                );
             }
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getMessage(), e);
