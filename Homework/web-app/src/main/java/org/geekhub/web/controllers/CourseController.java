@@ -20,7 +20,7 @@ public class CourseController {
     public static final String COURSES_URL = "/courses";
 
     @GetMapping
-    public List<Course> getAll() {
+    public List<Course> findAllCourse() {
         Optional<CourseService> courseService = getCourseService();
         List<Course> courses = List.of();
         if (courseService.isPresent()) {
@@ -30,7 +30,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Course> get(@PathVariable int id) {
+    public Optional<Course> findByIdCourse(@PathVariable int id) {
         Optional<CourseService> courseService = getCourseService();
         Optional<Course> course = Optional.empty();
         if (courseService.isPresent()) {
@@ -40,7 +40,7 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> create(@RequestBody Course course) {
+    public ResponseEntity<Course> saveCourse(@RequestBody Course course) {
         Optional<CourseService> courseService = getCourseService();
         Optional<Course> createdCourse = Optional.empty();
 
@@ -63,7 +63,7 @@ public class CourseController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void deleteCourse(@PathVariable int id) {
         Optional<CourseService> courseService = getCourseService();
         courseService.ifPresent(service -> service.deleteCourse(id));
     }

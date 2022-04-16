@@ -20,7 +20,7 @@ public class PersonController {
     public static final String PEOPLE_URL = "/people";
 
     @GetMapping
-    public List<Person> getAll() {
+    public List<Person> findAllPerson() {
         Optional<PersonService> personService = getPersonService();
         List<Person> people = List.of();
         if (personService.isPresent()) {
@@ -30,7 +30,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Person> get(@PathVariable int id) {
+    public Optional<Person> findByIdPerson(@PathVariable int id) {
         Optional<PersonService> personService = getPersonService();
         Optional<Person> person = Optional.empty();
         if (personService.isPresent()) {
@@ -40,7 +40,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<Person> create(
+    public ResponseEntity<Person> savePerson(
         @RequestBody Person person,
         @RequestBody int courseId
     ) {
@@ -66,7 +66,7 @@ public class PersonController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void deletePerson(@PathVariable int id) {
         Optional<PersonService> personService = getPersonService();
         personService.ifPresent(service -> service.deletePerson(id));
     }

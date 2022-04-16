@@ -20,7 +20,7 @@ public class HomeworkController {
     public static final String HOMEWORKS_URL = "/homeworks";
 
     @GetMapping
-    public List<HomeWork> getAll() {
+    public List<HomeWork> findAllHomeWork() {
         Optional<HomeWorkService> homeWorkService = getHomeWorkService();
         List<HomeWork> homeWork = List.of();
         if (homeWorkService.isPresent()) {
@@ -30,7 +30,7 @@ public class HomeworkController {
     }
 
     @GetMapping("/{id}")
-    public Optional<HomeWork> get(@PathVariable int id) {
+    public Optional<HomeWork> findByIdHomeWork(@PathVariable int id) {
         Optional<HomeWorkService> homeWorkService = getHomeWorkService();
         Optional<HomeWork> homeWork = Optional.empty();
         if (homeWorkService.isPresent()) {
@@ -40,7 +40,7 @@ public class HomeworkController {
     }
 
     @PostMapping
-    public ResponseEntity<HomeWork> create(
+    public ResponseEntity<HomeWork> saveHomeWork(
         @RequestBody HomeWork homeWork,
         @RequestBody int lectionId
     ) {
@@ -66,7 +66,7 @@ public class HomeworkController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void deleteHomeWork(@PathVariable int id) {
         Optional<HomeWorkService> homeWorkService = getHomeWorkService();
         homeWorkService.ifPresent(service -> service.deleteHomeWork(id));
     }

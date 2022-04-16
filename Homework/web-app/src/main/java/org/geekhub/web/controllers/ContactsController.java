@@ -20,7 +20,7 @@ public class ContactsController {
     public static final String CONTACTS_URL = "/contacts";
 
     @GetMapping
-    public List<Contact> getAll() {
+    public List<Contact> findAllContact() {
         Optional<ContactsService> contactsService = getContactsService();
         List<Contact> contacts = List.of();
         if (contactsService.isPresent()) {
@@ -30,7 +30,7 @@ public class ContactsController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Contact> get(@PathVariable int id) {
+    public Optional<Contact> findByIdContact(@PathVariable int id) {
         Optional<ContactsService> contactsService = getContactsService();
         Optional<Contact> contact = Optional.empty();
         if (contactsService.isPresent()) {
@@ -40,7 +40,7 @@ public class ContactsController {
     }
 
     @PostMapping
-    public ResponseEntity<Contact> create(
+    public ResponseEntity<Contact> saveContact(
         @RequestBody Contact contact,
         @RequestBody int personId
     ) {
@@ -66,7 +66,7 @@ public class ContactsController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void deleteContact(@PathVariable int id) {
         Optional<ContactsService> contactsService = getContactsService();
         contactsService.ifPresent(service -> service.deleteContact(id));
     }

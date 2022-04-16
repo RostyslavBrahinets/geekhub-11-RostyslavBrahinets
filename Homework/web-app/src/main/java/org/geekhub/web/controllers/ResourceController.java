@@ -20,7 +20,7 @@ public class ResourceController {
     public static final String RESOURCES_URL = "/resources";
 
     @GetMapping
-    public List<Resource> getAll() {
+    public List<Resource> findAllResource() {
         Optional<ResourceService> resourceService = getResourceService();
         List<Resource> resources = List.of();
         if (resourceService.isPresent()) {
@@ -30,7 +30,7 @@ public class ResourceController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Resource> get(@PathVariable int id) {
+    public Optional<Resource> findByIdResource(@PathVariable int id) {
         Optional<ResourceService> resourceService = getResourceService();
         Optional<Resource> resource = Optional.empty();
         if (resourceService.isPresent()) {
@@ -40,7 +40,7 @@ public class ResourceController {
     }
 
     @PostMapping
-    public ResponseEntity<Resource> create(
+    public ResponseEntity<Resource> saveResource(
         @RequestBody Resource resource,
         @RequestBody int lectionId
     ) {
@@ -66,7 +66,7 @@ public class ResourceController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void deleteResource(@PathVariable int id) {
         Optional<ResourceService> resourceService = getResourceService();
         resourceService.ifPresent(service -> service.deleteResource(id));
     }

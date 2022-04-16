@@ -15,13 +15,13 @@ public class LoggerRestController {
     public static final String LOGGER_URL = "/logger";
 
     @GetMapping("/logs")
-    public List<String> getAll() {
+    public List<String> findAllLog() {
         Logger logger = new Logger();
         return logger.getLogs();
     }
 
     @GetMapping("/logs/{id}")
-    public Optional<String> get(@PathVariable int id) {
+    public Optional<String> findByIdLog(@PathVariable int id) {
         Logger logger = new Logger();
         return Optional.ofNullable(logger.getLogs().get(id));
     }

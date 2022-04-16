@@ -20,7 +20,7 @@ public class LectionController {
     public static final String LECTIONS_URL = "/lections";
 
     @GetMapping
-    public List<Lection> getAll() {
+    public List<Lection> findAllLection() {
         Optional<LectionService> lectionService = getLectionService();
         List<Lection> lections = List.of();
         if (lectionService.isPresent()) {
@@ -30,7 +30,7 @@ public class LectionController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Lection> get(@PathVariable int id) {
+    public Optional<Lection> findByIdLection(@PathVariable int id) {
         Optional<LectionService> lectionService = getLectionService();
         Optional<Lection> lection = Optional.empty();
         if (lectionService.isPresent()) {
@@ -40,7 +40,7 @@ public class LectionController {
     }
 
     @PostMapping
-    public ResponseEntity<Lection> create(
+    public ResponseEntity<Lection> saveLection(
         @RequestBody Lection lection,
         @RequestBody int lecturerId,
         @RequestBody int courseId
@@ -67,7 +67,7 @@ public class LectionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void deleteLection(@PathVariable int id) {
         Optional<LectionService> lectionService = getLectionService();
         lectionService.ifPresent(service -> service.deleteLection(id));
     }
