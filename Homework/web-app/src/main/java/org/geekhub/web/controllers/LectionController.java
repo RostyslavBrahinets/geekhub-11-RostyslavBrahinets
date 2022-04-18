@@ -5,12 +5,9 @@ import models.Lection;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import services.LectionService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,46 +20,49 @@ public class LectionController {
     public List<Lection> findAllLection() {
         Optional<LectionService> lectionService = getLectionService();
         List<Lection> lections = List.of();
+
         if (lectionService.isPresent()) {
             lections = lectionService.get().getLections();
         }
+
         return lections;
     }
 
     @GetMapping("/{id}")
-    public Optional<Lection> findByIdLection(@PathVariable int id) {
+    public Lection findByIdLection(@PathVariable int id) {
         Optional<LectionService> lectionService = getLectionService();
-        Optional<Lection> lection = Optional.empty();
+        Lection lection = null;
+
         if (lectionService.isPresent()) {
-            lection = lectionService.get().getLection(id);
+            Optional<Lection> lectionOptional = lectionService.get().getLection(id);
+
+            if (lectionOptional.isPresent()) {
+                lection = lectionOptional.get();
+            }
         }
+
         return lection;
     }
 
     @PostMapping
-    public ResponseEntity<Lection> saveLection(
+    public Lection saveLection(
         @RequestBody Lection lection,
         @RequestBody int lecturerId,
         @RequestBody int courseId
     ) {
         Optional<LectionService> lectionService = getLectionService();
-        Optional<Lection> createdLection = Optional.empty();
+        Lection createdLection = null;
 
         if (lectionService.isPresent()) {
-            createdLection = lectionService.get().addLection(lection, lecturerId, courseId);
+            Optional<Lection> lectionOptional = lectionService.get()
+                .addLection(lection, lecturerId, courseId);
+
+            if (lectionOptional.isPresent()) {
+                createdLection = lectionOptional.get();
+            }
         }
 
-        ResponseEntity<Lection> entity = null;
-        URI uri;
-
-        if (createdLection.isPresent()) {
-            uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(LECTIONS_URL + "/{id}")
-                .buildAndExpand(createdLection.get().getId()).toUri();
-            entity = ResponseEntity.created(uri).body(createdLection.get());
-        }
-
-        return entity;
+        return createdLection;
     }
 
     @DeleteMapping("/{id}")
@@ -76,6 +76,7 @@ public class LectionController {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         LectionService lectionService = applicationContext.getBean(LectionService.class);
+
         return Optional.of(lectionService);
     }
 }

@@ -5,12 +5,9 @@ import models.Contact;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import services.ContactsService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,45 +20,47 @@ public class ContactsController {
     public List<Contact> findAllContact() {
         Optional<ContactsService> contactsService = getContactsService();
         List<Contact> contacts = List.of();
+
         if (contactsService.isPresent()) {
             contacts = contactsService.get().getContacts();
         }
+
         return contacts;
     }
 
     @GetMapping("/{id}")
-    public Optional<Contact> findByIdContact(@PathVariable int id) {
+    public Contact findByIdContact(@PathVariable int id) {
         Optional<ContactsService> contactsService = getContactsService();
-        Optional<Contact> contact = Optional.empty();
+        Contact contact = null;
+
         if (contactsService.isPresent()) {
-            contact = contactsService.get().getContact(id);
+            Optional<Contact> contactOptional = contactsService.get().getContact(id);
+
+            if (contactOptional.isPresent()) {
+                contact = contactOptional.get();
+            }
         }
+
         return contact;
     }
 
     @PostMapping
-    public ResponseEntity<Contact> saveContact(
+    public Contact saveContact(
         @RequestBody Contact contact,
         @RequestBody int personId
     ) {
         Optional<ContactsService> contactsService = getContactsService();
-        Optional<Contact> createdContact = Optional.empty();
+        Contact createdContact = null;
 
         if (contactsService.isPresent()) {
-            createdContact = contactsService.get().addContact(contact, personId);
+            Optional<Contact> contactOptional = contactsService.get().addContact(contact, personId);
+
+            if (contactOptional.isPresent()) {
+                createdContact = contactOptional.get();
+            }
         }
 
-        ResponseEntity<Contact> entity = null;
-        URI uri;
-
-        if (createdContact.isPresent()) {
-            uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(CONTACTS_URL + "/{id}")
-                .buildAndExpand(createdContact.get().getId()).toUri();
-            entity = ResponseEntity.created(uri).body(createdContact.get());
-        }
-
-        return entity;
+        return createdContact;
     }
 
     @DeleteMapping("/{id}")
@@ -75,6 +74,7 @@ public class ContactsController {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         ContactsService contactsService = applicationContext.getBean(ContactsService.class);
+
         return Optional.of(contactsService);
     }
 }

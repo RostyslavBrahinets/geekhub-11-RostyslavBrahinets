@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = LoggerRestController.LOGGER_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -21,13 +20,13 @@ public class LoggerRestController {
     }
 
     @GetMapping("/logs/{id}")
-    public Optional<String> findByIdLog(@PathVariable int id) {
+    public String findByIdLog(@PathVariable int id) {
         Logger logger = new Logger();
-        return Optional.ofNullable(logger.getLogs().get(id));
+        return logger.getLogs().get(id);
     }
 
     @PostMapping("/settings")
-    public Optional<String> settings(
+    public String settings(
         @ModelAttribute("loggerStorage") String loggerStorage
     ) {
         switch (loggerStorage) {
@@ -37,6 +36,6 @@ public class LoggerRestController {
             default -> throw new NotFoundException("Logger Storage Not Found");
         }
 
-        return Optional.of(loggerStorage);
+        return loggerStorage;
     }
 }

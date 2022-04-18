@@ -5,12 +5,9 @@ import models.Resource;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import services.ResourceService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,45 +20,48 @@ public class ResourceController {
     public List<Resource> findAllResource() {
         Optional<ResourceService> resourceService = getResourceService();
         List<Resource> resources = List.of();
+
         if (resourceService.isPresent()) {
             resources = resourceService.get().getResources();
         }
+
         return resources;
     }
 
     @GetMapping("/{id}")
-    public Optional<Resource> findByIdResource(@PathVariable int id) {
+    public Resource findByIdResource(@PathVariable int id) {
         Optional<ResourceService> resourceService = getResourceService();
-        Optional<Resource> resource = Optional.empty();
+        Resource resource = null;
+
         if (resourceService.isPresent()) {
-            resource = resourceService.get().getResource(id);
+            Optional<Resource> resourceOptional = resourceService.get().getResource(id);
+
+            if (resourceOptional.isPresent()) {
+                resource = resourceOptional.get();
+            }
         }
+
         return resource;
     }
 
     @PostMapping
-    public ResponseEntity<Resource> saveResource(
+    public Resource saveResource(
         @RequestBody Resource resource,
         @RequestBody int lectionId
     ) {
         Optional<ResourceService> resourceService = getResourceService();
-        Optional<Resource> createdResource = Optional.empty();
+        Resource createdResource = null;
 
         if (resourceService.isPresent()) {
-            createdResource = resourceService.get().addResource(resource, lectionId);
+            Optional<Resource> resourceOptional = resourceService.get()
+                .addResource(resource, lectionId);
+
+            if (resourceOptional.isPresent()) {
+                createdResource = resourceOptional.get();
+            }
         }
 
-        ResponseEntity<Resource> entity = null;
-        URI uri;
-
-        if (createdResource.isPresent()) {
-            uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(RESOURCES_URL + "/{id}")
-                .buildAndExpand(createdResource.get().getId()).toUri();
-            entity = ResponseEntity.created(uri).body(createdResource.get());
-        }
-
-        return entity;
+        return createdResource;
     }
 
     @DeleteMapping("/{id}")
@@ -75,6 +75,7 @@ public class ResourceController {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         ResourceService resourceService = applicationContext.getBean(ResourceService.class);
+
         return Optional.of(resourceService);
     }
 }

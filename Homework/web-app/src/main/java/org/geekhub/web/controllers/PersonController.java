@@ -5,12 +5,9 @@ import models.Person;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import services.PersonService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,45 +20,47 @@ public class PersonController {
     public List<Person> findAllPerson() {
         Optional<PersonService> personService = getPersonService();
         List<Person> people = List.of();
+
         if (personService.isPresent()) {
             people = personService.get().getPeople();
         }
+
         return people;
     }
 
     @GetMapping("/{id}")
-    public Optional<Person> findByIdPerson(@PathVariable int id) {
+    public Person findByIdPerson(@PathVariable int id) {
         Optional<PersonService> personService = getPersonService();
-        Optional<Person> person = Optional.empty();
+        Person person = null;
+
         if (personService.isPresent()) {
-            person = personService.get().getPerson(id);
+            Optional<Person> personOptional = personService.get().getPerson(id);
+
+            if (personOptional.isPresent()) {
+                person = personOptional.get();
+            }
         }
+
         return person;
     }
 
     @PostMapping
-    public ResponseEntity<Person> savePerson(
+    public Person savePerson(
         @RequestBody Person person,
         @RequestBody int courseId
     ) {
         Optional<PersonService> personService = getPersonService();
-        Optional<Person> createdPerson = Optional.empty();
+        Person createdPerson = null;
 
         if (personService.isPresent()) {
-            createdPerson = personService.get().addPerson(person, courseId);
+            Optional<Person> personOptional = personService.get().addPerson(person, courseId);
+
+            if (personOptional.isPresent()) {
+                createdPerson = personOptional.get();
+            }
         }
 
-        ResponseEntity<Person> entity = null;
-        URI uri;
-
-        if (createdPerson.isPresent()) {
-            uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(PEOPLE_URL + "/{id}")
-                .buildAndExpand(createdPerson.get().getId()).toUri();
-            entity = ResponseEntity.created(uri).body(createdPerson.get());
-        }
-
-        return entity;
+        return createdPerson;
     }
 
     @DeleteMapping("/{id}")
@@ -75,6 +74,7 @@ public class PersonController {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         PersonService personService = applicationContext.getBean(PersonService.class);
+
         return Optional.of(personService);
     }
 }

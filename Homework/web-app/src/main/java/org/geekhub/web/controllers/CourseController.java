@@ -5,12 +5,9 @@ import models.Course;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import services.CourseService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,42 +20,44 @@ public class CourseController {
     public List<Course> findAllCourse() {
         Optional<CourseService> courseService = getCourseService();
         List<Course> courses = List.of();
+
         if (courseService.isPresent()) {
             courses = courseService.get().getCourses();
         }
+
         return courses;
     }
 
     @GetMapping("/{id}")
-    public Optional<Course> findByIdCourse(@PathVariable int id) {
+    public Course findByIdCourse(@PathVariable int id) {
         Optional<CourseService> courseService = getCourseService();
-        Optional<Course> course = Optional.empty();
+        Course course = null;
+
         if (courseService.isPresent()) {
-            course = courseService.get().getCourse(id);
+            Optional<Course> courseOptional = courseService.get().getCourse(id);
+
+            if (courseOptional.isPresent()) {
+                course = courseOptional.get();
+            }
         }
+
         return course;
     }
 
     @PostMapping
-    public ResponseEntity<Course> saveCourse(@RequestBody Course course) {
+    public Course saveCourse(@RequestBody Course course) {
         Optional<CourseService> courseService = getCourseService();
-        Optional<Course> createdCourse = Optional.empty();
+        Course createdCourse = null;
 
         if (courseService.isPresent()) {
-            createdCourse = courseService.get().addCourse(course);
+            Optional<Course> courseOptional = courseService.get().addCourse(course);
+            if (courseOptional.isPresent()) {
+                createdCourse = courseOptional.get();
+            }
+
         }
 
-        ResponseEntity<Course> entity = null;
-        URI uri;
-
-        if (createdCourse.isPresent()) {
-            uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(COURSES_URL + "/{id}")
-                .buildAndExpand(createdCourse.get().getId()).toUri();
-            entity = ResponseEntity.created(uri).body(createdCourse.get());
-        }
-
-        return entity;
+        return createdCourse;
     }
 
     @DeleteMapping("/{id}")
@@ -72,6 +71,7 @@ public class CourseController {
         AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
         CourseService courseService = applicationContext.getBean(CourseService.class);
+
         return Optional.of(courseService);
     }
 }
